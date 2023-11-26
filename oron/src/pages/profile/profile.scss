@@ -1,0 +1,254 @@
+@import "../../style.scss";
+.profile{
+    @include themify($themes){
+        background-color: themed("bgSoft");
+        .images{
+            width: 100%;
+            height: 300px;
+            position: relative;
+            .cover{
+                width: 120%;
+                height: 100%;
+                object-fit: cover;
+                left: 0;
+                top: 0;
+                position: absolute;
+            }
+            .profilePic{
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                object-fit: cover;
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin: auto;
+                top:200px;
+            }
+            button.uploadButtonPic {
+                position: relative;
+                top: 327px;
+                left: 58%;
+                transform: translate(-50%, -50%);
+                border-radius: 20%;
+                cursor: pointer;
+                background-color: themed("bgSoft");
+                padding-top: 4px;
+                padding-bottom: 4px;
+            }
+
+            button.uploadButtonPicCover {
+                position: relative;
+                top: 92%;
+                left: 97%;
+                transform: translate(-50%, -50%);
+                border-radius: 20%;
+                cursor: pointer;
+                background-color: themed("bgSoft");
+                padding-top: 4px;
+                padding-bottom: 4px;
+            }
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border: 1px solid #ccc;
+            z-index: 999;
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.384); /* Màu nền mờ với độ mờ 45% */
+            backdrop-filter: blur(30px); /* Tạo hiệu ứng mờ bằng backdrop-filter */
+            box-shadow: 0 4px 6px rgba(226, 223, 223, 0.704);
+            border-radius: 10px;
+            min-height: 200px;
+            overflow: hidden;
+            z-index: 2;
+
+            input{
+                border: none;
+                padding:20px;
+                width: 80%;
+                margin-bottom: 20px;
+            }
+
+            h2{
+                color: #555;
+                font-size: 30px;
+                margin-bottom: 20px;
+                margin-top: -20px;
+            }
+
+            p{
+                display: flex;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                height: 50%;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .imageContainer {
+                width: 100%;
+                height: 227px;
+                border: 2px solid;
+                margin-bottom: 20px;
+            }
+
+            .imageContainer img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+
+            .popup-content{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+
+                .button_AS {
+                    width: calc(80% + 40px);
+                    display: flex;
+                    justify-content: space-between;
+
+                    .Access_button{
+                        width: 35%;
+                        padding: 5px;
+                        border: none;
+                        background-color: rgb(174,222,228);
+                        font-weight: bold;
+                        color: rgb(242, 242, 242);
+                        cursor: pointer;
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: center;
+                    }
+
+                    .SendOTP_button{
+                        width: 60%;
+                        padding: 5px;
+                        border: none;
+                        background-color: rgb(29, 67, 89);
+                        font-weight: bold;
+                        color: rgb(242, 242, 242);
+                        cursor: pointer;
+                        border-radius: 5px;
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+            }
+          }
+          
+          .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Màu đen với độ trong suốt 0.5 */
+            z-index: 1; /* Đặt z-index thấp hơn popup nhưng cao hơn nền để tạo hiệu ứng che mờ */
+        }
+        .profileContainer{
+            padding: 20px 70px;
+            @include mobile{
+                padding: 10px;
+            }
+            @include tablet{
+                padding: 20px;
+            }
+            .uInfo{
+                height: 180px;
+                -webkit-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+                -moz-box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+                box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+                border-radius: 20px;
+                background-color: themed("bg");
+                color: themed("textColor");
+                padding: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+                @include mobile{
+                    flex-direction: column;
+                    height: 30vh;
+                    padding: 20px;
+                    margin-top: 100px;
+                }
+                .left{
+                    flex: 1;
+                    display: flex;
+                    gap: 10px;
+
+                    @include tablet{
+                        flex-wrap: wrap;
+                    }
+
+                    a{
+                        color: themed("textColorSoft");
+                    }
+                }
+                .center{
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                    span{
+                        font-size: 30px;
+                        font-weight: 500;
+                    }
+                    .info{
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
+                        .item{
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                            color: themed("textColorSoft");
+                            span{
+                                font-size: 12px;
+                            }
+                        }
+                        
+                    }
+                    button{
+                        border: none;
+                        background-color: #5271ff;
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                }
+                .right{
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 10px;
+                }
+            }
+        }
+    }
+}
