@@ -1,0 +1,7 @@
+@import "../../style.scss";
+
+.carousel {
+    @include themify($themes){
+        width: 100%;
+    }
+}
