@@ -274,15 +274,6 @@ useEffect(() => {
       <div className="profileContainer">
             <div className="uInfo">
                   <div className="left">
-                        <a href="http://facebook.com">
-                          <FacebookTwoToneIcon fontSize="large" />
-                        </a>
-                        <a href="http://facebook.com">
-                          <InstagramIcon fontSize="large" />
-                        </a>
-                        <a href="http://facebook.com">
-                          <LinkedInIcon fontSize="large" />
-                        </a>
                   </div>
                   <div className="center">
                       <span>{currentUser.data.username}</span>

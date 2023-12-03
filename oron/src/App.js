@@ -2,6 +2,9 @@ import Register from "./pages/register/Register.jsx";
 import Login from "./pages/login/Login.jsx";
 import Pagefriend from "./pages/listFriendPage/friend.jsx";
 import Forgotpassword from "./pages/forgotpassword/forgotpassword.jsx";
+import Ranking from "./pages/ranking/Ranking.jsx";
+import Reportadmin from "./pages/reportadmin/Reportadmin.jsx";
+
 import {
   createBrowserRouter,
   Navigate,
@@ -82,6 +85,14 @@ function App() {
           path: "/profile/:id",
           element: <Profile />,
         },
+        // {
+        //   path: "/ranking",
+        //   element: <Ranking />,
+        // },
+        // {
+        //   path: "/reportadmin",
+        //   element: <Reportadmin />,
+        // },
       ],
     },
     {
@@ -99,6 +110,14 @@ function App() {
     {
       path: "/forgotpassword",
       element: <Forgotpassword />,
+    },
+    {
+      path: "/ranking",
+      element: <Ranking />,
+    },
+    {
+      path: "/reportadmin",
+      element: <Reportadmin />,
     },
   ]);
   //

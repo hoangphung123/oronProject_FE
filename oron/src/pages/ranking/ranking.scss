@@ -1,0 +1,129 @@
+.background {
+    background-image: url("../../assets/ranking.png");
+    background-size: cover;
+    // z-index: 999;
+    // position:absolute;
+
+
+    .container {
+        width: 50%;
+        height: 50%;
+    }
+
+
+    .ranking_container {
+        position: fixed;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-row: auto;
+        column-gap: 30px;
+        grid-template-areas:
+            "column4 column2 column5"
+            "column1 column2 column5"
+            "column1 column2 column3"
+            "column1 column2 column3";
+        justify-content: center;
+        left: 25%;
+        top: 35%;
+        width: 50%;
+        height: 400px;
+        border-radius: 5%;
+
+    }
+
+    .first_one {
+        grid-area: column1;
+        position: relative;
+    }
+
+    .second_one {
+        grid-area: column2;
+        position: relative;
+    }
+
+    .third_one {
+        grid-area: column3;
+        position: relative;
+    }
+
+    .ranking_column {
+        background-color: #8f6f98;
+        border-radius: 20px;
+    }
+
+    .user_name {
+        width: auto;
+        height: 60px;
+        background-color: rgb(0, 0, 0);
+        display: flex;
+        justify-content: center;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+    }
+
+    .user_name .name {
+        color: rgb(187, 153, 0);
+        font-size: 40px;
+        margin-top: 10px;
+    }
+
+    // .point {
+    //     position: absolute;
+    //     display: flex;
+    //     top: 80%;
+    //     left: 30%;
+    // }
+
+    .point .score {
+        font-size: 30px;
+        color: var(--white);
+    }
+
+    .rating1 {
+        position: absolute;
+        left: 25%;
+        display: flex;
+        font-size: 100px;
+        z-index: 1;
+    }
+
+    .rating2 {
+        position: absolute;
+        left: 25%;
+        display: flex;
+        font-size: 100px;
+        z-index: 1;
+    }
+
+    .rating3 {
+        position: absolute;
+        left: 25%;
+        display: flex;
+        font-size: 100px;
+        z-index: 1;
+    }
+
+    .point {
+        position: absolute;
+        display: flex;
+        top: 80%;
+        left: 30%;
+        display: flex;
+        align-items: center;
+        gap: 8px; // Adjust the gap between score and stars as needed
+    }
+
+    .score {
+        font-size: 24px; // Adjust the font size of the score as needed
+    }
+
+    .rating {
+        font-size: 24px; // Adjust the font size of the stars as needed
+    }
+
+    .rating span {
+        color: gold; // Set the color of the stars
+    }
+}
+
+;
