@@ -47,11 +47,16 @@ const LeftBar = () => {
             <span>{currentUser.data.username}</span>
           </div>
           <div className="item">
-            <img src={Friends} alt="" />
+            <Link to="/friends" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <img src={Friends} alt="" />
+            </Link>
             <span>Friends</span>
           </div>
           <div className="item">
-            <img src={Ranking} alt="" />
+            <Link to="/ranking" style={{ textDecoration: 'none', color: 'inherit' }}>
+              <img src={Ranking} alt="" />
+            </Link>
+
             <span>Ranking</span>
           </div>
           <hr />

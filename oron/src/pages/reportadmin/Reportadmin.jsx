@@ -10,8 +10,8 @@ const AdminPanel = () => {
     const { darkMode } = useContext(DarkModeContext);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 100 },
-        { field: 'postId', headerName: 'Post ID', width: 150 },
+        { field: 'id', headerName: 'No.', width: 100 },
+        // { field: 'postId', headerName: 'Post ID', width: 150 },
         { field: 'Tittle', headerName: 'Title', width: 200 },
         { field: 'description', headerName: 'Description', width: 300 },
         {

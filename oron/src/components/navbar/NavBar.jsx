@@ -74,7 +74,7 @@ const NavBar = () => {
         <Link to = "/" style={{textDecoration:"none"}}>
           <span>ORON Social</span>
         </Link>
-        <HomeOutlinedIcon/>
+        {/* <HomeOutlinedIcon/> */}
         { darkMode ? <WbSunnyOutlinedIcon onClick = {toggle}/>: 
         <DarkModeOutlinedIcon onClick = {toggle} /> 
          }
