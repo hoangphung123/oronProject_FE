@@ -134,13 +134,11 @@ const NavBar = () => {
         <Link to="/" style={{ textDecoration: "none" }}>
           <span>ORON Social</span>
         </Link>
-        <HomeOutlinedIcon />
-        {darkMode ? (
-          <WbSunnyOutlinedIcon onClick={toggle} />
-        ) : (
-          <DarkModeOutlinedIcon onClick={toggle} />
-        )}
-        <GridViewOutlinedIcon />
+        {/* <HomeOutlinedIcon/> */}
+        { darkMode ? <WbSunnyOutlinedIcon onClick = {toggle}/>: 
+        <DarkModeOutlinedIcon onClick = {toggle} /> 
+         }
+        {/* <GridViewOutlinedIcon/> */}
         <div className="search">
           <div className="search_input">
             <SearchOutlinedIcon />

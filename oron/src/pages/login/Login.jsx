@@ -41,6 +41,9 @@ const Login = () => {
                     <Link to="/register">
                     <button>Register</button>
                     </Link>
+                    <Link to="/forgotpassword">
+                    <span1>Forgot your password?</span1>
+                    </Link>
             </div>
             <div className="right">
                   <h1>Login</h1>
