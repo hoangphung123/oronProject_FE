@@ -10,6 +10,8 @@ export const AuthContextProvider = ({children}) =>{
             JSON.parse(localStorage.getItem("user") )|| null
     );
 
+    const [currentUserId, setCurrentUserId] = useState([])
+
 
     const login = async (loginData)=>{
        const response = await UserServices.loginUser(loginData);
@@ -27,7 +29,7 @@ export const AuthContextProvider = ({children}) =>{
 
 
     return (
-        <AuthContext.Provider value = {{currentUser, login, setCurrentUser }}>
+        <AuthContext.Provider value = {{currentUser, login, setCurrentUser, currentUserId, setCurrentUserId }}>
             {children}
         </AuthContext.Provider>
     )

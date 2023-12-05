@@ -14,6 +14,9 @@
     background-color: themed("bg");
     color: themed("textColor");
     z-index: 999;
+
+    
+
     .left{
         display: flex;
         align-items: center;
@@ -25,11 +28,61 @@
         }
         .search{
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
             border: 1px solid themed("border");
             border-radius: 5px;
             padding: 5px;
+            position: relative;
+
+            .search_input {
+                display: flex;
+            }
+
+            .recent-searches {
+                display: flex;
+                position: absolute;
+                top: 110%;
+                background: themed("bg");
+                left: 0;
+                width: 100%;
+                z-index: 1;
+                flex-direction: column;
+                
+                justify-content: center;
+                border: 1px solid lightgray;
+                border-radius: 5px;
+
+                .search-item {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    position: relative;
+                    margin-bottom: 2%;
+
+                    img.avatar {
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 50%;
+                        margin-right: 3%;
+                    }
+
+                    span {
+                        font-size: 15px;
+                    }                    
+                }
+
+                .search-item:hover{
+                    background-color: themed("textColor");
+                    
+                    cursor: pointer;
+
+                    span {
+                        color: themed("bg");
+                    } 
+                }
+            }
 
             input{
                 border: none;
@@ -65,6 +118,10 @@
                  border-radius: 50%;
                  object-fit: cover;
             }
+        }
+
+        .css-6hp17o-MuiList-root-MuiMenu-list {
+            background: themed("bg");
         }
     }
 

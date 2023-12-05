@@ -1,0 +1,58 @@
+@import "../../style.scss";
+
+.ranking {
+    @include themify($themes) {
+        background-color: themed("bgSoft");
+        color: themed("textColor");
+
+        .header {
+            margin-top: 3%;
+            margin-left: 2%;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .left-container {
+            height: 700px;
+            margin-top: 2%;
+            margin-left: 2%;
+            flex: 1;
+        }
+
+
+        .right-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile {
+            text-align: center;
+
+            h2 {
+                color: gold !important;
+                width: 150%;
+                height: 150%;
+                font-size: 250%;
+            }
+
+            h3 {
+                color: goldenrod !important;
+                width: 150%;
+                height: 150%;
+                font-size: 200%;
+            }
+        }
+
+
+        .profile img {
+            width: 150%;
+            height: 150%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
+}
