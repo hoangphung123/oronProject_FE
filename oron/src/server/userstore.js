@@ -166,8 +166,23 @@ export const getUserPic = async (accessToken, fileName) => {
     console.error('Error while fetching user picture:', error.message);
     throw error;
   }
-};
+}
 
+export const getFriends = async (accessToken) => {
+  try {
+    const response = await axios.get(`${api_url}/user/friends`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const friendsList = response.data;
+    return friendsList;
+  } catch (error) {
+    console.error('Error while fetching friends list:', error.message);
+    throw error;
+  }
+}
 
 
 
