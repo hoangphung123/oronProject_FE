@@ -31,7 +31,7 @@ const Post = ({ post }) => {
   const [selectedImages, setSelectedImages] = useState(null);
   const [description, setDescription] = useState("");
 
-  
+
 
   const handleInputChange = (e, inputField) => {
     const value = e.target.value;
@@ -65,7 +65,7 @@ const Post = ({ post }) => {
   const closePopup = () => {
     setIsPopupOpen(false);
   };
-  const handleSendClick =() =>{
+  const handleSendClick = () => {
 
   };
   const { getRootProps, getInputProps } = useDropzone({
@@ -135,16 +135,16 @@ const Post = ({ post }) => {
                   <div className="popup-content">
                     <div className="left">
                       <div className="left-container">
-                        <h1>Ảnh</h1>
-                        <div className="imageContainer">
-                          <div {...getRootProps()} className="dropzone">
-                            <input {...getInputProps()} />
-                            <p className="imageContainer_p">+</p>
-                          </div>
-                          {selectedImages && (
-                            <img src={selectedImages} alt="Selected" />
-                          )}
-                        </div>
+                        <h1>Tittle</h1>
+                        <form>
+                          <textarea
+                            className="input_description"
+                            type="text"
+                            placeholder="Tittle"
+                            value={description}
+                            onChange={(e) => handleInputChange(e, "description")}
+                          />
+                        </form>
                       </div>
                     </div>
                     <div className="right">
