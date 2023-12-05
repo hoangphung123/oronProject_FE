@@ -78,7 +78,7 @@ const NavBar = () => {
         { darkMode ? <WbSunnyOutlinedIcon onClick = {toggle}/>: 
         <DarkModeOutlinedIcon onClick = {toggle} /> 
          }
-        <GridViewOutlinedIcon/>
+        {/* <GridViewOutlinedIcon/> */}
         <div className="search">
           <SearchOutlinedIcon/>
           <input type="text" placeholder="Search..."/>
