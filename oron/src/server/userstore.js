@@ -199,6 +199,85 @@ export const verifyforgotpassword = async (userData) => {
     console.error('Error while verifying forgot password:', error.message);
     throw error;
   }
-};
+}
+
+export const getUserByUsername = async (accessToken, username) => {
+  try {
+    const response = await axios.get(
+      `${api_url}/user/filter?keyword=${username}&limit=10`, // Use URL parameters for username and limit
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const user = response.data;
+    return user;
+  } catch (error) {
+    console.error('Error while fetching user by username:', error.message);
+    throw error;
+  }
+}
+
+export const getFollowings = async (accessToken) => {
+  try {
+    const response = await axios.get(
+      `${api_url}/user/followings`, // Use URL parameter for userId
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const followings = response.data;
+    return followings;
+  } catch (error) {
+    console.error('Error while fetching user followings:', error.message);
+    throw error;
+  }
+}
+
+export const createFollow = async (accessToken, userId) => {
+  try {
+    const response = await axios.post(
+      `${api_url}/user/${userId}/follow`, // Use URL parameter for userId
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const followResult = response.data;
+    return followResult;
+  } catch (error) {
+    console.error('Error while creating follow:', error.message);
+    throw error;
+  }
+}
+
+export const UnFollow = async (accessToken, userId) => {
+  try {
+    const response = await axios.delete(
+      `${api_url}/user/${userId}/unfollow`, // Use URL parameter for userId
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const unfollowResult = response.data;
+    return unfollowResult;
+  } catch (error) {
+    console.error('Error while creating follow:', error.message);
+    throw error;
+  }
+}
+
+
 
 

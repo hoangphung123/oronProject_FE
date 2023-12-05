@@ -16,6 +16,7 @@ import LeftBar from "./components/leftbar/LeftBar.jsx";
 import RightBar from "./components/rightbar/RightBar.jsx";
 import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
+import ProfileFriends from "./pages/profileFriends/profileFriends.jsx";
 import Carousel from './components/carousel/Carousel.jsx';
 import "./style.scss";
 import { useContext, useEffect } from "react";
@@ -54,6 +55,19 @@ function App() {
             <Outlet />
           </div>
           <RightBar />
+        </div>
+      </div>
+    );
+  };
+
+  const Layouts = () => {
+    return (
+      <div className={`theme-${darkMode ? "dark" : "light"}`}>
+        <NavBar />
+        <div style={{ display: "flex" }}>
+          <div style={{ flex: 6 }}>
+            <Outlet />
+          </div>
         </div>
       </div>
     );
@@ -118,6 +132,20 @@ function App() {
     {
       path: "/reportadmin",
       element: <Reportadmin />,
+    },
+    {
+      path: "/profileFriends",
+      element: (
+        <ProtectedRoute>
+          <Layouts />
+        </ProtectedRoute>
+      ),
+      children: [
+        {
+          path: "/profileFriends",
+          element: <ProfileFriends />,
+        },
+      ],
     },
   ]);
   //

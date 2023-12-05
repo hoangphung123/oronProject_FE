@@ -75,6 +75,7 @@
                     align-items: center;
                     /* You can adjust the width as needed */
                     padding: 10px;
+                    padding-left: 0;
                 }
 
                 .square {
@@ -83,6 +84,7 @@
                     background-color: #00f;
                     /* You can set the background color as needed */
                     margin-right: 10px;
+                    border-radius: 10px;
                 }
 
                 .text-container {

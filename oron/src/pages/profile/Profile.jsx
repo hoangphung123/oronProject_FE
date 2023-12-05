@@ -287,7 +287,7 @@ useEffect(() => {
                             <span>tamnhu.dev</span>
                           </div>
                       </div>
-                      <button>follow</button>
+                      {/* <button>follow</button> */}
                   </div>
                   <div className="right">
                       <EmailOutlinedIcon/>
