@@ -7,6 +7,8 @@ import React, { useContext, useEffect} from "react";
 import * as postserver from "../../server/itemstore"
 import { PostsContext } from "../../context/postContext";
 import { AuthContext } from "../../context/authContext";
+import Carousel from "../../components/carousel/Carousel";
+import Submenu from '../../components/Submenu/Submenu';
 
 
 const Home = () => {
@@ -48,6 +50,8 @@ const Home = () => {
   
   return (
     <div className="home">
+      <Carousel />
+      <Submenu />
       <ShareBox />
       <button className="button_next">
         <FontAwesomeIcon icon={faAngleRight} size="xl" />
