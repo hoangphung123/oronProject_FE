@@ -4,10 +4,12 @@ import Gallery from "../../assets/8.png";
 import Ranking from "../../assets/14.png";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
+import { PostsContext } from "../../context/postContext";
 import { Link } from "react-router-dom";
 import * as Userserver from "../../server/userstore";
 const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
+  const { savePost, setSavePost } = useContext(PostsContext);
   const [profileImage, setProfileImage] = useState(currentUser.data.profilePic);
   // useEffect(() => {
   //   const fetchUserProfilePicture = async () => {
@@ -68,30 +70,17 @@ const LeftBar = () => {
             <span>Saved Post</span>
           </div>
           <div>
-            {/* <hr /> */}
-            <div className="rectangle-box">
-              <div className="square"></div>
-              <div className="text-container">
-                <div className="Name">Hoang Phung</div>
-                <div className="Decripstion">Đây là mô hình Goku</div>
-              </div>
-            </div>
-            <div className="rectangle-box">
-              <div className="square"></div>
-              <div className="text-container">
-                <div className="Name">Hoang Phung</div>
-                <div className="Decripstion">Đây là mô hình Goku</div>
-              </div>
-            </div>
-            <div className="rectangle-box">
-              <div className="square"></div>
-              <div className="text-container">
-                <div className="Name">Hoang Phung</div>
-                <div className="Decripstion">
-                  Đây là mô hình Goku, tỉ lệ 1:12, cao 12cm
+          {savePost.map((post, index) => (
+              <div className="rectangle-box" key={index}>
+                <div className="square">
+                  <img className="square_img" src={`http://localhost:3500/${post.imageURL}`} alt="" />
+                </div>
+                <div className="text-container">
+                  <div className="Name">{post.user.username}</div>
+                  <div className="Decripstion">{post.description}</div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

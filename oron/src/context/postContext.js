@@ -11,6 +11,8 @@ export const PostsProvider = ({ children }) => {
   const [friendsList, setFriendsList] = useState([]);
   const [followingList, setFollowingList] = useState([]);
   const [followerList, setFollowerList] = useState([]);
+  const [savePost, setSavePost] = useState([]);
+
 
   const fetchPostsRegistation = async () => {
     try {
@@ -80,6 +82,22 @@ export const PostsProvider = ({ children }) => {
     }
   }
 
+  const fetchSavePost = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const result = await postserver.getSavedPostsByUser(
+        accessToken,
+      );
+      setSavePost(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error(
+        "Error while fetching List Friends:",
+        error.message
+      );
+    }
+  }
+
   const fetchPosts = async (limit) => {
     // Fetch posts with the specified limit parameter
     const response = await postserver.getAllPost(limit);
@@ -89,6 +107,7 @@ export const PostsProvider = ({ children }) => {
 
   // Fetch initial posts when the component mounts
   useEffect(() => {
+    fetchSavePost()
     fetchListFollower()
     fetchListFollowing()
     fetchListFriends()
@@ -97,7 +116,7 @@ export const PostsProvider = ({ children }) => {
   }, []);
 
   return (
-    <PostsContext.Provider value={{ posts, setPosts, postRegistrations, setPostRegistrations, friendsList, setFriendsList, followingList, setFollowingList, followerList, setFollowerList }}>
+    <PostsContext.Provider value={{ posts, setPosts, postRegistrations, setPostRegistrations, friendsList, setFriendsList, followingList, setFollowingList, followerList, setFollowerList, savePost, setSavePost }}>
       {children}
     </PostsContext.Provider>
   );

@@ -199,4 +199,42 @@ export const getFollower = async (accessToken) => {
     }
 }
 
+export const savePost = async (accessToken, postId) => {
+  try {
+      const response = await axios.post(
+          `${api_url}/post/${postId}/save`,
+          {},
+          {
+              headers: {
+                  Authorization: `Bearer ${accessToken}`,
+              },
+          }
+      );
+
+      const savedPost = response.data;
+      return savedPost;
+  } catch (error) {
+      console.error(`Error while saving post with id ${postId}:`, error.message);
+      throw error;
+  }
+}
+
+export const getSavedPostsByUser = async (accessToken) => {
+  try {
+      const response = await axios.get(`${api_url}/post/saved/user`, {
+          headers: {
+              Authorization: `Bearer ${accessToken}`,
+          },
+      });
+
+      const savedPosts = response.data; // Cập nhật dòng này dựa trên cấu trúc dữ liệu trả về từ API của bạn
+      return savedPosts;
+  } catch (error) {
+      console.error('Error while fetching saved posts:', error.message);
+      throw error;
+  }
+}
+
+
+
 
