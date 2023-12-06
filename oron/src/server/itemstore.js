@@ -132,10 +132,10 @@ export const postRegistration = async (accessToken, registrationData) => {
     }
 }
 
-export const getPostRegistrationByUserId = async (accessToken, userId, limit) => {
+export const getPostRegistrationByUserId = async (accessToken, creatorId, limit) => {
     try {
       const response = await axios.get(
-        `${api_url}/post-registration/filter?userId=${userId}&limit=${limit}`,
+        `${api_url}/post-registration/filter?creatorId=${creatorId}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -146,8 +146,57 @@ export const getPostRegistrationByUserId = async (accessToken, userId, limit) =>
       const postRegistrations = response.data; // Cập nhật dòng này dựa trên cấu trúc dữ liệu trả về từ API của bạn
       return postRegistrations;
     } catch (error) {
-      console.error(`Error while fetching post registrations for user with id ${userId}:`, error.message);
+      console.error(`Error while fetching post registrations for user with id ${creatorId}:`, error.message);
       throw error;
     }
 }
+
+export const getFriends = async (accessToken) => {
+    try {
+      const response = await axios.get(`${api_url}/user/friends`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      const friendsList = response.data;
+      return friendsList;
+    } catch (error) {
+      console.error('Error while fetching friends list:', error.message);
+      throw error;
+    }
+}
+
+export const getFollowing = async (accessToken) => {
+    try {
+      const response = await axios.get(`${api_url}/user/followings`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      const followingList = response.data;
+      return followingList;
+    } catch (error) {
+      console.error('Error while fetching friends list:', error.message);
+      throw error;
+    }
+}
+
+export const getFollower = async (accessToken) => {
+    try {
+      const response = await axios.get(`${api_url}/user/followers`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      const followerList = response.data;
+      return followerList;
+    } catch (error) {
+      console.error('Error while fetching friends list:', error.message);
+      throw error;
+    }
+}
+
 
