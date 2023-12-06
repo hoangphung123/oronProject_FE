@@ -30,7 +30,7 @@ export default function Share() {
   const [selectedWard, setSelectedWard] = useState("");
   const [description, setDescription] = useState("");
   const {setPosts} = useContext(PostsContext);
-  const Status = ["Công Khai", "Riêng tư"];
+  const Status = ["Công Khai", "Riêng tư","Bạn bè"];
 
   const openPopup = () => {
     setIsPopupOpen(true);

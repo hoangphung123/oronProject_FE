@@ -36,9 +36,7 @@ const Ranking = () => {
         <div className={`theme-${darkMode ? "dark" : "light"}`}>
             <div className='ranking'>
                 <NavBar />
-                <div className="header">
                     <h1> TOP RANKING IN WEEK</h1>
-                </div>
                 <div className="container">
                     <div className="left-container">
                         <div className="select-row-container">
@@ -92,7 +90,12 @@ const Ranking = () => {
                         <div className="profile">
                             <h2>Top 1 in week</h2>
                             <img src={avata} alt="Profile" />
-                            <h3>Xuan Loc</h3>
+                            <h3>Huynh Dinh Thinh</h3>
+                            <div className="star-rating">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                    <span key={star} className="star">&#9733;</span>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>

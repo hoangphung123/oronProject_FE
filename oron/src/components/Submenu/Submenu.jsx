@@ -113,12 +113,12 @@ const ButtonFrame = ({ buttonData }) => {
 
 const CombinedComponent = () => {
   const buttonData = [
-    { image: 'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_640.jpg', onClick: () => console.log('Clicked on button 1') },
-    { image: 'https://e7.pngegg.com/pngimages/135/840/png-clipart-drawing-dish-%D0%BA%D0%B0%D1%81%D1%82%D1%80%D1%8E%D0%BB%D1%8F-food-photography.png', onClick: () => console.log('Clicked on button 2') },
-    { image: 'https://img.lovepik.com/free-png/20211126/lovepik-green-tree-png-image_401150180_wh1200.png', onClick: () => console.log('Clicked on button 3') },
-    { image: 'https://banner2.cleanpng.com/20180701/ezr/kisspng-t-shirt-clothing-outerwear-computer-icons-shirt-vector-5b3852802005f3.0364733715304177921312.jpg', onClick: () => console.log('Clicked on button 4') },
-    { image: 'https://purepng.com/public/uploads/large/purepng.com-photos-iconsymbolsiconsapple-iosiosios-8-iconsios-8-721522596102asedt.png', onClick: () => console.log('Clicked on button 5') },
-    { image: 'https://www.freeiconspng.com/thumbs/financial-icon-png/financial-icon-png-don-8.png', onClick: () => console.log('Clicked on button 6') },
+    { image: 'https://img.icons8.com/ultraviolet/40/cat-footprint.png', onClick: () => console.log('Clicked on button 1') },
+    { image: 'https://img.icons8.com/ultraviolet/40/literature--v1.png', onClick: () => console.log('Clicked on button 2') },
+    { image: 'https://img.icons8.com/ultraviolet/40/teddy-bear.png', onClick: () => console.log('Clicked on button 3') },
+    { image: 'https://img.icons8.com/ultraviolet/40/plant-under-sun.png', onClick: () => console.log('Clicked on button 4') },
+    { image: 'https://img.icons8.com/ultraviolet/40/rice-bowl.png', onClick: () => console.log('Clicked on button 5') },
+    { image: 'https://img.icons8.com/ultraviolet/40/shirt.png', onClick: () => console.log('Clicked on button 6') },
     // Add more button data as needed
   ];
 
