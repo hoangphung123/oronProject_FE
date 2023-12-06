@@ -22,27 +22,6 @@ const RightBar = () => {
     },
     // Add more user data as needed
   ];
-  const FriendsDataArray = [
-    {
-      userid: 135,
-      username: "hoanghuy",
-      imageURL:
-        "https://i.pinimg.com/564x/3b/1a/6f/3b1a6f3340cc082e698456137522057a.jpg",
-    },
-    {
-      userid: 134,
-      username: "DinhThinh",
-      imageURL:
-        "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-    },
-    {
-      userid: 136,
-      username: "DucHuy",
-      imageURL:
-        "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-    },
-    // Add more user data as needed
-  ];
 
   const formatTimeDifference = (createdAt) => {
     return formatDistanceToNow(new Date(createdAt), { addSuffix: true });

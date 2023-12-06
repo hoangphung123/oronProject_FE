@@ -165,4 +165,38 @@ export const getFriends = async (accessToken) => {
       console.error('Error while fetching friends list:', error.message);
       throw error;
     }
-  }
+}
+
+export const getFollowing = async (accessToken) => {
+    try {
+      const response = await axios.get(`${api_url}/user/followings`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      const followingList = response.data;
+      return followingList;
+    } catch (error) {
+      console.error('Error while fetching friends list:', error.message);
+      throw error;
+    }
+}
+
+export const getFollower = async (accessToken) => {
+    try {
+      const response = await axios.get(`${api_url}/user/followers`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+  
+      const followerList = response.data;
+      return followerList;
+    } catch (error) {
+      console.error('Error while fetching friends list:', error.message);
+      throw error;
+    }
+}
+
+
