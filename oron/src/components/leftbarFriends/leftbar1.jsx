@@ -1,61 +1,94 @@
-import "./leftbar1.scss"
+import "./leftbar1.scss";
+import { PostsContext } from "../../context/postContext";
+import { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../../context/authContext";
+import * as Userserver from "../../server/userstore";
+import * as Postserver from "../../server/itemstore";
+
 const LeftBar1 = () => {
-    const FriendsDataArray = [
-        {
-          userid: 135,
-          username: "hoanghuy",
-          imageURL: "https://i.pinimg.com/564x/3b/1a/6f/3b1a6f3340cc082e698456137522057a.jpg",
-          status: "online",
-        },
-        {
-          userid: 134,
-          username: "DinhThinh",
-          imageURL: "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-          status: "online",
-        },
-        {
-          userid: 136,
-          username: "DucHuy",
-          imageURL: "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-          status: "online",
-        },
-        {
-            userid: 137,
-            username: "hoanghuy1",
-            imageURL: "https://i.pinimg.com/564x/3b/1a/6f/3b1a6f3340cc082e698456137522057a.jpg",
-            status: "online",
-        },
-        {
-            userid: 138,
-            username: "DinhThinh1",
-            imageURL: "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-            status: "online",
-        },
-        {
-            userid: 139,
-            username: "DucHuy1",
-            imageURL: "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-            status: "online",
-        },
-        // Add more user data as needed
-   ];
+  const { friendsList, followingList, followerList } = useContext(PostsContext);
+  const [selectedTab, setSelectedTab] = useState("following");
+  const { currentUserId, setCurrentUserId, setCurrentUserProfile } = useContext(AuthContext);
+  const { setPosts } = useContext(PostsContext);
+
+  let dataToRender = [];
+
+  // Determine which data to render based on the selectedTab
+  if (selectedTab === "friends") {
+    dataToRender = friendsList;
+  } else if (selectedTab === "followers") {
+    dataToRender = followerList;
+  } else if (selectedTab === "following") {
+    dataToRender = followingList;
+  }
+
+  const handleUserClick = async (userId, username) => {
+    console.log(`Clicked on user with ID: ${userId} and Username: ${username}`);
+    const updatedUserId = { userId, username };
+    setCurrentUserId(updatedUserId);
+
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+    const res = await Userserver.getUserByUsername(accessToken, currentUserId.username);
+
+    setCurrentUserProfile(res)
+
+    const response = await Postserver.getPostByUserId(
+      currentUserId.userId,
+      9
+    );
+
+    setPosts(response.listData);
+
+    // Store the updated user data in localStorage
+    localStorage.setItem("friends", JSON.stringify(updatedUserId));
+  };
 
   return (
     <div className="leftBar1">
       <div className="container">
         <hr />
-        {/* Render user data from FriendsDataArray */}
+        <div className="tabs">
+          <div
+            className={`tab ${selectedTab === "friends" ? "active" : ""}`}
+            onClick={() => setSelectedTab("friends")}
+          >
+            Friends
+          </div>
+          <div
+            className={`tab ${selectedTab === "followers" ? "active" : ""}`}
+            onClick={() => setSelectedTab("followers")}
+          >
+            Followers
+          </div>
+          <div
+            className={`tab ${selectedTab === "following" ? "active" : ""}`}
+            onClick={() => setSelectedTab("following")}
+          >
+            Following
+          </div>
+        </div>
         <div className="menu">
-          {FriendsDataArray.map((friend) => (
-            <div key={friend.userid} className="user">
-              <img src={friend.imageURL} alt="" />
-              <span>{friend.username}</span>
+          {dataToRender.map((userData, index) => (
+            <div
+              className="user"
+              key={index}
+              onClick={() => handleUserClick(userData.id, userData.username)}
+            >
+              <div className="userInfos">
+                <img
+                  src={`http://localhost:3500/${userData.profilePic}`}
+                  alt=""
+                />
+                <div className="online" />
+                <span>{userData.username}</span>
+              </div>
             </div>
           ))}
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default LeftBar1
+export default LeftBar1;

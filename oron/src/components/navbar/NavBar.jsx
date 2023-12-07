@@ -9,6 +9,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import * as Userserver from "../../server/userstore";
+import * as postserver from "../../server/itemstore";
 import { useContext, useState, useEffect } from "react";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
@@ -24,12 +25,11 @@ const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showRecentSearches, setShowRecentSearches] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
-  
 
   const handleSearchChange = async (event) => {
     const query = event.target.value;
     setSearchQuery(query);
-  
+
     if (query.trim() === "") {
       // If the search query is empty, reset recent searches
       setRecentSearches([]);
@@ -37,29 +37,31 @@ const NavBar = () => {
       try {
         // Retrieve the access token from localStorage
         const accessToken = JSON.parse(localStorage.getItem("access_token"));
-  
+
         // Call the getUserByUsername function to get user by username
         const user = await Userserver.getUserByUsername(accessToken, query);
-  
+
         // Set recent searches to the entire listData array
         setRecentSearches(user?.listData || []);
-  
       } catch (error) {
-        console.error('Error while fetching user by username:', error.message);
+        console.error("Error while fetching user by username:", error.message);
       }
     }
   };
 
   const handleUserClicks = ({ userId, username }) => {
     // Use the userId and username
-    setCurrentUserId({ userId, username });
-    console.log('userId', userId);
-    console.log('username', username);
-    navigate("/profileFriends")
+    const updatedUserId = { userId, username };
+    setCurrentUserId(updatedUserId);
+
+    // Store the updated user data in localStorage
+    localStorage.setItem("friends", JSON.stringify(updatedUserId));
+    console.log("userId", userId);
+    console.log("username", username);
+    navigate("/profileFriends");
     // Optionally, you may also want to close the recent searches dropdown
     setShowRecentSearches(false);
   };
-
 
   const handleSearchClick = () => {
     setShowRecentSearches(true);
@@ -128,16 +130,34 @@ const NavBar = () => {
   //   fetchUserProfilePicture();
   // }, [currentUser.data.profilePic]);
 
+  const handlefetchFriends = async () => {
+    try {
+      // Assuming you have an accessToken, you can get it from your authentication context or elsewhere
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const friends = await postserver.getFriends(accessToken);
+      const updatedUserId = {
+        userId: friends.listData[0].id,
+        username: friends.listData[0].username
+      };
+      localStorage.setItem("friends", JSON.stringify(updatedUserId));
+      setCurrentUserId(updatedUserId)
+    } catch (error) {
+      console.error("Error fetching friends:", error.message);
+    }
+  };
+
   return (
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span>ORON Social</span>
+          <span onClick={handlefetchFriends}>ORON Social</span>
         </Link>
         {/* <HomeOutlinedIcon/> */}
-        { darkMode ? <WbSunnyOutlinedIcon onClick = {toggle}/>: 
-        <DarkModeOutlinedIcon onClick = {toggle} /> 
-         }
+        {darkMode ? (
+          <WbSunnyOutlinedIcon onClick={toggle} />
+        ) : (
+          <DarkModeOutlinedIcon onClick={toggle} />
+        )}
         {/* <GridViewOutlinedIcon/> */}
         <div className="search">
           <div className="search_input">
@@ -152,24 +172,33 @@ const NavBar = () => {
           </div>
           {showRecentSearches && (
             <div className="recent-searches">
-            {recentSearches.length > 0 ? (
-              recentSearches.map((userData, index) => {
-                return (
-                  <div key={index} className="search-item" onClick={() => handleUserClicks({ userId: userData.id, username: userData.username })}>
-                    {/* Assuming user data has properties like 'profilePic' and 'username' */}
-                    <img
-                      src={`http://localhost:3500/${userData.profilePic}`}
-                      alt={`${userData.username} avatar`}
-                      className="avatar"
-                    />
-                    <span>{userData.username}</span>
-                  </div>
-                );
-              })
-            ) : (
-              <div>Không có tìm kiếm gần đây</div>
-            )}
-          </div>
+              {recentSearches.length > 0 ? (
+                recentSearches.map((userData, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="search-item"
+                      onClick={() =>
+                        handleUserClicks({
+                          userId: userData.id,
+                          username: userData.username,
+                        })
+                      }
+                    >
+                      {/* Assuming user data has properties like 'profilePic' and 'username' */}
+                      <img
+                        src={`http://localhost:3500/${userData.profilePic}`}
+                        alt={`${userData.username} avatar`}
+                        className="avatar"
+                      />
+                      <span>{userData.username}</span>
+                    </div>
+                  );
+                })
+              ) : (
+                <div>Không có tìm kiếm gần đây</div>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -198,7 +227,6 @@ const NavBar = () => {
             vertical: "top",
             horizontal: "right",
           }}
-          
         >
           <MenuItem
             component={Link}
@@ -209,7 +237,9 @@ const NavBar = () => {
             Profile
           </MenuItem>
           {/* <MenuItem onClick={handleClose}>Option 2</MenuItem> */}
-          <MenuItem className="custom-menu" onClick={handleLogout}>logout</MenuItem>
+          <MenuItem className="custom-menu" onClick={handleLogout}>
+            logout
+          </MenuItem>
         </Menu>
       </div>
     </div>
