@@ -122,6 +122,13 @@
             height: 58.4px;
             margin-bottom: 20px;   
             background: #e9e9e9; 
+
+            
+        }
+
+        .selectStatus {
+            height: 20px;
+            padding: 0;
         }
 
         select.statusSelect{
@@ -182,6 +189,7 @@
             height: 100%;
             object-fit: cover;
             z-index: 9999;
+            position: relative;
         }
 
         .popup-content{

@@ -199,4 +199,140 @@ export const getFollower = async (accessToken) => {
     }
 }
 
+export const savePost = async (accessToken, postId) => {
+  try {
+      const response = await axios.post(
+          `${api_url}/post/${postId}/save`,
+          {},
+          {
+              headers: {
+                  Authorization: `Bearer ${accessToken}`,
+              },
+          }
+      );
+
+      const savedPost = response.data;
+      return savedPost;
+  } catch (error) {
+      console.error(`Error while saving post with id ${postId}:`, error.message);
+      throw error;
+  }
+}
+
+export const getSavedPostsByUser = async (accessToken) => {
+  try {
+      const response = await axios.get(`${api_url}/post/saved/user`, {
+          headers: {
+              Authorization: `Bearer ${accessToken}`,
+          },
+      });
+
+      const savedPosts = response.data; // Cập nhật dòng này dựa trên cấu trúc dữ liệu trả về từ API của bạn
+      return savedPosts;
+  } catch (error) {
+      console.error('Error while fetching saved posts:', error.message);
+      throw error;
+  }
+}
+
+export const getRegistrationsByPostId = async (accessToken, postId, status) => {
+  try {
+    const response = await axios.get(`${api_url}/post-registration/filter?status=${status}&postId=${postId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const registrations = response.data; // Update this line based on your API response structure
+    return registrations;
+  } catch (error) {
+    console.error(`Error while fetching registrations for post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
+export const getPostRegisByPostOwnerId = async (accessToken, postOwnerId, status) => {
+  try {
+      const response = await axios.get(
+          `${api_url}/post-registration/filter?status=${status}&postOwnerId=${postOwnerId}`,
+          {
+              headers: {
+                  Authorization: `Bearer ${accessToken}`,
+              },
+          }
+      );
+      const postRegistrations = response.data; // Cập nhật dòng này dựa trên cấu trúc dữ liệu trả về từ API của bạn
+      return postRegistrations;
+  } catch (error) {
+      console.error(`Error while fetching post registrations for post with id ${postOwnerId} and status ${status}:`, error.message);
+      throw error;
+  }
+}
+
+export const deleteRegisById = async (accessToken, regisId, data) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/post-registration/${regisId}`,
+      data,  // Dữ liệu body được truyền vào PATCH
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const deletedRegis = response.data;
+    return deletedRegis;
+  } catch (error) {
+    console.error(`Error while deleting registration with id ${regisId}:`, error.message);
+    throw error;
+  }
+}
+
+
+export const deletePost = async (accessToken, postId) => {
+  try {
+    const response = await axios.delete(
+      `${api_url}/post/${postId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const deletedPost = response.data; // Update this line based on your API response structure
+    return deletedPost;
+  } catch (error) {
+    console.error(`Error while deleting post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
+export const updatePost = async (accessToken, postId, updateData) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/post/${postId}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const updatedPost = response.data; // Update this line based on your API response structure
+    return updatedPost;
+  } catch (error) {
+    console.error(`Error while updating post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
+
+
+
+
+
+
+
 

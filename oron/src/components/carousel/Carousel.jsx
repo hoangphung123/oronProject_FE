@@ -121,7 +121,7 @@ const CaptionCarousel = () => {
 
   return (
     <div className="carousel">
-    <Box position={'relative'} height={'300px'} width={'700px'} borderRadius={"16px"} overflow={'hidden'} marginBottom={ '10px'} >
+    <Box position={'relative'} height={'300px'} width={'1000px'} borderRadius={"16px"} overflow={'hidden'} marginBottom={ '10px'} >
       <Slider {...settings}>
         {cards.map((card, index) => (
           <Box

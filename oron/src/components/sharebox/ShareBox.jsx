@@ -10,27 +10,26 @@ import * as UserService from "../../server/userstore";
 import * as UserServices from "../../server/itemstore";
 import { PostsContext } from "../../context/postContext";
 import { ToastContainer, toast } from "react-toastify";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 // import Carousel from '../carousel/Carousel';
-
-
 
 export default function Share() {
   const { currentUser } = useContext(AuthContext);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [provinces, setProvinces] = useState([]);
-  const [statuss, setStatus] = useState([]);
+  const [category, setCategory] = useState([]);
   const [wards, setwards] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImages, setSelectedImages] = useState(null);
   const [selectedWard, setSelectedWard] = useState("");
   const [description, setDescription] = useState("");
-  const {setPosts} = useContext(PostsContext);
-  const Status = ["Công Khai", "Riêng tư","Bạn bè"];
+  const { setPosts } = useContext(PostsContext);
+  const Status = ["Công Khai", "Riêng tư", "Bạn bè"];
+  const [selectedStatus, setSelectedStatus] = useState("Công Khai");
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -46,7 +45,7 @@ export default function Share() {
     const imageUrl = URL.createObjectURL(file);
     console.log("file", imageUrl);
     setSelectedImage(file);
-    setSelectedImages(imageUrl)
+    setSelectedImages(imageUrl);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -54,15 +53,15 @@ export default function Share() {
     onDrop,
   });
 
-  const fetchStatus = async () => {
+  const fetchCategory = async () => {
     try {
       const response = await UserServices.getCategory(1);
       console.log("listdata", response);
-      const fetchedStatus = response.listData;
+      const fetchedCategory = response.listData;
 
-      setStatus(fetchedStatus);
+      setCategory(fetchedCategory);
     } catch (error) {
-      toast.error(`Error fetching provinces: ${error.message}`);
+      toast.error(`Error fetching Category: ${error.message}`);
     }
   };
 
@@ -121,8 +120,8 @@ export default function Share() {
     fetchDistrictsByProvinceId(selectedProvinceId);
   };
 
-  const handSelectedStatus = (e) => {
-    setSelectedStatus(e.target.value);
+  const handSelectedCategory = (e) => {
+    setSelectedCategory(e.target.value);
   };
 
   const handleInputChange = (e, inputField) => {
@@ -159,24 +158,47 @@ export default function Share() {
 
   const handleRegisterClick = async () => {
     try {
+      let statusValue;
+      switch (selectedStatus) {
+        case "Công Khai":
+          statusValue = 1;
+          break;
+        case "Riêng tư":
+          statusValue = 0;
+          break;
+        case "Bạn bè":
+          statusValue = 2;
+          break;
+        default:
+          statusValue = 1; // Default to "Công Khai" if none selected
+          break;
+      }
       // setLoading(true);
       const postData = {
         description: description,
+        categoryId: selectedCategory,
         province: selectedProvince,
         district: selectedDistrict,
         ward: selectedWard,
+        status: statusValue,
       };
 
       const accessToken = JSON.parse(localStorage.getItem("access_token"));
 
-
-      const registeredUser = await UserServices.createPost(accessToken,postData);
+      const registeredUser = await UserServices.createPost(
+        accessToken,
+        postData
+      );
 
       const registeredUserId = registeredUser.data.id;
 
-      console.log(selectedImage)
+      console.log(selectedImage);
 
-      const uploadedPicturePost = await UserServices.uploadPost(accessToken, selectedImage, registeredUserId);
+      const uploadedPicturePost = await UserServices.uploadPost(
+        accessToken,
+        selectedImage,
+        registeredUserId
+      );
 
       const newData = {
         id: registeredUser.data.id,
@@ -208,7 +230,7 @@ export default function Share() {
       };
 
       setPosts((prevPosts) => [newData, ...prevPosts]);
-
+      setIsPopupOpen(false);
       toast.success(`Success: ${registeredUser.message}`);
       // setShowPopup(true);
     } catch (error) {
@@ -217,7 +239,7 @@ export default function Share() {
   };
 
   useEffect(() => {
-    fetchStatus();
+    fetchCategory();
     fetchProvinces();
   }, []);
 
@@ -272,7 +294,11 @@ export default function Share() {
                   />
                   <div className="shareTop-content">
                     <span>{currentUser.data.username}</span>
-                    <select className="statusSelect">
+                    <select
+                      className="selectStatus"
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
                       {Status.map((option, index) => (
                         <option key={index} value={option}>
                           {option}
@@ -313,15 +339,15 @@ export default function Share() {
                       onChange={(e) => handleInputChange(e, "description")}
                     />
                     <select
-                      value={selectedStatus}
-                      onChange={handSelectedStatus}
+                      value={selectedCategory}
+                      onChange={handSelectedCategory}
                     >
                       <option value="" disabled>
-                        Status
+                        Category
                       </option>
-                      {statuss.map((status) => (
-                        <option key={status.id} value={status.id}>
-                          {status.name}
+                      {category.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.name}
                         </option>
                       ))}
                     </select>
@@ -368,7 +394,13 @@ export default function Share() {
                 </div>
               </div>
               <div className="popup-action">
-                <Button onClick={handleRegisterClick} variant="contained" className="acsess_button">Đăng</Button>
+                <Button
+                  onClick={handleRegisterClick}
+                  variant="contained"
+                  className="acsess_button"
+                >
+                  Đăng
+                </Button>
               </div>
             </div>
           </>
