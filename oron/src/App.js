@@ -4,7 +4,7 @@ import Pagefriend from "./pages/listFriendPage/friend.jsx";
 import Forgotpassword from "./pages/forgotpassword/forgotpassword.jsx";
 import Ranking from "./pages/ranking/Ranking.jsx";
 import Reportadmin from "./pages/reportadmin/Reportadmin.jsx";
-
+import DetailRegistation from "./pages/detailRegister/detail.jsx";
 import {
   createBrowserRouter,
   Navigate,
@@ -17,7 +17,7 @@ import RightBar from "./components/rightbar/RightBar.jsx";
 import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import ProfileFriends from "./pages/profileFriends/profileFriends.jsx";
-import Carousel from './components/carousel/Carousel.jsx';
+// import Carousel from './components/carousel/Carousel.jsx';
 import "./style.scss";
 import { useContext, useEffect } from "react";
 import { DarkModeContext } from "./context/darkModeContext.js";
@@ -132,6 +132,10 @@ function App() {
     {
       path: "/reportadmin",
       element: <Reportadmin />,
+    },
+    {
+      path: "/detailRegistation",
+      element: <DetailRegistation />,
     },
     {
       path: "/profileFriends",
