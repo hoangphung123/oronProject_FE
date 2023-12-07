@@ -289,6 +289,47 @@ export const deleteRegisById = async (accessToken, regisId, data) => {
 }
 
 
+export const deletePost = async (accessToken, postId) => {
+  try {
+    const response = await axios.delete(
+      `${api_url}/post/${postId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const deletedPost = response.data; // Update this line based on your API response structure
+    return deletedPost;
+  } catch (error) {
+    console.error(`Error while deleting post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
+export const updatePost = async (accessToken, postId, updateData) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/post/${postId}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const updatedPost = response.data; // Update this line based on your API response structure
+    return updatedPost;
+  } catch (error) {
+    console.error(`Error while updating post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
+
+
 
 
 
