@@ -15,6 +15,8 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import {
+  Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField} from '@mui/material';
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,6 +27,9 @@ const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showRecentSearches, setShowRecentSearches] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const handleSearchChange = async (event) => {
     const query = event.target.value;
@@ -93,6 +98,24 @@ const NavBar = () => {
     navigate("/login");
     // Đóng Menu sau khi logout
     handleClose();
+  };
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    // Optionally, reset password fields
+    setOldPassword('');
+    setNewPassword('');
+  };
+
+  const handleChangepassword = () => {
+    // Implement your logic for changing the password
+    console.log('Changing password...');
+    // Optionally, close the dialog
+    handleCloseDialog();
   };
 
   useEffect(() => {
@@ -236,9 +259,39 @@ const NavBar = () => {
           >
             Profile
           </MenuItem>
-          {/* <MenuItem onClick={handleClose}>Option 2</MenuItem> */}
+          <MenuItem className="custom-menu" onClick={handleOpenDialog}>
+            Change password
+          </MenuItem>
+          <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+            <DialogTitle>Change Password</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Old Password"
+                type="password"
+                fullWidth
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="New Password"
+                type="password"
+                fullWidth
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Cancel</Button>
+              <Button onClick={handleChangepassword} variant="contained" color="primary">
+                Change
+              </Button>
+            </DialogActions>
+          </Dialog>
           <MenuItem className="custom-menu" onClick={handleLogout}>
-            logout
+            Logout
           </MenuItem>
         </Menu>
       </div>
