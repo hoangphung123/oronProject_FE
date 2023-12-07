@@ -11,14 +11,17 @@
         @include tablet{
             padding: 20px;
         }
+
+        .button_next{
+            position: fixed;
+            right: 25%;
+            top: 50%;
+            z-index: 1;
+            border: none;
+            background-color: themed("bgs");
+            color: themed("textColor") ;
+        }
     }
-    .button_next{
-        position: fixed;
-        right: 27%;
-        top: 50%;
-        z-index: 1;
-        border: none;
-        background-color: #f6f3f3;
-    }
+    
 }
     

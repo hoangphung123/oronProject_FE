@@ -56,7 +56,7 @@ const Post = ({ post }) => {
       const accessToken = JSON.parse(localStorage.getItem("access_token"));
       const data = {
         // message: "Lovely",
-        status: 4,
+        status: 3,
       };
       const deletedRegis = await Itemserver.deleteRegisById(
         accessToken,
@@ -190,7 +190,7 @@ const Post = ({ post }) => {
         const accessToken = JSON.parse(localStorage.getItem("access_token"));
         const registrations = await Itemserver.getRegistrationsByPostId(
           accessToken,
-          post.post.id,
+          post.id,
           1
         );
         setUserDataArray(registrations.listData);
@@ -200,7 +200,7 @@ const Post = ({ post }) => {
     };
 
     fetchRegistrations();
-  }, [post.post.id, registrationUpdated]);
+  }, [post.id, registrationUpdated]);
 
   return (
     <div className="postRegistation">
@@ -223,8 +223,8 @@ const Post = ({ post }) => {
           </div>
         </div>
         <div className="content">
-          <p>{post.post.description}</p>
-          <img src={`http://localhost:3500/${post.post.imageURL}`} alt="" />
+          <p>{post.description}</p>
+          <img src={`http://localhost:3500/${post.imageURL}`} alt="" />
         </div>
         <div className="info">
           <div
@@ -238,7 +238,7 @@ const Post = ({ post }) => {
           </div>
         </div>
         {showRegisteredUsers && (
-          <RegisteredUsersComponent postId={post.post.id} />
+          <RegisteredUsersComponent postId={post.id} />
         )}
       </div>
       <ToastContainer />

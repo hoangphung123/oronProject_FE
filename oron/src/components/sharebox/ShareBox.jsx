@@ -30,6 +30,7 @@ export default function Share() {
   const { setPosts } = useContext(PostsContext);
   const Status = ["Công Khai", "Riêng tư", "Bạn bè"];
   const [selectedStatus, setSelectedStatus] = useState("Công Khai");
+  
 
   const openPopup = () => {
     setIsPopupOpen(true);

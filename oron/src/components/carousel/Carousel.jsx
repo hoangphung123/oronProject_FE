@@ -92,13 +92,19 @@ import { ClassNames } from '@emotion/react';
 const CaptionCarousel = () => {
   const cards = [
     {
-      image: 'https://images.unsplash.com/photo-1516796181074-bf453fbfa3e6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60',
+      image: 'https://i.pinimg.com/564x/1e/db/c2/1edbc2367a605156d052c8fb415063a8.jpg',
       height: '50%',
       width: '50%', // Set the desired width, you can use pixels or percentage
       // Add more properties as needed
     },
     {
-      image: 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D',
+      image: 'https://i.pinimg.com/564x/d3/ee/06/d3ee06c64b5f931bb9bd068792b57f39.jpg',
+      height: '50%',
+      width: '50%', // Set the desired width, you can use pixels or percentage
+      // Add more properties as needed
+    },
+    {
+      image: 'https://i.pinimg.com/564x/36/d8/99/36d899f2e42dda38b99eb1e5eb7e1ccf.jpg',
       height: '50%',
       width: '50%', // Set the desired width, you can use pixels or percentage
       // Add more properties as needed
@@ -113,7 +119,7 @@ const CaptionCarousel = () => {
     fade: true,
     infinite: true,
     autoplay: true,
-    speed: 500,
+    speed: 1000,
     autoplaySpeed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -121,7 +127,7 @@ const CaptionCarousel = () => {
 
   return (
     <div className="carousel">
-    <Box position={'relative'} height={'300px'} width={'1000px'} borderRadius={"16px"} overflow={'hidden'} marginBottom={ '10px'} >
+    <Box position={'relative'} height={'300px'} width={'700px'} borderRadius={"16px"} overflow={'hidden'} marginBottom={ '10px'} >
       <Slider {...settings}>
         {cards.map((card, index) => (
           <Box

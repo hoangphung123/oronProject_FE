@@ -8,6 +8,7 @@ export const PostsProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [postRegistrations, setPostRegistrations] = useState([]);
+  const [postRegistrationsByOwner, setPostRegistrationsByowner] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [followingList, setFollowingList] = useState([]);
   const [followerList, setFollowerList] = useState([]);
@@ -25,6 +26,26 @@ export const PostsProvider = ({ children }) => {
         limit
       );
       setPostRegistrations(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error(
+        "Error while fetching post registrations:",
+        error.message
+      );
+    }
+  }
+
+  const fetchPostsRegistationByOwner = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
+      const limit = 3;
+      const result = await postserver.getPostRegistrationByPostownerId(
+        accessToken,
+        userId,
+        limit
+      );
+      setPostRegistrationsByowner(result.listData);
     } catch (error) {
       // Xử lý lỗi nếu cần
       console.error(
@@ -107,6 +128,7 @@ export const PostsProvider = ({ children }) => {
 
   // Fetch initial posts when the component mounts
   useEffect(() => {
+    fetchPostsRegistationByOwner()
     fetchSavePost()
     fetchListFollower()
     fetchListFollowing()
@@ -116,7 +138,7 @@ export const PostsProvider = ({ children }) => {
   }, []);
 
   return (
-    <PostsContext.Provider value={{ posts, setPosts, postRegistrations, setPostRegistrations, friendsList, setFriendsList, followingList, setFollowingList, followerList, setFollowerList, savePost, setSavePost }}>
+    <PostsContext.Provider value={{ posts, setPosts, postRegistrations, setPostRegistrations, friendsList, setFriendsList, followingList, setFollowingList, followerList, setFollowerList, savePost, setSavePost, postRegistrationsByOwner, setPostRegistrationsByowner}}>
       {children}
     </PostsContext.Provider>
   );

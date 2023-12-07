@@ -395,7 +395,7 @@ const Post = ({ post }) => {
             {isEditPopupOpen  && (
               <>
                 <div className="overlay" onClick={() => setIsEditPopupOpen(false)}></div>
-                <div className="popup">
+                <div className="popups">
                   <div className="popup-title">
                     <div className="shareTop">
                       <img

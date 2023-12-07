@@ -80,6 +80,17 @@ export const getPostByUserId = async (userId, limit) => {
     }
 }
 
+export const getPostByUserIdStattus = async (userId, registration_status) => {
+  try {
+      const response = await axios.get(`${api_url}/post/filter?userId=${userId}&registration_status=${registration_status}`);
+      const posts = response.data; // Update this line based on your API response structure
+      return posts;
+  } catch (error) {
+      console.error(`Error while fetching posts for user with id ${userId}:`, error.message);
+      throw error;
+  }
+}
+
 export const getCommentByPostId = async (postId) => {
     try {
         const response = await axios.get(`${api_url}/comment/post/${postId}`);
@@ -149,6 +160,26 @@ export const getPostRegistrationByUserId = async (accessToken, creatorId, limit)
       console.error(`Error while fetching post registrations for user with id ${creatorId}:`, error.message);
       throw error;
     }
+}
+
+
+export const getPostRegistrationByPostownerId = async (accessToken, postOwnerId, limit) => {
+  try {
+    const response = await axios.get(
+      `${api_url}/post-registration/filter?postOwnerId=${postOwnerId}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const postRegistrations = response.data; // Cập nhật dòng này dựa trên cấu trúc dữ liệu trả về từ API của bạn
+    return postRegistrations;
+  } catch (error) {
+    console.error(`Error while fetching post registrations for user with id ${postOwnerId}:`, error.message);
+    throw error;
+  }
 }
 
 export const getFriends = async (accessToken) => {
@@ -273,6 +304,25 @@ export const deleteRegisById = async (accessToken, regisId, data) => {
     const response = await axios.patch(
       `${api_url}/post-registration/${regisId}`,
       data,  // Dữ liệu body được truyền vào PATCH
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const deletedRegis = response.data;
+    return deletedRegis;
+  } catch (error) {
+    console.error(`Error while deleting registration with id ${regisId}:`, error.message);
+    throw error;
+  }
+}
+
+export const deleteRegisByIds = async (accessToken, regisId) => {
+  try {
+    const response = await axios.delete(
+      `${api_url}/post-registration/${regisId}`,  // Dữ liệu body được truyền vào PATCH
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

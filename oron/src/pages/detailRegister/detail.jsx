@@ -35,9 +35,9 @@ const DetailRegister = () => {
 
   useEffect(() => {
     const GetPostByUserId = async () => {
-      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      // const accessToken = JSON.parse(localStorage.getItem("access_token"));
       const userID = currentUser.data.id;
-      const response = await Userserver.getPostRegisByPostOwnerId(accessToken,userID, 1);
+      const response = await Userserver.getPostByUserIdStattus(userID, 1);
 
       setPostss(response.listData);
     };
@@ -52,7 +52,7 @@ const DetailRegister = () => {
       <NavBar />
       <div style={{ display: "flex" }}>
         <LeftBar />
-        <div style={{ flex: 8 }}>
+        <div style={{ flex: 6 }}>
           <div className="posts">
             <div className="regis_right">Register for your post</div>
             {Array.isArray(postss) &&
@@ -62,7 +62,7 @@ const DetailRegister = () => {
           </div>
           <Outlet />
         </div>
-        <div style={{ flex: 4 }}>
+        <div style={{ flex: 3 }}>
           <div className="regis_right">Register for oder post</div>
           <RegisOder />
         </div>

@@ -1,34 +1,54 @@
 import "./regisOder.scss";
 // import ProfileImg from "../../assets/profile/boyChild.jpg";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { PostsContext } from "../../context/postContext";
 import * as UserServices from "../../server/itemstore";
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
+import Button from "@mui/material/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RegisOder = () => {
   const { currentUser } = useContext(AuthContext);
-  const {postRegistrations, setPostRegistrations, friendsList, setFriendsList } = useContext(PostsContext);
-  const userDataArray = [
-    {
-      description: "Có ai thích phim ko",
-      imageURL:
-        "https://i.pinimg.com/564x/3b/1a/6f/3b1a6f3340cc082e698456137522057a.jpg",
-    },
-    {
-      description: "Dư một chậu cây cảnh",
-      imageURL:
-        "https://i.pinimg.com/564x/db/30/72/db3072aea296b6a96773e09a79880c54.jpg",
-    },
-    // Add more user data as needed
-  ];
-
+  const {
+    postRegistrations,
+    setPostRegistrations,
+    friendsList,
+    setFriendsList,
+  } = useContext(PostsContext);
+  const [registrationUpdated, setRegistrationUpdated] = useState(false);
   const formatTimeDifference = (createdAt) => {
     return formatDistanceToNow(new Date(createdAt), { addSuffix: true });
   };
 
+  const handleDelete = async (regisId) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const deletedRegis = await UserServices.deleteRegisByIds(
+        accessToken,
+        regisId,
+      );
+
+      const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
+      const limit = 3;
+      const result = await UserServices.getPostRegistrationByUserId(
+        accessToken,
+        userId,
+        limit
+      );
+      setPostRegistrations(result.listData);
+
+      console.log("Registration deleted successfully:", deletedRegis);
+    } catch (error) {
+      console.error("Error deleting registration:", error.message);
+      // Xử lý lỗi nếu cần thiết
+      toast.error("Error deleting registration");
+    }
+  };
+
   useEffect(() => {
-    console.log('postRegistrations', postRegistrations)
+    console.log("postRegistrations", postRegistrations);
     // Gọi hàm getPostRegistrationByUserId và cập nhật state khi có dữ liệu trả về
     const fetchData = async () => {
       try {
@@ -63,13 +83,24 @@ const RegisOder = () => {
             postRegistrations.map((registration, index) => (
               <div className="user" key={index}>
                 <div className="userInfo">
-                  <img src={`http://localhost:3500/${registration.post.imageURL}`} alt="" />
+                  <img
+                    src={`http://localhost:3500/${registration.post.imageURL}`}
+                    alt=""
+                  />
                   <p>
                     <span>{registration.post.description} </span>
                     {registration.action}
                   </p>
                 </div>
-                <span>{formatTimeDifference(registration.createdAt)}</span>
+                {registration.status === 1 && (
+                  <Button
+                    onClick={() => handleDelete(registration.id)}
+                    color="error"
+                  >
+                    Cancel
+                  </Button>
+                )}
+                {registration.status === 3 && <Button>Received</Button>}
               </div>
             ))
           ) : (
@@ -77,6 +108,7 @@ const RegisOder = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

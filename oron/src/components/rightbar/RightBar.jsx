@@ -8,7 +8,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 const RightBar = () => {
   const { currentUser } = useContext(AuthContext);
-  const {postRegistrations, setPostRegistrations, friendsList, setFriendsList } = useContext(PostsContext);
+  const {postRegistrations, setPostRegistrations, friendsList, setFriendsList, postRegistrationsByOwner } = useContext(PostsContext);
   const userDataArray = [
     {
       description: "Có ai thích phim ko",
@@ -55,21 +55,28 @@ const RightBar = () => {
   return (
     <div className="rightBar">
       <div className="container">
-        <div className="item">
+      <div className="item">
           <span>Registration for your posts</span>
-          {userDataArray.map((userData, index) => (
-            <div className="user" key={index}>
-              {/* User */}
-              <div className="userInfo">
-                {/* Use the imageURL from user data */}
-                <img src={userData.imageURL} alt="" />
-                <span>{userData.description}</span>
+          {Array.isArray(postRegistrationsByOwner) &&
+          postRegistrationsByOwner.length > 0 ? (
+            postRegistrationsByOwner.map((registration, index) => (
+              <div className="user" key={index}>
+                <div className="userInfo">
+                  <img
+                    src={`http://localhost:3500/${registration.user.profilePic}`}
+                    alt=""
+                  />
+                  <p>
+                    <span>{registration.message} </span>
+                    {registration.action}
+                  </p>
+                </div>
+                <span>{formatTimeDifference(registration.createdAt)}</span>
               </div>
-              <div className="buttons">
-                <button>Detail</button>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No registrations found.</p>
+          )}
         </div>
         <div className="item">
           <span>Your registrations for oder post</span>
