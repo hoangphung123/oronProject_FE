@@ -15,7 +15,7 @@ import Submenu from '../../components/Submenu/Submenu';
 
 const Home = () => {
   const { currentUser, currentUserId, setCurrentUserId } = useContext(AuthContext);
-  const { setPostRegistrations } = useContext(PostsContext);
+  const { setPostRegistrations, setSavePost, setFriendsList } = useContext(PostsContext);
   const {setPosts} = useContext(PostsContext);
   const [Iduser, setIduser] = useState(0);
   const fetchPosts = async (limit) => {
@@ -43,7 +43,39 @@ const Home = () => {
         error.message
       );
     }
-  }
+  };
+
+  const fetchSavePost = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const result = await postserver.getSavedPostsByUser(
+        accessToken,
+      );
+      setSavePost(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error(
+        "Error while fetching List Friends:",
+        error.message
+      );
+    }
+  };
+
+  const fetchListFriends = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const result = await postserver.getFriends(
+        accessToken,
+      );
+      setFriendsList(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error(
+        "Error while fetching List Friends:",
+        error.message
+      );
+    }
+  };
 
   // const fetchFriends = async () => {
   //   try {
@@ -69,7 +101,8 @@ const Home = () => {
 
   // Fetch initial posts when the component mounts
   useEffect(() => {
-    
+    fetchListFriends()
+    fetchSavePost()
     fetchPostsRegistation()
     fetchPosts(9); // Default limit is set to 2, change it as needed
   }, []);
