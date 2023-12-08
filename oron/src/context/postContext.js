@@ -124,8 +124,9 @@ export const PostsProvider = ({ children }) => {
   }
 
   const fetchPosts = async (limit) => {
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
     // Fetch posts with the specified limit parameter
-    const response = await postserver.getAllPost(limit);
+    const response = await postserver.getAllPost(accessToken, limit);
     const postData = response.listData
     setPosts(postData);
   };

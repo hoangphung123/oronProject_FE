@@ -64,8 +64,10 @@ const ProfileFriends = () => {
     };
 
     const GetPostByUserId = async () => {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
       console.log("userId", currentUserId);
       const response = await Postserver.getPostByUserId(
+        accessToken,
         currentUserId.userId,
         9
       );

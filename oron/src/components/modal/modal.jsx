@@ -55,7 +55,7 @@ const Modal = ({ open, onClose, postId }) => {
           </p>
           <div className="content">
             <p>Do you want a</p>
-            <h1>$20 CREDIT</h1>
+            <h1>THIS PRODUCT</h1>
             <p>for your first tade?</p>
           </div>
           <div className="btnContainer">

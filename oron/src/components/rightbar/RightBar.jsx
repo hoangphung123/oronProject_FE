@@ -79,7 +79,7 @@ const RightBar = () => {
           )}
         </div>
         <div className="item">
-          <span>Your registrations for oder post</span>
+          <span>Your registrations for other post</span>
           {/* Check if postRegistrations is an array before mapping */}
           {Array.isArray(postRegistrations) && postRegistrations.length > 0 ? (
             postRegistrations.map((registration, index) => (

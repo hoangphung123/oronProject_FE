@@ -178,6 +178,12 @@
         }
       }
 
+      .infos{
+        display: flex;
+        align-items: center;
+        gap: 320px;
+      }
+
       .info {
         display: flex;
         align-items: center;

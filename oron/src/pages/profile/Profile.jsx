@@ -25,8 +25,7 @@ import { PostsContext } from "../../context/postContext";
 
 const Profile = () => {
   const {currentUser, setCurrentUser } = useContext(AuthContext);
-  const { darkMode, toggle } = useContext(DarkModeContext);
-  const navigate = useNavigate();
+  const { darkMode } = useContext(DarkModeContext);
   const {setPosts} = useContext(PostsContext);
 
   const cameraIconColor = darkMode ? '#fff' : '#000';
@@ -191,8 +190,9 @@ useEffect(() => {
   };
 
   const GetPostByUserId = async () => {
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
     const userID = currentUser.data.id
-    const response = await Postserver.getPostByUserId(userID, 9)
+    const response = await Postserver.getPostByUserId(accessToken, userID, 9)
     
     setPosts(response.listData);
   }

@@ -34,6 +34,7 @@ const LeftBar1 = () => {
     setCurrentUserProfile(res)
 
     const response = await Postserver.getPostByUserId(
+      accessToken,
       currentUserId.userId,
       9
     );

@@ -23,6 +23,7 @@ import MoodIcon from "@mui/icons-material/Mood";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 // import AngryIcon from "@mui/icons-material/Angry";
 import Popover from "@mui/material/Popover";
+import Rating from "react-rating";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -58,8 +59,8 @@ const Post = ({ post }) => {
     setSelectedProvince(post.provinceId);
     setSelectedDistrict(post.districtId);
     setSelectedWard(post.wardId);
-    setDescription(post.description)
-    setSelectedImages(`http://localhost:3500/${post.imageURL}`)
+    setDescription(post.description);
+    setSelectedImages(`http://localhost:3500/${post.imageURL}`);
 
     setIsEditPopupOpen(true);
   };
@@ -83,7 +84,6 @@ const Post = ({ post }) => {
     setSelectedImage(file);
     setSelectedImages(imageUrl);
   };
-  
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -174,7 +174,6 @@ const Post = ({ post }) => {
     setSelectedIcon(selectedIcon);
     setLikeAnchorEl(null);
   };
-
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -274,7 +273,6 @@ const Post = ({ post }) => {
     fetchProvinces();
   }, []);
 
-
   const handleUpdateClick = async () => {
     try {
       let statusValue;
@@ -314,11 +312,7 @@ const Post = ({ post }) => {
 
       console.log(selectedImage);
 
-      await Itemserver.uploadPost(
-        accessToken,
-        selectedImage,
-        registeredUserId
-      );
+      await Itemserver.uploadPost(accessToken, selectedImage, registeredUserId);
 
       const limit = 9;
       const response = await Itemserver.getAllPost(limit);
@@ -333,6 +327,11 @@ const Post = ({ post }) => {
     }
   };
 
+  const handleRatingChange = (value) => {
+    // Implement logic to handle the rating change
+    console.log("Rating changed to:", value);
+    // You can update state or perform other actions based on the rating value
+  };
 
   return (
     <div className="post">
@@ -386,9 +385,12 @@ const Post = ({ post }) => {
                   </>
                 )}
             </Menu>
-            {isEditPopupOpen  && (
+            {isEditPopupOpen && (
               <>
-                <div className="overlay" onClick={() => setIsEditPopupOpen(false)}></div>
+                <div
+                  className="overlay"
+                  onClick={() => setIsEditPopupOpen(false)}
+                ></div>
                 <div className="popups">
                   <div className="popup-title">
                     <div className="shareTop">
@@ -413,7 +415,10 @@ const Post = ({ post }) => {
                       </div>
                     </div>
                     <h2>Tạo Bài viết</h2>
-                    <span className="close"  onClick={() => setIsEditPopupOpen(false)}>
+                    <span
+                      className="close"
+                      onClick={() => setIsEditPopupOpen(false)}
+                    >
                       x
                     </span>
                   </div>
@@ -573,48 +578,55 @@ const Post = ({ post }) => {
           <p>{post.description}</p>
           <img src={`http://localhost:3500/${post.imageURL}`} alt="" />
         </div>
-        <div className="info">
-          <div className="item" id="likeButton" onClick={handleLikeClick}>
-            {selectedIcon ? selectedIcon : <FavoriteBorderOutlinedIcon />}
+        <div className="infos">
+          <div className="info">
+            <div className="item" id="likeButton" onClick={handleLikeClick}>
+              {selectedIcon ? selectedIcon : <FavoriteBorderOutlinedIcon />}
 
-            {selectedIcon
-              ? `${updatedTotalReactions} bạn và người khác`
-              : `${post.totalReactions} người khác`}
-          </div>
-
-          <Popover
-            id={popoverId}
-            open={Boolean(likeAnchorEl)}
-            anchorEl={likeAnchorEl}
-            onClose={() => setLikeAnchorEl(null)}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            transformOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-around" }}>
-              <FavoriteOutlinedIcon
-                onClick={() => handleIconSelect(<FavoriteOutlinedIcon />)}
-              />
-              <MoodIcon onClick={() => handleIconSelect(<MoodIcon />)} />
-              <EmojiEventsIcon
-                onClick={() => handleIconSelect(<EmojiEventsIcon />)}
-              />
+              {selectedIcon
+                ? `${updatedTotalReactions} bạn và người khác`
+                : `${post.totalReactions} người khác`}
             </div>
-          </Popover>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
-            <TextsmsOutlinedIcon />
-            {post.totalComments} comments
+            {/* Star Rating */}
+
+            <Popover
+              id={popoverId}
+              open={Boolean(likeAnchorEl)}
+              anchorEl={likeAnchorEl}
+              onClose={() => setLikeAnchorEl(null)}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+                <FavoriteOutlinedIcon
+                  onClick={() => handleIconSelect(<FavoriteOutlinedIcon />)}
+                />
+                <MoodIcon onClick={() => handleIconSelect(<MoodIcon />)} />
+                <EmojiEventsIcon
+                  onClick={() => handleIconSelect(<EmojiEventsIcon />)}
+                />
+              </div>
+            </Popover>
+            <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+              <TextsmsOutlinedIcon />
+              {post.totalComments} comments
+            </div>
           </div>
-          <div className="item">
-            <Tooltip title="Share" arrow>
-              {/* Add your Share icon here */}
-            </Tooltip>
-            Share
+
+          <div className="items">
+            <Rating
+              // initialRating={/* Giá trị rating ban đầu, thiết lập động */}
+              emptySymbol={<span className="icon">&#9734;</span>} // Biểu tượng sao Unicode
+              fullSymbol={<span className="icon">&#9733;</span>} // Biểu tượng sao Unicode
+              onChange={handleRatingChange} // Hàm gọi lại khi rating thay đổi
+              readonly={!post.isUserReceived} // Làm cho thành phần rating không thể tương tác nếu post.isUserReceived là false
+            />
           </div>
         </div>
         {commentOpen && <Comments postId={post.id} />}

@@ -17,7 +17,7 @@ const RegisOder = () => {
     friendsList,
     setFriendsList,
   } = useContext(PostsContext);
-  const [registrationUpdated, setRegistrationUpdated] = useState(false);
+  const [postRegistrationss, setPostRegistrationss] = useState([]);
   const formatTimeDifference = (createdAt) => {
     return formatDistanceToNow(new Date(createdAt), { addSuffix: true });
   };
@@ -32,14 +32,45 @@ const RegisOder = () => {
 
       const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
       const limit = 3;
-      const result = await UserServices.getPostRegistrationByUserId(
+      
+      const result = await UserServices.getPostRegistrationByUserIds(
         accessToken,
         userId,
-        limit
+        limit,
+        
       );
-      setPostRegistrations(result.listData);
+      setPostRegistrationss(result.listData);
 
       console.log("Registration deleted successfully:", deletedRegis);
+    } catch (error) {
+      console.error("Error deleting registration:", error.message);
+      // Xử lý lỗi nếu cần thiết
+      toast.error("Error deleting registration");
+    }
+  };
+
+  const handleReceived = async (regisId) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const status = 4;
+      const ReceivedRegis = await UserServices.updateStatusRegis(
+        accessToken,
+        regisId,
+        status
+      );
+
+      const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
+      const limit = 3;
+      
+      const result = await UserServices.getPostRegistrationByUserIds(
+        accessToken,
+        userId,
+        limit,
+        
+      );
+      setPostRegistrationss(result.listData);
+
+      console.log("Registration deleted successfully:", ReceivedRegis);
     } catch (error) {
       console.error("Error deleting registration:", error.message);
       // Xử lý lỗi nếu cần thiết
@@ -55,12 +86,12 @@ const RegisOder = () => {
         const accessToken = JSON.parse(localStorage.getItem("access_token"));
         const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
         const limit = 3;
-        const result = await UserServices.getPostRegistrationByUserId(
+        const result = await UserServices.getPostRegistrationByUserIds(
           accessToken,
           userId,
           limit
         );
-        setPostRegistrations(result.listData);
+        setPostRegistrationss(result.listData);
       } catch (error) {
         // Xử lý lỗi nếu cần
         console.error(
@@ -79,8 +110,8 @@ const RegisOder = () => {
         <div className="item">
           <span>Your registrations for oder post</span>
           {/* Check if postRegistrations is an array before mapping */}
-          {Array.isArray(postRegistrations) && postRegistrations.length > 0 ? (
-            postRegistrations.map((registration, index) => (
+          {Array.isArray(postRegistrationss) && postRegistrationss.length > 0 ? (
+            postRegistrationss.map((registration, index) => (
               <div className="user" key={index}>
                 <div className="userInfo">
                   <img
@@ -100,7 +131,7 @@ const RegisOder = () => {
                     Cancel
                   </Button>
                 )}
-                {registration.status === 3 && <Button>Received</Button>}
+                {registration.status === 3 && <Button onClick={() => handleReceived(registration.id)}>Received</Button>}
               </div>
             ))
           ) : (
