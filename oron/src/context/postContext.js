@@ -20,10 +20,12 @@ export const PostsProvider = ({ children }) => {
       const accessToken = JSON.parse(localStorage.getItem("access_token"));
       const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
       const limit = 3;
+      const status = 1;
       const result = await postserver.getPostRegistrationByUserId(
         accessToken,
         userId,
-        limit
+        limit,
+        status
       );
       setPostRegistrations(result.listData);
     } catch (error) {
@@ -40,10 +42,12 @@ export const PostsProvider = ({ children }) => {
       const accessToken = JSON.parse(localStorage.getItem("access_token"));
       const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
       const limit = 3;
+      const status = 1;
       const result = await postserver.getPostRegistrationByPostownerId(
         accessToken,
         userId,
-        limit
+        limit,
+        status
       );
       setPostRegistrationsByowner(result.listData);
     } catch (error) {

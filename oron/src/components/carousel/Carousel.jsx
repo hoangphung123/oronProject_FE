@@ -85,7 +85,7 @@ import { Box, Heading, Text, Container } from '@chakra-ui/react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { ClassNames } from '@emotion/react';
+
 // import './carousel.scss'
 
 

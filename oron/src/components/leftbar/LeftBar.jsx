@@ -11,31 +11,6 @@ const LeftBar = () => {
   const { currentUser } = useContext(AuthContext);
   const { savePost, setSavePost } = useContext(PostsContext);
   const [profileImage, setProfileImage] = useState(currentUser.data.profilePic);
-  // useEffect(() => {
-  //   const fetchUserProfilePicture = async () => {
-  //     try {
-  //       // Retrieve the access token from localStorage
-  //       const accessToken = JSON.parse(localStorage.getItem("access_token"));
-
-  //       const profileUser = await Userserver.getProfile(accessToken);
-
-  //       localStorage.setItem("user", JSON.stringify(profileUser));
-
-  //       const user = JSON.parse(localStorage.getItem("user"));
-  //       const pictureUser = user.data.profilePic
-
-  //       const userProfile = `http://localhost:3500/user-profile/${pictureUser}`;
-
-  //       setProfileImage(userProfile)
-
-  //     } catch (error) {
-  //       console.error('Error fetching user profile picture:', error);
-  //     }
-  //   };
-
-  //   // Call the fetchUserProfilePicture function when the component mounts
-  //   fetchUserProfilePicture();
-  // }, [currentUser.data.profilePic]);
   return (
     <div className="leftBar">
       <div className="container">
@@ -69,7 +44,7 @@ const LeftBar = () => {
             <img src={Gallery} alt="" />
             <span>Saved Post</span>
           </div>
-          <div>
+          <div className="item_save">
           {savePost.map((post, index) => (
               <div className="rectangle-box" key={index}>
                 <div className="square">

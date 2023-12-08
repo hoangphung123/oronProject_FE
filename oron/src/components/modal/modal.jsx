@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import nft from "./nft.jpg";
 import { AuthContext } from "../../context/authContext";
 import { PostsContext } from "../../context/postContext";
 import * as Itemserver from "../../server/itemstore";
@@ -14,6 +13,7 @@ const Modal = ({ open, onClose, postId }) => {
     const accessToken = JSON.parse(localStorage.getItem("access_token")); // Assuming accessToken is present in currentUser.data
     const userId = currentUser.data.id; // Thay thế bằng userId của người dùng cụ thể
     const limit = 3;
+    const status = 1;
     const registrationData = {
       message: "Please give it for me",
       postId: postId, // Use the postId passed as a prop
@@ -24,7 +24,8 @@ const Modal = ({ open, onClose, postId }) => {
       const result = await Itemserver.getPostRegistrationByUserId(
         accessToken,
         userId,
-        limit
+        limit,
+        status
       );
       setPostRegistrations(result.listData)
       toast.success("Registration successful");

@@ -2,12 +2,10 @@ import "./post.scss";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
 import { useState, useContext, useEffect } from "react";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Tooltip from "@mui/material/Tooltip";
 import Modal from "../../components/modal/modal";
@@ -36,8 +34,7 @@ const Post = ({ post }) => {
   const [selectedImages, setSelectedImages] = useState(null);
   const [description, setDescription] = useState("");
   const [selectedPostUser, setSelectedPostUser] = useState(null);
-  const { savePost, setSavePost, setPosts } = useContext(PostsContext);
-  const [likeds, setLikeds] = useState(false);
+  const { setSavePost, setPosts } = useContext(PostsContext);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [likeAnchorEl, setLikeAnchorEl] = useState(null);
   const [popoverId, setPopoverId] = useState(null);
@@ -178,9 +175,6 @@ const Post = ({ post }) => {
     setLikeAnchorEl(null);
   };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClose = () => {
     setAnchorEl(null);

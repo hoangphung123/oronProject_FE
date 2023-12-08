@@ -143,10 +143,10 @@ export const postRegistration = async (accessToken, registrationData) => {
     }
 }
 
-export const getPostRegistrationByUserId = async (accessToken, creatorId, limit) => {
+export const getPostRegistrationByUserId = async (accessToken, creatorId, limit, status) => {
     try {
       const response = await axios.get(
-        `${api_url}/post-registration/filter?creatorId=${creatorId}&limit=${limit}`,
+        `${api_url}/post-registration/filter?status=${status}&creatorId=${creatorId}&limit=${limit}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -163,10 +163,10 @@ export const getPostRegistrationByUserId = async (accessToken, creatorId, limit)
 }
 
 
-export const getPostRegistrationByPostownerId = async (accessToken, postOwnerId, limit) => {
+export const getPostRegistrationByPostownerId = async (accessToken, postOwnerId, limit, status) => {
   try {
     const response = await axios.get(
-      `${api_url}/post-registration/filter?postOwnerId=${postOwnerId}&limit=${limit}`,
+      `${api_url}/post-registration/filter?status=${status}&limit=${limit}&postOwnerId=${postOwnerId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
