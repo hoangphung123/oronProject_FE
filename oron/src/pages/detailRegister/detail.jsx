@@ -37,7 +37,7 @@ const DetailRegister = () => {
     const GetPostByUserId = async () => {
       const accessToken = JSON.parse(localStorage.getItem("access_token"));
       const userID = currentUser.data.id;
-      const response = await Userserver.getPostByUserIdStattus(accessToken, userID, 1);
+      const response = await Userserver.getPostByUserIdStattus(accessToken, userID);
 
       setPostss(response.listData);
     };

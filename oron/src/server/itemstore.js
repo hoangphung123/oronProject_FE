@@ -95,10 +95,10 @@ export const getPostByUserId = async (accessToken, userId, limit) => {
   }
 };
 
-export const getPostByUserIdStattus = async (accessToken, userId, registration_status) => {
+export const getPostByUserIdStattus = async (accessToken, userId) => {
   try {
     const response = await axios.get(
-      `${api_url}/post/filter?userId=${userId}&registration_status=${registration_status}`,
+      `${api_url}/post/filter?userId=${userId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -330,10 +330,10 @@ export const getSavedPostsByUser = async (accessToken) => {
   }
 };
 
-export const getRegistrationsByPostId = async (accessToken, postId, status) => {
+export const getRegistrationsByPostId = async (accessToken, postId) => {
   try {
     const response = await axios.get(
-      `${api_url}/post-registration/filter?status=${status}&postId=${postId}`,
+      `${api_url}/post-registration/filter?postId=${postId}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -485,4 +485,73 @@ export const updateStatusRegis = async (accessToken, regisId, status) => {
     throw error;
   }
 }
+
+export const CreateReview = async (accessToken, reviewData) => {
+  try {
+    const response = await axios.post(`${api_url}/review`, reviewData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const createdReview = response.data; // Update this line based on your API response structure
+    return createdReview;
+  } catch (error) {
+    console.error("Error while creating review:", error.message);
+    throw error;
+  }
+}
+
+export const getReviewByPost = async (postId) => {
+  try {
+    const response = await axios.get(`${api_url}/review/filter?postId=${postId}`);
+    const reviews = response.data; // Update this line based on your API response structure
+    return reviews;
+  } catch (error) {
+    console.error(`Error while fetching reviews for post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
+export const getPostByPostId = async (accessToken, postId) => {
+  try {
+    const response = await axios.get(`${api_url}/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const PostById = response.data; // Cập nhật dòng này dựa trên cấu trúc dữ liệu trả về từ API của bạn
+    return PostById;
+  } catch (error) {
+    console.error(
+      `Error while fetching comments for post with id ${postId}:`,
+      error.message
+    );
+    throw error;
+  }
+}
+
+export const updateComment = async (accessToken, commentId, updateData) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/comment/${commentId}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const updatedComment = response.data;
+    return updatedComment;
+  } catch (error) {
+    console.error(
+      `Error while updating comment with id ${commentId}:`,
+      error.message
+    );
+    throw error;
+  }
+};
+
 

@@ -1,49 +1,105 @@
-import { useState, useContext, useEffect } from 'react';
-import './comments.scss';
-import { AuthContext } from '../../context/authContext';
+import { useState, useContext, useEffect } from "react";
+import "./comments.scss";
+import { AuthContext } from "../../context/authContext";
 import * as postServer from "../../server/itemstore";
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import IconButton from "@mui/material/IconButton";
 
 const Comments = ({ postId }) => {
   const { currentUser } = useContext(AuthContext);
-  const [editingComment, setEditingComment] = useState(null);
+
   // State to manage comments
   const [comments, setComments] = useState([]);
 
   // State to manage the new comment input
-  const [newComment, setNewComment] = useState('');
-  
-  const handleEditComment = (commentId, currentContent) => {
-    setEditingComment(commentId);
-    setNewComment(currentContent);
+  const [newComment, setNewComment] = useState("");
+  const [Reviewer, setReviewer] = useState([]);
+  const [isRatingPopupOpen, setIsRatingPopupOpen] = useState(false);
+  const [reviewDescription, setReviewDescription] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const [editingCommentId, setEditingCommentId] = useState(null);
+
+  // State to manage edited comment
+  const [editedComment, setEditedComment] = useState({
+    id: null,
+    description: "",
+  });
+
+  const openEditPopup = (commentId) => {
+    console.log("commentId", commentId);
+    setEditingCommentId(commentId);
   };
 
-  // Function to handle updating a comment
-  const handleUpdateComment = async (commentId) => {
-    if (newComment.trim() === '') {
-      return; // Do not update with empty comments
+  const handleKeyPress = (e, commentId) => {
+    if (e.key === "Enter") {
+      // Người dùng bấm Enter, gọi hàm handleEditComment
+      handleEditComment(commentId);
+      setEditingCommentId(null); // Kết thúc chỉnh sửa
     }
-    // Add your logic to update the comment using the commentId and newComment
-    // ...
-
-    // Reset the editing state
-    setEditingComment(null);
-    setNewComment('');
   };
+
+  const handleMenuClick = (event, commentId, commentDescription) => {
+    // Lưu trữ comment.id vào state
+    setEditedComment({ id: commentId, description: commentDescription });
+
+    // Mở Menu
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleEditComment = async (commentId) => {
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+    const updatedCommentData = {
+      description: editDescription,
+    };
+
+    try {
+      // Gọi API để cập nhật comment
+      await postServer.updateComment(
+        accessToken,
+        commentId,
+        updatedCommentData
+      );
+
+      // Cập nhật lại danh sách comments
+      const updatedComments = comments.map((comment) =>
+        comment.id === commentId
+          ? { ...comment, description: editDescription }
+          : comment
+      );
+
+      setComments(updatedComments);
+      setEditDescription(null); // Kết thúc chỉnh sửa
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   // Function to handle adding a new comment
   const handleAddComment = async (postId) => {
-    if (newComment.trim() === '') {
+    if (newComment.trim() === "") {
       return; // Do not add empty comments
     }
-    const accessToken = JSON.parse(localStorage.getItem("access_token") );
-    console.log('postId',postId)
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
+    console.log("postId", postId);
 
     const commentData = {
       description: newComment,
       postId: postId,
-    }
+    };
 
-    await postServer.uploadComment(accessToken,commentData)
+    await postServer.uploadComment(accessToken, commentData);
 
     const newCommentObject = {
       id: comments.id, // Generate a unique ID (replace with your logic)
@@ -68,10 +124,10 @@ const Comments = ({ postId }) => {
     };
 
     // Update the comments state with the new comment
-    setComments((prevComments) => [newCommentObject, ...prevComments ]);
+    setComments((prevComments) => [newCommentObject, ...prevComments]);
 
     // Clear the new comment input
-    setNewComment('');
+    setNewComment("");
   };
 
   // Simulating API call to get comments by postId
@@ -81,28 +137,110 @@ const Comments = ({ postId }) => {
       const response = await postServer.getCommentByPostId(postId);
       const data = response.listData;
 
+      console.log("Fetched comments:", data);
+
       // Update comments state with the fetched data
       setComments(data);
     } catch (error) {
-      console.error('Error fetching comments:', error);
+      console.error("Error fetching comments:", error);
     }
   };
+
+  // const getPostByPostId = async (postId) => {
+  //   // Replace the following with your actual API call
+  //   try {
+  //     const accessToken = JSON.parse(localStorage.getItem("access_token"));
+  //     const response = await postServer.getPostByPostId(accessToken, postId);
+  //     const data = response.data;
+
+  //     console.log('dataPost', currentUser.data.username)
+  //     // Update comments state with the fetched data
+  //     setPostById(data);
+  //   } catch (error) {
+  //     console.error("Error fetching comments:", error);
+  //   }
+  // };
 
   const formatTimeDifference = (createdAt) => {
     return formatDistanceToNow(new Date(createdAt), { addSuffix: true });
   };
 
+  const getReviewerByPostId = async (postId) => {
+    // Replace the following with your actual API call
+    try {
+      const response = await postServer.getReviewByPost(postId);
+      const data = response.listData;
+
+      // Update comments state with the fetched data
+      setReviewer(data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
+  const closePopup = () => {
+    setIsRatingPopupOpen(false);
+  };
+
   useEffect(() => {
     // Call getCommentsByPostId when postId changes
     if (postId) {
+      // getPostByPostId(postId);
+      getReviewerByPostId(postId);
       getCommentsByPostId(postId);
     }
   }, [postId]);
 
   return (
     <div className="comments">
+      {Reviewer.map((Reviewers) => (
+        <div className="comment" key={Reviewers.id}>
+          <img
+            src={`http://localhost:3500/${Reviewers.user.profilePic}`}
+            alt=""
+          />
+          <div className="info">
+            <span>{Reviewers.user.username}</span>
+            <p>{Reviewers.description}</p>
+          </div>
+          <div>
+            {currentUser.data.username === Reviewers.user.username && (
+              <div>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  // onClick={() => handleDelete(comment.id)}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => setIsRatingPopupOpen(!isRatingPopupOpen)}
+                >
+                  Edit
+                </Button>
+              </div>
+            )}
+            {currentUser.data.username !== Reviewers.user.username && (
+              <Button
+                variant="contained"
+                size="small"
+                // handle the action for the "Reviewer" button
+              >
+                Reviewer
+              </Button>
+            )}
+          </div>
+        </div>
+      ))}
+      <hr />
       <div className="write">
-        <img src={`http://localhost:3500/${currentUser.data.profilePic}`} alt="" />
+        <img
+          src={`http://localhost:3500/${currentUser.data.profilePic}`}
+          alt=""
+        />
         <input
           type="text"
           placeholder="Write a comment"
@@ -111,26 +249,114 @@ const Comments = ({ postId }) => {
         />
         <button onClick={() => handleAddComment(postId)}>Send</button>
       </div>
+      {isRatingPopupOpen && (
+        <>
+          <div className="overlay" onClick={closePopup}></div>
+          <div className="rating-popup">
+            <input
+              type="text"
+              placeholder="Enter your comment here..."
+              className="wide-input" // Add a class for custom styling
+              value={reviewDescription}
+              onChange={(e) => setReviewDescription(e.target.value)}
+              
+            />
+            <Button
+              // onClick={handleSendRating}
+              variant="contained"
+              className="acsess_button"
+              size="medium"
+            >
+              Send
+            </Button>
+          </div>
+        </>
+      )}
       {comments.map((comment) => (
         <div className="comment" key={comment.id}>
-          <img src={`http://localhost:3500/${comment.user.profilePic}`} alt="" />
+          <img
+            src={`http://localhost:3500/${comment.user.profilePic}`}
+            alt=""
+          />
           <div className="info">
             <span>{comment.user.username}</span>
-            <p>{comment.description}</p>
+            {editingCommentId === comment.id ? (
+              <input
+                type="text"
+                placeholder="Enter your comment"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                onKeyUp={(e) => handleKeyPress(e, comment.id)}
+                onBlur={() => {
+                  setEditingCommentId(null);
+                  setEditDescription(""); // Clear the editDescription state when losing focus
+                }}
+              />
+            ) : (
+              <p>{comment.description}</p>
+            )}
           </div>
-          
-          {currentUser.data.id === comment.user.id && (
-            <button onClick={() => handleEditComment(comment.id, comment.description)}>Edit</button>
-          )}
-          {editingComment === comment.id &&(
-            <>
-              <button onClick={() => handleUpdateComment(comment.id)} >Update</button>
-              <button onClick={() => setEditingComment(null)}>Cancel</button>
-            </>
-          )}
-          <span className="date">{formatTimeDifference(comment.createdAt)}</span>
+          <div className="menu_date">
+            <span className="date">
+              {formatTimeDifference(comment.createdAt)}
+            </span>
+            {currentUser.data.username === comment.user.username && (
+              <div>
+                <IconButton
+                  aria-label="more"
+                  aria-controls="long-menu"
+                  aria-haspopup="true"
+                  style={{ color: "#fff" }}
+                  onClick={(e) =>
+                    handleMenuClick(e, comment.id, comment.description)
+                  }
+                >
+                  <MoreHorizIcon />
+                </IconButton>
+                <Menu
+                  id="long-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={open}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => openEditPopup(editedComment.id)}>
+                    Edit
+                  </MenuItem>
+                  <MenuItem onClick={handleMenuClose}>Delete</MenuItem>
+                </Menu>
+              </div>
+            )}
+          </div>
         </div>
       ))}
+      {/* {isEditPopupOpen && (
+        <>
+          <div className="overlay" onClick={closeEditPopup}></div>
+          <div className="rating-popup">
+            <input
+              type="text"
+              placeholder="Edit your comment here..."
+              className="wide-input"
+              value={editedComment.description}
+              onChange={(e) =>
+                setEditedComment({
+                  ...editedComment,
+                  description: e.target.value,
+                })
+              }
+            />
+            <Button
+              // onClick={() => handleEditComment(editedComment)}
+              variant="contained"
+              className="access_button"
+              size="medium"
+            >
+              Save
+            </Button>
+          </div>
+        </>
+      )} */}
     </div>
   );
 };

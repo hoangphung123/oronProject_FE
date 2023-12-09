@@ -181,7 +181,7 @@
       .infos{
         display: flex;
         align-items: center;
-        gap: 320px;
+        justify-content: space-between;
       }
 
       .info {
@@ -218,6 +218,44 @@
         .shareInput:focus {
           outline: none;
         }
+    }
+
+    .items {
+      display: flex;
+    }
+
+    .reviewer-info {
+      margin-left: 10px;
+    }
+
+    .rating-popup{
+      position: fixed;
+      top: 54%;
+      left: 50%;
+      transform: translate(-50%, -49%);
+      padding: 20px;
+      border: 1px solid #000000;
+      z-index: 999;
+      width: 30%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      background-color: themed("bg"); /* Màu nền mờ với độ mờ 45% */
+      // backdrop-filter: blur(30px); /* Tạo hiệu ứng mờ bằng backdrop-filter */
+      box-shadow: 0 4px 6px rgba(226, 223, 223, 0.704);
+      border-radius: 10px;
+      
+      overflow: hidden;
+      z-index: 2;
+
+      .wide-input{
+        width: 70%;
+        height: 30px;
+        margin-right: 10px;
+      }
+      
+      
     }
 
     .popups {

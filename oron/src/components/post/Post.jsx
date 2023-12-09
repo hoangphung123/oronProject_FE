@@ -51,6 +51,9 @@ const Post = ({ post }) => {
   const [districts, setDistricts] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Công Khai");
   const Status = ["Công Khai", "Riêng tư", "Bạn bè"];
+  const [isRatingPopupOpen, setIsRatingPopupOpen] = useState(false);
+  const [ratingValue, setRatingValue] = useState(0);
+  const [reviewDescription, setReviewDescription] = useState("");
 
   const handleEditClick = () => {
     // Initialize edit states with the data of the selected post
@@ -96,6 +99,7 @@ const Post = ({ post }) => {
   };
   const closePopup = () => {
     setIsPopupOpen(false);
+    setIsRatingPopupOpen(false);
   };
   const handleSendClick = () => {};
   const { getRootProps, getInputProps } = useDropzone({
@@ -327,10 +331,43 @@ const Post = ({ post }) => {
     }
   };
 
+  // const handleRatingChange = (value) => {
+  //   // Implement logic to handle the rating change
+  //   console.log("Rating changed to:", value);
+  //   // You can update state or perform other actions based on the rating value
+  // };
+
   const handleRatingChange = (value) => {
     // Implement logic to handle the rating change
     console.log("Rating changed to:", value);
+    setRatingValue(value);
+    setIsRatingPopupOpen(true);
     // You can update state or perform other actions based on the rating value
+  };
+
+  const handleSendRating = async () => {
+    // Implement logic to send the rating
+    setIsRatingPopupOpen(false);
+
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+      // Use the ratingValue and reviewDescription in the CreateReview function
+      const reviewData = {
+        description: reviewDescription,
+        numberStar: ratingValue,
+        postId: post.id, // Use the postId from the post object
+      };
+
+      // Call the CreateReview function with the reviewData
+      await Itemserver.CreateReview(accessToken, reviewData);
+
+      // Add any additional logic or notifications as needed
+      console.log("Review created successfully");
+    } catch (error) {
+      console.error("Error creating review:", error.message);
+      // Handle error, show a notification, or perform other actions
+    }
   };
 
   return (
@@ -621,16 +658,45 @@ const Post = ({ post }) => {
 
           <div className="items">
             <Rating
-              // initialRating={/* Giá trị rating ban đầu, thiết lập động */}
+              initialRating={post.reviewStar}
               emptySymbol={<span className="icon">&#9734;</span>} // Biểu tượng sao Unicode
               fullSymbol={<span className="icon">&#9733;</span>} // Biểu tượng sao Unicode
               onChange={handleRatingChange} // Hàm gọi lại khi rating thay đổi
               readonly={!post.isUserReceived} // Làm cho thành phần rating không thể tương tác nếu post.isUserReceived là false
             />
+            {post.reviewer && (
+              <div className="reviewer-info">
+                 :{post.reviewer.username}
+              </div>
+            )}
           </div>
         </div>
         {commentOpen && <Comments postId={post.id} />}
       </div>
+      {/* Rating Popup */}
+      {isRatingPopupOpen && (
+        <>
+          <div className="overlay" onClick={closePopup}></div>
+          <div className="rating-popup">
+            <input
+              type="text"
+              placeholder="Enter your comment here..."
+              className="wide-input" // Add a class for custom styling
+              value={reviewDescription}
+              onChange={(e) => setReviewDescription(e.target.value)}
+              // You can use onChange to handle input changes if needed
+            />
+            <Button
+              onClick={handleSendRating}
+              variant="contained"
+              className="acsess_button"
+              size="medium"
+            >
+              Send
+            </Button>
+          </div>
+        </>
+      )}
       <ToastContainer />
     </div>
   );

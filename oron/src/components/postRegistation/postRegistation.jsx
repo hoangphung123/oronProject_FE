@@ -22,6 +22,7 @@ import Button from "@mui/material/Button";
 import * as Itemserver from "../../server/itemstore";
 import { PostsContext } from "../../context/postContext";
 
+
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const { currentUser } = useContext(AuthContext);
@@ -93,18 +94,47 @@ const Post = ({ post }) => {
               </div>
             </div>
             <div>
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                color="error"
-                size="small"
-                onClick={() => handleDelete(user.id)}
-              >
-                Delete
-              </Button>
-              <Button variant="contained" size="small" endIcon={<SendIcon />} onClick={() => handleAccept(user.id)}>
-                accept
-              </Button>
+              {user.status === 1 && (
+                <>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    color="error"
+                    size="small"
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    endIcon={<SendIcon />}
+                    onClick={() => handleAccept(user.id)}
+                  >
+                    Accept
+                  </Button>
+                </>
+              )}
+              {user.status === 3 && (
+                <Button
+                  variant="contained"
+                  size="small"
+                  // endIcon={<YourWaitingReceiptIcon />} // Replace with the appropriate icon for WAITING_RECEIPT
+                  // onClick={() => handleWaitingReceipt(user.id)}
+                >
+                  Waiting Receipt
+                </Button>
+              )}
+              {user.status === 4 && (
+                <Button
+                  variant="contained"
+                  size="small"
+                  // endIcon={<YourReceivedIcon />} // Replace with the appropriate icon for RECEIVED
+                  // onClick={() => handleReceived(user.id)}
+                >
+                  Received
+                </Button>
+              )}
             </div>
           </div>
         ))}
@@ -191,7 +221,6 @@ const Post = ({ post }) => {
         const registrations = await Itemserver.getRegistrationsByPostId(
           accessToken,
           post.id,
-          1
         );
         setUserDataArray(registrations.listData);
       } catch (error) {
