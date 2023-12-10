@@ -3,7 +3,7 @@ import "./home.scss";
 import ShareBox from "../../components/sharebox/ShareBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons"; // Import the specific icon
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as postserver from "../../server/itemstore"
 import { PostsContext } from "../../context/postContext";
 import { AuthContext } from "../../context/authContext";
@@ -17,13 +17,45 @@ const Home = () => {
   const {currentUser} = useContext(AuthContext);
   const {setPostRegistrations, setSavePost, setFriendsList, setPostRegistrationsByowner} = useContext(PostsContext);
   const {setPosts} = useContext(PostsContext);
-  const fetchPosts = async (limit) => {
-    const accessToken = JSON.parse(localStorage.getItem("access_token"));
-    // Fetch posts with the specified limit parameter
-    const response = await postserver.getAllPost(accessToken,limit);
+  const [limit, setLimit] = useState(9);
+  const fetchPosts = async (currentLimit) => {
+    const accessToken = JSON.parse(localStorage.getItem('access_token'));
+    const response = await postserver.getAllPost(accessToken, currentLimit);
     const postData = response.listData;
     setPosts(postData);
   };
+
+  const handleScroll = () => {
+    const windowHeight =
+      'innerHeight' in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if (windowBottom >= docHeight) {
+      // Khi kéo đến cuối trang, tăng giá trị limit và gọi fetchPosts
+      const newLimit = limit + 9; // Tăng limit lên 9 (hoặc giá trị khác tùy chọn)
+      setLimit(newLimit);
+      fetchPosts(newLimit);
+    }
+  };
+
+  useEffect(() => {
+    // Đăng ký sự kiện scroll để theo dõi việc kéo đến cuối trang
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [limit]);
 
   const fetchPostsRegistation = async () => {
     try {
@@ -109,12 +141,12 @@ const Home = () => {
 
   // Fetch initial posts when the component mounts
   useEffect(() => {
-    fetchPostsRegistationByOwner()
-    fetchListFriends()
-    fetchSavePost()
-    fetchPostsRegistation()
-    fetchPosts(9); // Default limit is set to 2, change it as needed
-  }, []);
+    fetchPostsRegistationByOwner();
+    fetchListFriends();
+    fetchSavePost();
+    fetchPostsRegistation();
+    fetchPosts(limit); // Sử dụng giá trị limit
+  }, [limit]); 
   
   return (
     <div className="home">

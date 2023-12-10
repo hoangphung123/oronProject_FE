@@ -4,11 +4,20 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/authContext";
 import { PostsContext } from "../../context/postContext";
 import * as UserServices from "../../server/itemstore";
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from "date-fns";
+import Button from "@mui/material/Button";
+import { useNavigate } from 'react-router-dom';
 
 const RightBar = () => {
   const { currentUser } = useContext(AuthContext);
-  const {postRegistrations, setPostRegistrations, friendsList, setFriendsList, postRegistrationsByOwner } = useContext(PostsContext);
+  const navigate = useNavigate();
+  const {
+    postRegistrations,
+    setPostRegistrations,
+    friendsList,
+    setFriendsList,
+    postRegistrationsByOwner,
+  } = useContext(PostsContext);
   const userDataArray = [
     {
       description: "Có ai thích phim ko",
@@ -25,6 +34,10 @@ const RightBar = () => {
 
   const formatTimeDifference = (createdAt) => {
     return formatDistanceToNow(new Date(createdAt), { addSuffix: true });
+  };
+
+  const redirectToDetail = () => {
+    navigate('/detailRegistation');
   };
 
   useEffect(() => {
@@ -55,8 +68,11 @@ const RightBar = () => {
   return (
     <div className="rightBar">
       <div className="container">
-      <div className="item">
-          <span>Registration for your posts</span>
+        <div className="item">
+          <div className="item_title">
+            <span>Registration for your posts</span>
+            <Button onClick={redirectToDetail}>Detail</Button>
+          </div>
           {Array.isArray(postRegistrationsByOwner) &&
           postRegistrationsByOwner.length > 0 ? (
             postRegistrationsByOwner.map((registration, index) => (
@@ -79,13 +95,19 @@ const RightBar = () => {
           )}
         </div>
         <div className="item">
-          <span>Your registrations for other post</span>
+          <div className="item_title">
+            <span>Your registrations for other post</span>
+            <Button onClick={redirectToDetail}>Detail</Button>
+          </div>
           {/* Check if postRegistrations is an array before mapping */}
           {Array.isArray(postRegistrations) && postRegistrations.length > 0 ? (
             postRegistrations.map((registration, index) => (
               <div className="user" key={index}>
                 <div className="userInfo">
-                  <img src={`http://localhost:3500/${registration.post.imageURL}`} alt="" />
+                  <img
+                    src={`http://localhost:3500/${registration.post.imageURL}`}
+                    alt=""
+                  />
                   <p>
                     <span>{registration.post.description} </span>
                     {registration.action}
@@ -105,7 +127,10 @@ const RightBar = () => {
           {friendsList.map((friendData, index) => (
             <div className="user" key={index}>
               <div className="userInfo">
-                <img src={`http://localhost:3500/${friendData.profilePic}`} alt="" />
+                <img
+                  src={`http://localhost:3500/${friendData.profilePic}`}
+                  alt=""
+                />
                 <div className="online" />
                 <span>{friendData.username}</span>
               </div>
