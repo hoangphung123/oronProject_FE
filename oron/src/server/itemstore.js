@@ -607,4 +607,31 @@ export const deleteComment = async (accessToken, commentId) => {
   }
 }
 
+export const createReaction = async (accessToken, reactionData) => {
+  try {
+    const response = await axios.post(`${api_url}/reaction`, reactionData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // You can handle the response here if needed
+    return response.data;
+  } catch (error) {
+    // Handle error, show a notification, or perform other actions
+    throw new Error(`Error creating reaction: ${error.message}`);
+  }
+}
+
+export const getAllReaction = async (postId) => {
+  try {
+    const response = await axios.get(`${api_url}/reaction/post/${postId}`);
+    const reactions = response.data; // Update this line based on your API response structure
+    return reactions;
+  } catch (error) {
+    console.error(`Error while fetching reactions for post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
 

@@ -1,6 +1,8 @@
 import "./post.scss";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
@@ -54,6 +56,8 @@ const Post = ({ post }) => {
   const [isRatingPopupOpen, setIsRatingPopupOpen] = useState(false);
   const [ratingValue, setRatingValue] = useState(0);
   const [reviewDescription, setReviewDescription] = useState("");
+  const [reactionListOpen, setReactionListOpen] = useState(false);
+  const [reactionUser, setReactionUser] = useState([]);
 
   const handleEditClick = () => {
     // Initialize edit states with the data of the selected post
@@ -100,6 +104,7 @@ const Post = ({ post }) => {
   const closePopup = () => {
     setIsPopupOpen(false);
     setIsRatingPopupOpen(false);
+    setReactionListOpen(false);
   };
   const handleSendClick = () => {};
   const { getRootProps, getInputProps } = useDropzone({
@@ -159,24 +164,58 @@ const Post = ({ post }) => {
     }
   };
 
-  const handleLikeClick = (event) => {
-    // Toggle between FavoriteOutlinedIcon and FavoriteBorderOutlinedIcon
-    const updatedIcon = selectedIcon ? null : <FavoriteOutlinedIcon />;
-    setSelectedIcon(updatedIcon);
+  const handleLikeClick = async () => {
+    try {
+      // Mở hoặc đóng danh sách phản ứng
+      setReactionListOpen(!reactionListOpen);
 
-    // Update total reactions based on the toggle
-    const updatedTotalReactions = selectedIcon
-      ? post.totalReactions
-      : post.totalReactions + 1;
-    SetUpdatedTotalReactions(updatedTotalReactions);
-
-    setLikeAnchorEl(event.currentTarget);
-    setPopoverId(event.currentTarget.id);
+      // Nếu danh sách phản ứng đang mở, bạn có thể thực hiện các xử lý cần thiết ở đây
+      // Ví dụ: Gọi hàm getAllReaction để lấy danh sách phản ứng và cập nhật state
+      const postId = post.id;
+      const response = await Itemserver.getAllReaction(postId);
+      const reactionsList = response.listData;
+      // Cập nhật state với danh sách phản ứng mới
+      setReactionUser(reactionsList);
+    } catch (error) {
+      console.error("Error handling like click:", error.message);
+      // Xử lý lỗi nếu cần
+    }
   };
 
-  const handleIconSelect = (selectedIcon) => {
-    setSelectedIcon(selectedIcon);
+  const handleIconSelect = (selectedType, type) => {
+    setSelectedIcon(selectedType);
     setLikeAnchorEl(null);
+
+    console.log("type", type);
+
+    // Call the createReaction function with the post ID and type
+    createReaction(post.id, type);
+  };
+
+  const createReaction = async (postId, type) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+      // Use postId and type to create the reaction
+      const reactionData = {
+        postId,
+        type,
+      };
+
+      // Call the createReaction function with the reactionData
+      await Itemserver.createReaction(accessToken, reactionData);
+
+      const limit = 9;
+      const response = await Itemserver.getAllPost(accessToken, limit);
+      const postData = response.listData;
+      setPosts(postData);
+
+      // Add any additional logic or notifications as needed
+      console.log("Reaction created successfully");
+    } catch (error) {
+      console.error("Error creating reaction:", error.message);
+      // Handle error, show a notification, or perform other actions
+    }
   };
 
   const handleClose = () => {
@@ -373,6 +412,14 @@ const Post = ({ post }) => {
       console.error("Error creating review:", error.message);
       // Handle error, show a notification, or perform other actions
     }
+  };
+
+  const handleLikeHover = (event) => {
+    setLikeAnchorEl(event.currentTarget);
+  };
+
+  const handleLikeLeave = () => {
+    setLikeAnchorEl(null);
   };
 
   return (
@@ -622,13 +669,34 @@ const Post = ({ post }) => {
         </div>
         <div className="infos">
           <div className="info">
-            <div className="item" id="likeButton" onClick={handleLikeClick}>
-              {selectedIcon ? selectedIcon : <FavoriteBorderOutlinedIcon />}
-
-              {selectedIcon
-                ? `${updatedTotalReactions} bạn và người khác`
+            <div
+              className="item"
+              id="likeButton"
+              onMouseEnter={handleLikeHover}
+              // onClick={handleLikeClick}
+            >
+              {post.currentUserReaction &&
+              post.currentUserReaction.type === 0 ? (
+                <ThumbUpAltIcon />
+              ) : post.currentUserReaction &&
+                post.currentUserReaction.type === 1 ? (
+                <FavoriteOutlinedIcon />
+              ) : post.currentUserReaction &&
+                post.currentUserReaction.type === 2 ? (
+                <MoodIcon />
+              ) : post.currentUserReaction &&
+                post.currentUserReaction.type === 3 ? (
+                <SentimentVeryDissatisfiedIcon />
+              ) : (
+                <ThumbUpOffAltIcon />
+              )}
+            </div>
+            <div onClick={handleLikeClick}>
+              {post.currentUserReaction
+                ? `${post.totalReactions} bạn và người khác`
                 : `${post.totalReactions} người khác`}
             </div>
+
             {/* Star Rating */}
 
             <Popover
@@ -647,12 +715,17 @@ const Post = ({ post }) => {
             >
               <div style={{ display: "flex", justifyContent: "space-around" }}>
                 <FavoriteOutlinedIcon
-                  onClick={() => handleIconSelect(<FavoriteOutlinedIcon />)}
+                  onClick={() => handleIconSelect(<FavoriteOutlinedIcon />, 1)}
                 />
-                <MoodIcon onClick={() => handleIconSelect(<MoodIcon />)} />
-                <EmojiEventsIcon
-                  onClick={() => handleIconSelect(<EmojiEventsIcon />)}
+                <MoodIcon onClick={() => handleIconSelect(<MoodIcon />, 2)} />
+                <SentimentVeryDissatisfiedIcon
+                  onClick={() =>
+                    handleIconSelect(<SentimentVeryDissatisfiedIcon />, 3)
+                  }
                 />
+                <ThumbUpAltIcon
+                  onClick={() => handleIconSelect(<ThumbUpAltIcon />, 0)}
+                ></ThumbUpAltIcon>
               </div>
             </Popover>
             <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
@@ -670,9 +743,7 @@ const Post = ({ post }) => {
               readonly={!post.isUserReceived} // Làm cho thành phần rating không thể tương tác nếu post.isUserReceived là false
             />
             {post.reviewer && (
-              <div className="reviewer-info">
-                 :{post.reviewer.username}
-              </div>
+              <div className="reviewer-info">:{post.reviewer.username}</div>
             )}
           </div>
         </div>
@@ -699,6 +770,28 @@ const Post = ({ post }) => {
             >
               Send
             </Button>
+          </div>
+        </>
+      )}
+      {reactionListOpen && (
+        <>
+          <div className="overlay" onClick={closePopup}></div>
+          <div className="reaction-popup">
+            <p>REACTION</p>
+            {reactionUser.map((reaction, index) => (
+              <div key={index} className="reaction-item">
+                {reaction.type === 0 ? (
+                  <ThumbUpAltIcon />
+                ) : reaction.type === 1 ? (
+                  <FavoriteOutlinedIcon />
+                ) : reaction.type === 2 ? (
+                  <MoodIcon />
+                ) : reaction.type === 3 ? (
+                  <SentimentVeryDissatisfiedIcon />
+                ) : null}
+                <span className="username">{reaction.username}</span>
+              </div>
+            ))}
           </div>
         </>
       )}
