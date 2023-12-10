@@ -8,14 +8,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import IconButton from "@mui/material/IconButton";
+import { PostsContext } from "../../context/postContext";
+import Rating from "react-rating";
 
 const Comments = ({ postId }) => {
   const { currentUser } = useContext(AuthContext);
 
   // State to manage comments
   const [comments, setComments] = useState([]);
-
-  // State to manage the new comment input
+  const { setPosts } = useContext(PostsContext);
+  const [ratingValue, setRatingValue] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [Reviewer, setReviewer] = useState([]);
   const [isRatingPopupOpen, setIsRatingPopupOpen] = useState(false);
@@ -37,6 +39,11 @@ const Comments = ({ postId }) => {
     setEditingCommentId(commentId);
   };
 
+  const handleRatingChange = (value) => {
+    console.log("Rating changed to:", value);
+    setRatingValue(value);
+  };
+
   const handleKeyPress = (e, commentId) => {
     if (e.key === "Enter") {
       // Người dùng bấm Enter, gọi hàm handleEditComment
@@ -51,6 +58,60 @@ const Comments = ({ postId }) => {
 
     // Mở Menu
     setAnchorEl(event.currentTarget);
+  };
+
+  const handleDeleteReview = async (reviewId) => {
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+    try {
+      // Make an API call to delete the review
+      await postServer.deleteReview(accessToken, reviewId);
+      setReviewer([]);
+
+      const limit = 9;
+      const response = await postServer.getAllPost(accessToken, limit);
+      const postData = response.listData;
+      setPosts(postData);
+      // Set the deleted review ID for UI updates
+    } catch (error) {
+      console.error("Error deleting review:", error);
+    }
+  };
+
+  const handleUpdateReview = async (reviewId) => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+      // Use the ratingValue and reviewDescription in the CreateReview function
+      const reviewData = {
+        description: reviewDescription,
+        numberStar: ratingValue,
+      };
+
+      // Call the CreateReview function with the reviewData
+      await postServer.updateReview(accessToken, reviewId, reviewData);
+
+      const limit = 9;
+      const response = await postServer.getAllPost(accessToken, limit);
+      const postData = response.listData;
+      setPosts(postData);
+
+      const updatedReviewers = Reviewer.map((r) =>
+        r.id === reviewId
+          ? { ...r, description: reviewDescription, numberStar: ratingValue }
+          : r
+      );
+      setReviewer(updatedReviewers);
+
+      // Close the rating popup
+      setIsRatingPopupOpen(false);
+
+      // Add any additional logic or notifications as needed
+      console.log("Review upadte successfully");
+    } catch (error) {
+      console.error("Error update review:", error.message);
+      // Handle error, show a notification, or perform other actions
+    }
   };
 
   const handleEditComment = async (commentId) => {
@@ -101,33 +162,61 @@ const Comments = ({ postId }) => {
 
     await postServer.uploadComment(accessToken, commentData);
 
-    const newCommentObject = {
-      id: comments.id, // Generate a unique ID (replace with your logic)
-      description: newComment,
-      user: {
-        username: currentUser.data.username,
-        profilePic: `${currentUser.data.profilePic}`,
-      },
-      post: {
-        id: "0a73500d-8f84-4a81-a50a-0479152e2a5d", // Replace with the actual post ID
-        description: "Đại học sư phạm kỹ Thuật", // Replace with the actual post description
-        imageURL: "post/1700901151754-maxresdefault.jpg", // Replace with the actual image URL
-        videoURL: null, // Set to null if there is no video
-        status: 1, // Replace with the actual post status
-        fullAddress: "Xã Phú Mỹ, Huyện Phú Tân, Tỉnh Cà Mau", // Replace with the actual post address
-        specificAddress: "32, Le Quy Don", // Replace with the actual post specific address
-        createdAt: "2023-11-25T08:32:31.708Z", // Replace with the actual post createdAt
-        updatedAt: "2023-11-25T08:32:31.768Z", // Replace with the actual post updatedAt
-      },
-      createdAt: new Date().toISOString(), // Assuming createdAt is a string in ISO format
-      updatedAt: new Date().toISOString(), // Assuming updatedAt is a string in ISO format
-    };
+    // const newCommentObject = {
+    //   id: comments.id, // Generate a unique ID (replace with your logic)
+    //   description: newComment,
+    //   user: {
+    //     username: currentUser.data.username,
+    //     profilePic: `${currentUser.data.profilePic}`,
+    //   },
+    //   post: {
+    //     id: "0a73500d-8f84-4a81-a50a-0479152e2a5d", // Replace with the actual post ID
+    //     description: "Đại học sư phạm kỹ Thuật", // Replace with the actual post description
+    //     imageURL: "post/1700901151754-maxresdefault.jpg", // Replace with the actual image URL
+    //     videoURL: null, // Set to null if there is no video
+    //     status: 1, // Replace with the actual post status
+    //     fullAddress: "Xã Phú Mỹ, Huyện Phú Tân, Tỉnh Cà Mau", // Replace with the actual post address
+    //     specificAddress: "32, Le Quy Don", // Replace with the actual post specific address
+    //     createdAt: "2023-11-25T08:32:31.708Z", // Replace with the actual post createdAt
+    //     updatedAt: "2023-11-25T08:32:31.768Z", // Replace with the actual post updatedAt
+    //   },
+    //   createdAt: new Date().toISOString(), // Assuming createdAt is a string in ISO format
+    //   updatedAt: new Date().toISOString(), // Assuming updatedAt is a string in ISO format
+    // };
 
     // Update the comments state with the new comment
-    setComments((prevComments) => [newCommentObject, ...prevComments]);
+    // setComments((prevComments) => [newCommentObject, ...prevComments]);
+
+    const response = await postServer.getCommentByPostId(postId);
+    const data = response.listData;
+
+    console.log("Fetched comments:", data);
+
+    // Update comments state with the fetched data
+    setComments(data);
 
     // Clear the new comment input
     setNewComment("");
+  };
+
+
+  const handleDeleteComment = async (commentId) => {
+    const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+    try {
+      // Make an API call to delete the comment
+      await postServer.deleteComment(accessToken, commentId);
+
+      // Update the comments state after deletion
+      const updatedComments = comments.filter((comment) => comment.id !== commentId);
+      setComments(updatedComments);
+      setAnchorEl(null);
+      
+      // Add any additional logic or notifications as needed
+      console.log("Comment deleted successfully");
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
   };
 
   // Simulating API call to get comments by postId
@@ -145,21 +234,6 @@ const Comments = ({ postId }) => {
       console.error("Error fetching comments:", error);
     }
   };
-
-  // const getPostByPostId = async (postId) => {
-  //   // Replace the following with your actual API call
-  //   try {
-  //     const accessToken = JSON.parse(localStorage.getItem("access_token"));
-  //     const response = await postServer.getPostByPostId(accessToken, postId);
-  //     const data = response.data;
-
-  //     console.log('dataPost', currentUser.data.username)
-  //     // Update comments state with the fetched data
-  //     setPostById(data);
-  //   } catch (error) {
-  //     console.error("Error fetching comments:", error);
-  //   }
-  // };
 
   const formatTimeDifference = (createdAt) => {
     return formatDistanceToNow(new Date(createdAt), { addSuffix: true });
@@ -210,7 +284,7 @@ const Comments = ({ postId }) => {
                   variant="outlined"
                   color="error"
                   size="small"
-                  // onClick={() => handleDelete(comment.id)}
+                  onClick={() => handleDeleteReview(Reviewers.id)}
                 >
                   Delete
                 </Button>
@@ -233,6 +307,34 @@ const Comments = ({ postId }) => {
               </Button>
             )}
           </div>
+          {isRatingPopupOpen && (
+            <>
+              <div className="overlay" onClick={closePopup}></div>
+              <div className="rating-popup">
+                <Rating
+                  initialRating={Reviewers.numberStar}
+                  emptySymbol={<span className="icon">&#9734;</span>} // Biểu tượng sao Unicode
+                  fullSymbol={<span className="icon">&#9733;</span>} // Biểu tượng sao Unicode
+                  onChange={handleRatingChange} // Hàm gọi lại khi rating thay đổi
+                />
+                <input
+                  type="text"
+                  placeholder="Enter your comment here..."
+                  className="wide-input" // Add a class for custom styling
+                  value={reviewDescription}
+                  onChange={(e) => setReviewDescription(e.target.value)}
+                />
+                <Button
+                  onClick={() => handleUpdateReview(Reviewers.id)}
+                  variant="contained"
+                  className="acsess_button"
+                  size="medium"
+                >
+                  Send
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       ))}
       <hr />
@@ -249,29 +351,7 @@ const Comments = ({ postId }) => {
         />
         <button onClick={() => handleAddComment(postId)}>Send</button>
       </div>
-      {isRatingPopupOpen && (
-        <>
-          <div className="overlay" onClick={closePopup}></div>
-          <div className="rating-popup">
-            <input
-              type="text"
-              placeholder="Enter your comment here..."
-              className="wide-input" // Add a class for custom styling
-              value={reviewDescription}
-              onChange={(e) => setReviewDescription(e.target.value)}
-              
-            />
-            <Button
-              // onClick={handleSendRating}
-              variant="contained"
-              className="acsess_button"
-              size="medium"
-            >
-              Send
-            </Button>
-          </div>
-        </>
-      )}
+
       {comments.map((comment) => (
         <div className="comment" key={comment.id}>
           <img
@@ -323,7 +403,7 @@ const Comments = ({ postId }) => {
                   <MenuItem onClick={() => openEditPopup(editedComment.id)}>
                     Edit
                   </MenuItem>
-                  <MenuItem onClick={handleMenuClose}>Delete</MenuItem>
+                  <MenuItem onClick={() => handleDeleteComment(comment.id)}>Delete</MenuItem>
                 </Menu>
               </div>
             )}

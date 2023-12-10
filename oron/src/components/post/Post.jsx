@@ -362,6 +362,11 @@ const Post = ({ post }) => {
       // Call the CreateReview function with the reviewData
       await Itemserver.CreateReview(accessToken, reviewData);
 
+      const limit = 9;
+      const response = await Itemserver.getAllPost(accessToken, limit);
+      const postData = response.listData;
+      setPosts(postData);
+
       // Add any additional logic or notifications as needed
       console.log("Review created successfully");
     } catch (error) {

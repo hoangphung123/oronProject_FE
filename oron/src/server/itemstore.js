@@ -552,6 +552,59 @@ export const updateComment = async (accessToken, commentId, updateData) => {
     );
     throw error;
   }
-};
+}
+
+
+export const deleteReview = async (accessToken, reviewId) => {
+  try {
+    const response = await axios.delete(`${api_url}/review/${reviewId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const deletedReview = response.data; // Update this line based on your API response structure
+    return deletedReview;
+  } catch (error) {
+    console.error(`Error while deleting review with id ${reviewId}:`, error.message);
+    throw error;
+  }
+}
+
+export const updateReview = async (accessToken, reviewId, updateData) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/review/${reviewId}`,
+      updateData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const updatedReview = response.data; // Update this line based on your API response structure
+    return updatedReview;
+  } catch (error) {
+    console.error(`Error while updating review with id ${reviewId}:`, error.message);
+    throw error;
+  }
+}
+
+export const deleteComment = async (accessToken, commentId) => {
+  try {
+    const response = await axios.delete(`${api_url}/comment/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const deletedComment = response.data; // Update this line based on your API response structure
+    return deletedComment;
+  } catch (error) {
+    console.error(`Error while deleting comment with id ${commentId}:`, error.message);
+    throw error;
+  }
+}
 
 
