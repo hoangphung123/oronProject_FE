@@ -6,6 +6,11 @@
     @include themify($themes) {
         background-color: themed("bgSoft");
         color: themed("textColor");
+        height: 130vh;
+
+        .top_rank{
+            margin-left: 30px;
+        }
 
         .h1 {
             margin-top: 3%;
@@ -35,25 +40,27 @@
         }
 
         h2,
-        h3 {
-            width: 100%;
-            height: 100%;
+        h3 { 
             font-size: 370%;
             font-family: 'Passion One', sans-serif;
             animation: twinkling 2s infinite; // Adjust the duration as needed
-            margin-left: 20%;
         }
 
         h3 {
             font-size: 320%;
             margin: 5% 25px 5% 5%;
-            margin-left: 15%;
 
         }
 
+        .h3_profile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .profile img {
-            width: 100%;
-            height: 100%;
+            width: 300px;
+            height: 300px;
             object-fit: cover;
             border-radius: 50%;
             position: relative;
@@ -67,7 +74,6 @@
             display: flex;
             justify-content: center;
             margin-top: 10px;
-            margin-left: 20%;
 
             .star {
                 font-size: 300%;
@@ -98,8 +104,45 @@
             }
         }
 
+        .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer {
+            color: themed("textColor");
+        }
+        
+        .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-cell--textLeft {
+            color: themed("textColor");
+        }
+
+        .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+            color: themed("textColor");
+            margin-bottom: 20px;
+            border: themed("textColor");
+        }
+
+        .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+            border-color: themed("textColor");
+        }
+
+        .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon {
+            color: themed("textColor");
+        } 
+        
+        .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+            color: themed("textColor");
+            top: -10px;
+        }
+
+        .css-ptkaw2-MuiDataGrid-root {
+            border-color:  themed("textColor"); 
+        }
+
+        .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-withBorderColor {
+            border-color: themed("textColor");
+        }
+
     }
 }
+
+
 
 @keyframes twinkling {
     0% {

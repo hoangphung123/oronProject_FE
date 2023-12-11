@@ -281,7 +281,7 @@ const Post = ({ post }) => {
       await Itemserver.deletePost(accessToken, post.id);
 
       const limit = 9;
-      const response = await Itemserver.getAllPost(limit);
+      const response = await Itemserver.getAllPost(accessToken, limit);
       const postData = response.listData;
       setPosts(postData);
 
@@ -411,7 +411,7 @@ const Post = ({ post }) => {
       await Itemserver.uploadPost(accessToken, selectedImage, registeredUserId);
 
       const limit = 9;
-      const response = await Itemserver.getAllPost(limit);
+      const response = await Itemserver.getAllPost(accessToken, limit);
       const postDatas = response.listData;
       setPosts(postDatas);
 

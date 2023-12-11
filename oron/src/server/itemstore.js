@@ -669,4 +669,41 @@ export const unsavePost = async (accessToken, postId) => {
   }
 }
 
+export const getTopUser = async (weekNumber, accessToken) => {
+  try {
+    const response = await axios.get(`${api_url}/user/top?weekNumber=${weekNumber}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const topUsers = response.data; // Update this line based on your API response structure
+    return topUsers;
+  } catch (error) {
+    console.error(`Error while fetching top users for week ${weekNumber}:`, error.message);
+    throw error;
+  }
+}
+
+export const getPostByCategoryId = async (categoryId, accessToken, limit) => {
+  try {
+    // Make a GET request to the API endpoint
+    const response = await axios.get(
+      `${api_url}/post/filter?categoryId=${categoryId}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    // Extract and return the data from the response
+    const postsByCategoryId = response.data;
+    return postsByCategoryId;
+  } catch (error) {
+    // Handle errors, log them, and throw the error
+    console.error(`Error while fetching posts for category with id ${categoryId}:`, error.message);
+    throw error;
+  }
+};
 

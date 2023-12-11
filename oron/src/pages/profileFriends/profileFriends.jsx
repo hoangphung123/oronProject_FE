@@ -143,10 +143,6 @@ const ProfileFriends = () => {
                 <PlaceIcon />
                 <span>Vietnam</span>
               </div>
-              <div className="item">
-                <LanguageIcon />
-                <span>tamnhu.dev</span>
-              </div>
             </div>
             <button onClick={handleFollowButtonClick}>
               {isFollowing ? "Unfollow" : "Follow"}

@@ -282,10 +282,6 @@ useEffect(() => {
                             <PlaceIcon/>
                             <span>Vietnam</span>
                           </div>
-                          <div className="item">
-                            <LanguageIcon/>
-                            <span>tamnhu.dev</span>
-                          </div>
                       </div>
                       {/* <button>follow</button> */}
                   </div>
