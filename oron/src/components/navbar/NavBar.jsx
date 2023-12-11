@@ -15,21 +15,30 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { AuthContext } from "../../context/authContext";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField} from '@mui/material';
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+} from "@mui/material";
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser, currentUserId, setCurrentUserId } = useContext(AuthContext);
+  const { currentUser, currentUserId, setCurrentUserId } =
+    useContext(AuthContext);
   const navigate = useNavigate();
   // const [profileImage, setProfileImage] = useState(currentUser.data.profilePic);
   const [searchQuery, setSearchQuery] = useState("");
   const [showRecentSearches, setShowRecentSearches] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const handleSearchChange = async (event) => {
     const query = event.target.value;
@@ -101,21 +110,47 @@ const NavBar = () => {
   };
 
   const handleOpenDialog = () => {
+    
     setDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
     // Optionally, reset password fields
-    setOldPassword('');
-    setNewPassword('');
+    setOldPassword("");
+    setNewPassword("");
   };
 
-  const handleChangepassword = () => {
-    // Implement your logic for changing the password
-    console.log('Changing password...');
-    // Optionally, close the dialog
-    handleCloseDialog();
+  const handleChangepassword = async () => {
+    try {
+      // Check if passwords are not empty
+      if (!oldPassword || !newPassword) {
+        toast.error("Please enter both old and new passwords.");
+        return;
+      }
+
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+      const datachage = {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      };
+
+      // Call the changePassWord function with the old and new passwords
+      await Userserver.changePassWord(accessToken, datachage);
+
+      // Assuming the changePassWord function returns an object with a success property
+
+      toast.success("Password changed successfully.");
+      handleCloseDialog();
+      setAnchorEl(null)
+    } catch (error) {
+      const errorMessage = Array.isArray(error.response.data.message)
+        ? error.response.data.message[0]
+        : error.response.data.message;
+
+      toast.error(`Error changing password: ${errorMessage}`);
+    }
   };
 
   useEffect(() => {
@@ -160,10 +195,10 @@ const NavBar = () => {
       const friends = await postserver.getFriends(accessToken);
       const updatedUserId = {
         userId: friends.listData[0].id,
-        username: friends.listData[0].username
+        username: friends.listData[0].username,
       };
       localStorage.setItem("friends", JSON.stringify(updatedUserId));
-      setCurrentUserId(updatedUserId)
+      setCurrentUserId(updatedUserId);
     } catch (error) {
       console.error("Error fetching friends:", error.message);
     }
@@ -285,7 +320,11 @@ const NavBar = () => {
             </DialogContent>
             <DialogActions>
               <Button onClick={handleCloseDialog}>Cancel</Button>
-              <Button onClick={handleChangepassword} variant="contained" color="primary">
+              <Button
+                onClick={handleChangepassword}
+                variant="contained"
+                color="primary"
+              >
                 Change
               </Button>
             </DialogActions>
@@ -294,6 +333,7 @@ const NavBar = () => {
             Logout
           </MenuItem>
         </Menu>
+        <ToastContainer />
       </div>
     </div>
   );

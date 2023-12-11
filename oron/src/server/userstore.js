@@ -295,6 +295,27 @@ export const UnFollow = async (accessToken, userId) => {
   }
 }
 
+export const changePassWord = async (accessToken, dataChange) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/user/change-password`,
+      dataChange,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const changePasswordResult = response.data;
+    return changePasswordResult;
+  } catch (error) {
+    console.error('Error while changing password:', error.message);
+    throw error;
+  }
+}
+
+
 
 
 
