@@ -23,6 +23,7 @@ import * as Userserver from "../../server/userstore";
 import { PostsContext } from "../../context/postContext";
 import MoodIcon from "@mui/icons-material/Mood";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import FileDownloadDoneIcon from "@mui/icons-material/FileDownloadDone";
 // import AngryIcon from "@mui/icons-material/Angry";
 import Popover from "@mui/material/Popover";
 import Rating from "react-rating";
@@ -36,12 +37,13 @@ const Post = ({ post }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImages, setSelectedImages] = useState(null);
   const [description, setDescription] = useState("");
+  const [descriptionReport, setDescriptionRepost] = useState("");
+  const [tittle, setTittles] = useState("");
   const [selectedPostUser, setSelectedPostUser] = useState(null);
   const { setSavePost, setPosts } = useContext(PostsContext);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [likeAnchorEl, setLikeAnchorEl] = useState(null);
   const [popoverId, setPopoverId] = useState(null);
-  const [updatedTotalReactions, SetUpdatedTotalReactions] = useState(null);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedProvince, setSelectedProvince] = useState("");
@@ -83,6 +85,20 @@ const Post = ({ post }) => {
     }
   };
 
+  const handleInputChangeReport = (e, inputField) => {
+    const value = e.target.value;
+    switch (inputField) {
+      case "description":
+        setDescriptionRepost(value);
+        break;
+      case "tittle":
+        setTittles(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
 
@@ -100,13 +116,50 @@ const Post = ({ post }) => {
 
   const openPopup = () => {
     setIsPopupOpen(true);
+    setAnchorEl(null);
   };
+
   const closePopup = () => {
     setIsPopupOpen(false);
     setIsRatingPopupOpen(false);
     setReactionListOpen(false);
   };
-  const handleSendClick = () => {};
+
+  const handleSendRepostClick = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+      // Check if both title and description are provided
+      if (!tittle || !descriptionReport) {
+        toast.error(
+          "Please provide both title and description for the report."
+        );
+        return;
+      }
+
+      const reportData = {
+        title: tittle,
+        description: descriptionReport,
+        postId: post.id,
+      };
+
+      // Call the API to send the report
+      await Itemserver.createReportByPostId(
+        accessToken,
+        reportData
+      );
+
+      // Check if the report was sent successfully
+
+      toast.success("Report sent successfully!");
+      // Close the report popup
+      setIsPopupOpen(false);
+    } catch (error) {
+      // Handle unexpected errors, display an error toast
+      toast.error(`Error sending report: ${error.message}`);
+    }
+  };
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
     onDrop,
@@ -370,12 +423,6 @@ const Post = ({ post }) => {
     }
   };
 
-  // const handleRatingChange = (value) => {
-  //   // Implement logic to handle the rating change
-  //   console.log("Rating changed to:", value);
-  //   // You can update state or perform other actions based on the rating value
-  // };
-
   const handleRatingChange = (value) => {
     // Implement logic to handle the rating change
     console.log("Rating changed to:", value);
@@ -607,46 +654,45 @@ const Post = ({ post }) => {
             {isPopupOpen && (
               <>
                 <div className="overlay" onClick={closePopup}></div>
-                <div className="popup">
+                <div className="report-popup">
                   <div className="popup-title">
-                    <h3>Báo cáo bài viết</h3>
-                    <span className="close" onClick={closePopup}>
-                      x
-                    </span>
+                    <h2>Báo cáo bài viết</h2>
                   </div>
                   <div className="popup-content">
                     <div className="left">
                       <div className="left-container">
-                        <h1>Tittle</h1>
+                        <h4>Tittle</h4>
                         <form>
                           <textarea
-                            className="input_description"
+                            className="input_Items"
                             type="text"
                             placeholder="Tittle"
-                            value={description}
+                            // value={tittle}
                             onChange={(e) =>
-                              handleInputChange(e, "description")
+                              handleInputChangeReport(e, "tittle")
                             }
                           />
                         </form>
                       </div>
                     </div>
                     <div className="right">
-                      <h1>Thông tin bài viết</h1>
+                      <h4>Thông tin bài viết</h4>
                       <form>
                         <textarea
-                          className="input_description"
+                          className="input_Items"
                           type="text"
                           placeholder="Description"
-                          value={description}
-                          onChange={(e) => handleInputChange(e, "description")}
+                          // value={description}
+                          onChange={(e) =>
+                            handleInputChangeReport(e, "description")
+                          }
                         />
                       </form>
                     </div>
                   </div>
                   <div className="popup-action">
                     <Button
-                      onClick={handleSendClick}
+                      onClick={handleSendRepostClick}
                       variant="contained"
                       className="acsess_button"
                     >

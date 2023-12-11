@@ -623,6 +623,22 @@ export const createReaction = async (accessToken, reactionData) => {
   }
 }
 
+export const createReportByPostId = async (accessToken, reportData) => {
+  try {
+    const response = await axios.post(`${api_url}/report`, reportData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // You can handle the response here if needed
+    return response.data;
+  } catch (error) {
+    // Handle error, show a notification, or perform other actions
+    throw new Error(`Error creating reaction: ${error.message}`);
+  }
+}
+
 export const getAllReaction = async (postId) => {
   try {
     const response = await axios.get(`${api_url}/reaction/post/${postId}`);
