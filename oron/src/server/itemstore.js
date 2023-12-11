@@ -650,4 +650,23 @@ export const getAllReaction = async (postId) => {
   }
 }
 
+export const unsavePost = async (accessToken, postId) => {
+  try {
+    const response = await axios.delete(
+      `${api_url}/post/${postId}/unsave`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const unsavedPost = response.data;
+    return unsavedPost;
+  } catch (error) {
+    console.error(`Error while unsaving post with id ${postId}:`, error.message);
+    throw error;
+  }
+}
+
 

@@ -5,6 +5,7 @@ import Forgotpassword from "./pages/forgotpassword/forgotpassword.jsx";
 import Ranking from "./pages/ranking/Ranking.jsx";
 import Reportadmin from "./pages/reportadmin/Reportadmin.jsx";
 import DetailRegistation from "./pages/detailRegister/detail.jsx";
+import DetailSavePost from "./pages/detailSavePost/detailSavePosr.jsx";
 import {
   createBrowserRouter,
   Navigate,
@@ -112,6 +113,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/detailSavePort",
+      element: <DetailSavePost />,
     },
     {
       path: "/register",

@@ -1,0 +1,107 @@
+@import "../../style.scss";
+
+.posts {
+  @include themify($themes) {
+    background: themed("bgs");
+  }
+}
+
+.items{
+  @include themify($themes) {
+    background: themed("bgs");
+  }  
+}
+
+.items:hover{
+    cursor: pointer;
+}
+
+.button-delete{
+    height: 30%;
+}
+
+
+/* Thêm đoạn mã CSS sau vào file detailSavePost.scss */
+.item_saves {
+    // column-count: 2;
+    // column-gap: 20px; /* Khoảng cách giữa các cột */
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+
+  .rectangle-content {
+    display: flex;
+    width: 70%;
+  }
+  
+  .rectangle-boxs {
+    @include themify($themes) {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        margin-bottom: 20px;
+        display: flex;
+        background: themed("bg");
+        padding: 20px;
+        border-radius: 10px;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+  }
+  
+
+.squares {
+    width: 200px;
+    height: 100px;
+    background-color: rgb(247, 247, 250);
+    /* You can set the background color as needed */
+    margin-right: 10px;
+    border-radius: 10px;
+    display: flex;
+
+    img.square_imgs {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    
+}
+
+.img-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.infor-containers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.text-containers {
+    @include themify($themes) {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+
+        color: themed("textColor") ;
+    }
+}
+
+.Names {
+    margin-bottom:1%;
+    font-size: 15px;
+    // font-weight: bold;
+    
+}
+.Decripstions {
+    margin-bottom:1%;
+    font-size: 30px;
+    font-weight:initial;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+}

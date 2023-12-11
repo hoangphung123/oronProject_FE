@@ -27,13 +27,19 @@ const LeftBar = () => {
             <span>{currentUser.data.username}</span>
           </div>
           <div className="item">
-            <Link to="/friends" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link
+              to="/friends"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <img src={Friends} alt="" />
             </Link>
             <span>Friends</span>
           </div>
           <div className="item">
-            <Link to="/ranking" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link
+              to="/ranking"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               <img src={Ranking} alt="" />
             </Link>
 
@@ -41,14 +47,23 @@ const LeftBar = () => {
           </div>
           <hr />
           <div className="item">
-            <img src={Gallery} alt="" />
+            <Link
+              to="/detailSavePort"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img src={Gallery} alt="" />
+            </Link>
             <span>Saved Post</span>
           </div>
           <div className="item_save">
-          {savePost.map((post, index) => (
+            {savePost.map((post, index) => (
               <div className="rectangle-box" key={index}>
                 <div className="square">
-                  <img className="square_img" src={`http://localhost:3500/${post.imageURL}`} alt="" />
+                  <img
+                    className="square_img"
+                    src={`http://localhost:3500/${post.imageURL}`}
+                    alt=""
+                  />
                 </div>
                 <div className="text-container">
                   <div className="Name">{post.user.username}</div>
