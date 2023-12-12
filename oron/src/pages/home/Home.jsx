@@ -15,12 +15,14 @@ import Submenu from '../../components/Submenu/Submenu';
 
 const Home = () => {
   const {currentUser} = useContext(AuthContext);
-  const {setPostRegistrations, setSavePost, setFriendsList, setPostRegistrationsByowner} = useContext(PostsContext);
+  const {setPostRegistrations, setSavePost, setFriendsList, setPostRegistrationsByowner, categoryIds, setCategoryIds} = useContext(PostsContext);
   const {setPosts} = useContext(PostsContext);
   const [limit, setLimit] = useState(9);
+
   const fetchPosts = async (currentLimit) => {
+    const categoryIdss = categoryIds;
     const accessToken = JSON.parse(localStorage.getItem('access_token'));
-    const response = await postserver.getAllPost(accessToken, currentLimit);
+    const response = await postserver.getAllPost(accessToken, currentLimit, categoryIdss);
     const postData = response.listData;
     setPosts(postData);
   };
@@ -137,16 +139,21 @@ const Home = () => {
     }
   }
 
+  useEffect(() => {
+    fetchPosts(limit); // Sử dụng giá trị limit
+  }, []); 
+
   
 
   // Fetch initial posts when the component mounts
   useEffect(() => {
+    setCategoryIds("")
     fetchPostsRegistationByOwner();
     fetchListFriends();
     fetchSavePost();
     fetchPostsRegistation();
     fetchPosts(limit); // Sử dụng giá trị limit
-  }, [limit]); 
+  },[]); 
   
   return (
     <div className="home">

@@ -9,7 +9,7 @@ const LeftBar1 = () => {
   const { friendsList, followingList, followerList } = useContext(PostsContext);
   const [selectedTab, setSelectedTab] = useState("following");
   const { currentUserId, setCurrentUserId, setCurrentUserProfile } = useContext(AuthContext);
-  const { setPosts } = useContext(PostsContext);
+  const { setPosts, setFriendsList, setFollowingList, setFollowerList } = useContext(PostsContext);
 
   let dataToRender = [];
 
@@ -44,6 +44,45 @@ const LeftBar1 = () => {
     // Store the updated user data in localStorage
     localStorage.setItem("friends", JSON.stringify(updatedUserId));
   };
+
+  const fetchListFriends = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const result = await Postserver.getFriends(accessToken);
+      setFriendsList(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error("Error while fetching List Friends:", error.message);
+    }
+  };
+
+  const fetchListFollowing = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const result = await Postserver.getFollowing(accessToken);
+      setFollowingList(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error("Error while fetching List Friends:", error.message);
+    }
+  };
+
+  const fetchListFollower = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const result = await Postserver.getFollower(accessToken);
+      setFollowerList(result.listData);
+    } catch (error) {
+      // Xử lý lỗi nếu cần
+      console.error("Error while fetching List Friends:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchListFriends();
+    fetchListFollowing();
+    fetchListFollower();
+  }, []);
 
   return (
     <div className="leftBar1">

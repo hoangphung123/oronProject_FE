@@ -40,7 +40,7 @@ const Post = ({ post }) => {
   const [descriptionReport, setDescriptionRepost] = useState("");
   const [tittle, setTittles] = useState("");
   const [selectedPostUser, setSelectedPostUser] = useState(null);
-  const { setSavePost, setPosts } = useContext(PostsContext);
+  const { setSavePost, setPosts, categoryIds } = useContext(PostsContext);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [likeAnchorEl, setLikeAnchorEl] = useState(null);
   const [popoverId, setPopoverId] = useState(null);
@@ -61,15 +61,38 @@ const Post = ({ post }) => {
   const [reactionListOpen, setReactionListOpen] = useState(false);
   const [reactionUser, setReactionUser] = useState([]);
 
-  const handleEditClick = () => {
+  const handleClosePopupEdit = () => {
+    resetEditPopup()
+    setIsEditPopupOpen(false);
+  }
+
+  const resetEditPopup = () => {
+    setSelectedStatus("");
+    setSelectedCategory("");
+    setSelectedProvince("");
+    setSelectedDistrict("");
+    
+    setSelectedWard("");
+    console.log('districtId', selectedDistrict, selectedWard )
+    setDescription("");
+    setSelectedImages(null);
+    setSelectedImage(null)
+  }
+
+  const handleEditClick = async () => {
+    
     // Initialize edit states with the data of the selected post
     setSelectedStatus(post.status);
-    setSelectedCategory(post.categoryId);
-    setSelectedProvince(post.provinceId);
-    setSelectedDistrict(post.districtId);
+    await setSelectedCategory(post.category.id);
+    await setSelectedProvince(post.provinceId);
+    await setSelectedDistrict(post.districtId);
+    
     setSelectedWard(post.wardId);
+    console.log('districtId', selectedDistrict, selectedWard )
     setDescription(post.description);
     setSelectedImages(`http://localhost:3500/${post.imageURL}`);
+    setSelectedImage(post.imageURL)
+    
 
     setIsEditPopupOpen(true);
   };
@@ -259,7 +282,7 @@ const Post = ({ post }) => {
       await Itemserver.createReaction(accessToken, reactionData);
 
       const limit = 9;
-      const response = await Itemserver.getAllPost(accessToken, limit);
+      const response = await Itemserver.getAllPost(accessToken, limit, categoryIds);
       const postData = response.listData;
       setPosts(postData);
 
@@ -281,7 +304,7 @@ const Post = ({ post }) => {
       await Itemserver.deletePost(accessToken, post.id);
 
       const limit = 9;
-      const response = await Itemserver.getAllPost(accessToken, limit);
+      const response = await Itemserver.getAllPost(accessToken, limit, categoryIds);
       const postData = response.listData;
       setPosts(postData);
 
@@ -406,14 +429,16 @@ const Post = ({ post }) => {
 
       const registeredUserId = registeredUser.data.id;
 
-      console.log(selectedImage);
+      console.log('selectedImage',selectedImage);
 
       await Itemserver.uploadPost(accessToken, selectedImage, registeredUserId);
 
       const limit = 9;
-      const response = await Itemserver.getAllPost(accessToken, limit);
+      const response = await Itemserver.getAllPost(accessToken, limit, categoryIds);
       const postDatas = response.listData;
       setPosts(postDatas);
+
+      resetEditPopup()
 
       setIsPopupOpen(false);
       toast.success(`Success: ${registeredUser.message}`);
@@ -449,7 +474,7 @@ const Post = ({ post }) => {
       await Itemserver.CreateReview(accessToken, reviewData);
 
       const limit = 9;
-      const response = await Itemserver.getAllPost(accessToken, limit);
+      const response = await Itemserver.getAllPost(accessToken, limit, categoryIds);
       const postData = response.listData;
       setPosts(postData);
 
@@ -525,7 +550,7 @@ const Post = ({ post }) => {
               <>
                 <div
                   className="overlay"
-                  onClick={() => setIsEditPopupOpen(false)}
+                  onClick={() => handleClosePopupEdit()}
                 ></div>
                 <div className="popups">
                   <div className="popup-title">
@@ -553,7 +578,7 @@ const Post = ({ post }) => {
                     <h2>Tạo Bài viết</h2>
                     <span
                       className="close"
-                      onClick={() => setIsEditPopupOpen(false)}
+                      onClick={() => handleClosePopupEdit()}
                     >
                       x
                     </span>

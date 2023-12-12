@@ -131,7 +131,8 @@ const RegisOder = () => {
                     Cancel
                   </Button>
                 )}
-                {registration.status === 3 && <Button onClick={() => handleReceived(registration.id)}>Received</Button>}
+                {registration.status === 3 && <Button onClick={() => handleReceived(registration.id)}>ready to receive </Button>}
+                {registration.status === 4 && <Button>Received</Button>}
               </div>
             ))
           ) : (

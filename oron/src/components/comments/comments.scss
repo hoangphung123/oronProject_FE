@@ -12,6 +12,11 @@
         border-radius: 50%;
         object-fit: cover;
     }
+
+    .iconButtonMenu {
+        color: themed("textColor") !important;
+    }
+
     .write{
         display: flex;
         align-items: center;

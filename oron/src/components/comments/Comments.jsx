@@ -16,7 +16,7 @@ const Comments = ({ postId }) => {
 
   // State to manage comments
   const [comments, setComments] = useState([]);
-  const { setPosts } = useContext(PostsContext);
+  const { setPosts, categoryIds } = useContext(PostsContext);
   const [ratingValue, setRatingValue] = useState(0);
   const [newComment, setNewComment] = useState("");
   const [Reviewer, setReviewer] = useState([]);
@@ -69,7 +69,7 @@ const Comments = ({ postId }) => {
       setReviewer([]);
 
       const limit = 9;
-      const response = await postServer.getAllPost(accessToken, limit);
+      const response = await postServer.getAllPost(accessToken, limit, categoryIds);
       const postData = response.listData;
       setPosts(postData);
       // Set the deleted review ID for UI updates
@@ -92,7 +92,7 @@ const Comments = ({ postId }) => {
       await postServer.updateReview(accessToken, reviewId, reviewData);
 
       const limit = 9;
-      const response = await postServer.getAllPost(accessToken, limit);
+      const response = await postServer.getAllPost(accessToken, limit, categoryIds);
       const postData = response.listData;
       setPosts(postData);
 
@@ -390,6 +390,7 @@ const Comments = ({ postId }) => {
                   onClick={(e) =>
                     handleMenuClick(e, comment.id, comment.description)
                   }
+                  className="iconButtonMenu"
                 >
                   <MoreHorizIcon />
                 </IconButton>

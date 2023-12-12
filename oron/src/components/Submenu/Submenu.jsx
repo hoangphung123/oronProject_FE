@@ -22,11 +22,14 @@ const ButtonFrame = ({ buttonData }) => {
 };
 
 const CombinedComponent = () => {
-  const { setPosts } = useContext(PostsContext);
+  const { setPosts, setCategoryIds } = useContext(PostsContext);
 
   
   const handleButtonClick = async (categoryId) => {
+    await setCategoryIds("")
     try {
+      setCategoryIds(categoryId)
+      console.log('categoryId', categoryId)
       const accessToken = JSON.parse(localStorage.getItem("access_token"));
       // Gọi hàm getPostByCategoryId và cập nhật state hoặc thực hiện các thao tác khác
       const posts = await Itemserver.getPostByCategoryId(categoryId, accessToken, 12);

@@ -30,7 +30,6 @@ export default function Share() {
   const { setPosts } = useContext(PostsContext);
   const Status = ["Công Khai", "Riêng tư", "Bạn bè"];
   const [selectedStatus, setSelectedStatus] = useState("Công Khai");
-  
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -253,35 +252,16 @@ export default function Share() {
             src={`http://localhost:3500/${currentUser.data.profilePic}`}
             alt=""
           />
-          <input
-            placeholder="What's in your mind Thinh?"
-            className="shareInput"
-          />
+          <span>What product do you want to share?</span>
+          <div className="shareBottom">
+            <div className="shareOptions"></div>
+            <button className="shareButton" onClick={openPopup}>
+              Share
+            </button>
+          </div>
         </div>
         <hr className="shareHr" />
-        <div className="shareBottom">
-          <div className="shareOptions">
-            <div className="shareOption">
-              <PermMediaIcon htmlColor="tomato" className="shareIcon" />
-              <span className="shareOptionText">Photo or Video</span>
-            </div>
-            <div className="shareOption">
-              <LabelIcon htmlColor="blue" className="shareIcon" />
-              <span className="shareOptionText">Tag</span>
-            </div>
-            <div className="shareOption">
-              <PlaceIcon htmlColor="green" className="shareIcon" />
-              <span className="shareOptionText">Location</span>
-            </div>
-            <div className="shareOption">
-              <MoodIcon htmlColor="goldenrod" className="shareIcon" />
-              <span className="shareOptionText">Feelings</span>
-            </div>
-          </div>
-          <button className="shareButton" onClick={openPopup}>
-            Share
-          </button>
-        </div>
+
         {isPopupOpen && (
           <>
             <div className="overlay" onClick={closePopup}></div>

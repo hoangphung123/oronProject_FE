@@ -103,7 +103,7 @@ const Post = ({ post }) => {
                     size="small"
                     onClick={() => handleDelete(user.id)}
                   >
-                    Delete
+                    Sorry
                   </Button>
                   <Button
                     variant="contained"
