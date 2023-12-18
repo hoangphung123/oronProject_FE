@@ -52,6 +52,15 @@ const Comments = ({ postId }) => {
     }
   };
 
+  const handleKeyPresss = (e, postId) => {
+    if (e.key === "Enter") {
+      console.log('aaaa')
+      // Người dùng bấm Enter, gọi hàm handleEditComment
+       // Kết thúc chỉnh sửa
+       handleAddComment(postId)
+    }
+  };
+
   const handleMenuClick = (event, commentId, commentDescription) => {
     // Lưu trữ comment.id vào state
     setEditedComment({ id: commentId, description: commentDescription });
@@ -348,6 +357,7 @@ const Comments = ({ postId }) => {
           placeholder="Write a comment"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
+          onKeyUp={(e) => handleKeyPresss(e, postId)}
         />
         <button onClick={() => handleAddComment(postId)}>Send</button>
       </div>

@@ -236,10 +236,8 @@ useEffect(() => {
               {selectedImage && <img src={selectedImage} alt="Selected" />}
             </div>
             <div className="button_AS">
-              <button className="Access_button" onClick={handleSaveImage} >Upload File
+              <button className="Access_button" onClick={handleSaveImage} >Save Image
               </button>
-              <button className="SendOTP_button" >Save Image
-                </button>
             </div>
           </div>
         </div>
@@ -262,10 +260,8 @@ useEffect(() => {
               {selectedImage && <img src={selectedImage} alt="Selected" />}
             </div>
             <div className="button_AS">
-              <button className="Access_button" onClick={handleSaveImageCover} >Upload File
+              <button className="Access_button" onClick={handleSaveImageCover} >Save Image
               </button>
-              <button className="SendOTP_button" >Save Image
-                </button>
             </div>
           </div>
         </div>

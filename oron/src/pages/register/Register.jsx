@@ -329,7 +329,7 @@ const Register = () => {
       <div className="card-left">
         <h1>ORON</h1>
         <p>Our redundancies other necessaries.</p>
-        <span>Don't have an account?</span>
+        <span>Have an account?</span>
         <Link to="/login">
           <button>Login</button>
         </Link>

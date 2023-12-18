@@ -8,12 +8,26 @@ import { AuthContext } from "../../context/authContext.js";
 import "./detailSavePost.scss";
 import Button from "@mui/material/Button";
 import { PostsContext } from "../../context/postContext";
+import DetailPost from "../detailPost/detailPost.jsx";
 
 const DetailSavePost = () => {
   const { darkMode } = useContext(DarkModeContext);
   //   const { currentUser, currentUserId, setCurrentUserId } =useContext(AuthContext);
   const [savePostss, setSavePostss] = useState([]);
   const { setSavePost } = useContext(PostsContext);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostIds, setSelectedPostIds] = useState(false);
+
+  const handleOpenPopup = (post) => {
+    setSelectedPost(post);
+    console.log("postId", post);
+    setSelectedPostIds(true);
+  };
+
+  const handleClosePopup = () => {
+    setSelectedPost(null);
+    setSelectedPostIds(false);
+  };
 
   const handleUnsavePost = async (postId) => {
     try {
@@ -22,7 +36,7 @@ const DetailSavePost = () => {
 
       const results = await Userserver.getSavedPostsByUser(accessToken);
       setSavePostss(results.listData);
-      setSavePost(results.listData)
+      setSavePost(results.listData);
       // Xử lý kết quả nếu cần
       console.log("Post unsaved successfully", result);
     } catch (error) {
@@ -54,7 +68,11 @@ const DetailSavePost = () => {
         <div className="items" style={{ flex: 6 }}>
           <div className="item_saves">
             {savePostss.map((post, index) => (
-              <div className="rectangle-boxs" key={index}>
+              <div
+                className="rectangle-boxs"
+                key={index}
+                onClick={() => handleOpenPopup(post)}
+              >
                 <div className="rectangle-content">
                   <div className="squares">
                     <img
@@ -91,6 +109,23 @@ const DetailSavePost = () => {
           <Outlet />
         </div>
         <div className="items" style={{ flex: 0.2 }}></div>
+        {selectedPostIds && (
+          <>
+            <div className="overlay" onClick={() => handleClosePopup()}></div>
+            <div className="popups">
+              <div className="popup-title">
+                <div></div>
+                <h2>Chi Tiết Bài viết</h2>
+                <span className="close" onClick={() => handleClosePopup()}>
+                  x
+                </span>
+              </div>
+              <div className="popup-content">
+                <DetailPost post={selectedPost} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

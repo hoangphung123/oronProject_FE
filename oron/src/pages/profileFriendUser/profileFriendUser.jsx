@@ -18,15 +18,13 @@ import { PostsContext } from "../../context/postContext";
 const ProfileFriends = () => {
   const {
     currentUser,
-    setCurrentUser,
     currentUserId,
-    setCurrentUserId,
     currentUserProfile,
     setCurrentUserProfile,
   } = useContext(AuthContext);
   const { darkMode, toggle } = useContext(DarkModeContext);
   const navigate = useNavigate();
-  const { setPosts } = useContext(PostsContext);
+  const { setPosts, setFollowingList, } = useContext(PostsContext);
 
   const [profileImage, setProfileImage] = useState(currentUser.data.profilePic);
   const [profileUserName, setprofileUserName] = useState("");
@@ -45,11 +43,11 @@ const ProfileFriends = () => {
 
         setCurrentUserProfile(profileUser);
 
-        console.log("profileUser", profileUser.listData[0].profilePic);
+        console.log("profileUser", profileUser);
 
         // const pictureUser = profileUser.listData[0].profilePic;
         // const backtureUser = profileUser.listData[0].backgroundPic;
-        // const profileUserName = profileUser.listData[0].username;
+        const profileUserName = profileUser.listData[0].username;
 
         // // Check if the access token is available
         // if (!accessToken) {
@@ -62,7 +60,7 @@ const ProfileFriends = () => {
         // const userBackProfile = `http://localhost:3500/${backtureUser}`;
         // setProfileImage(userProfile);
         // setCoverImage(userBackProfile);
-        // setprofileUserName(profileUserName);
+        setprofileUserName(profileUserName);
       } catch (error) {
         console.error("Error fetching user profile picture:", error);
       }
@@ -80,34 +78,38 @@ const ProfileFriends = () => {
       setPosts(response.listData);
     };
 
-    const fetchFollowing = async () => {
-      try {
-        const accessToken = JSON.parse(localStorage.getItem("access_token"));
-
-        const followings = await Userserver.getFollowings(accessToken);
-
-        console.log(
-          "followings",
-          currentUserId.userId,
-          followings.listData[0].id
-        );
-
-        const isCurrentUserFollowing = followings.listData.some(
-          (following) => following.id === currentUserId.userId
-        );
-
-        setIsFollowing(isCurrentUserFollowing);
-        // Check if the currentUserId is in the list of followings
-      } catch (error) {
-        console.error("Error fetching user followings:", error);
-      }
-    };
+    
 
     // Call the fetchUserProfilePicture function when the component mounts
     fetchFollowing();
     fetchUserProfilePicture();
     GetPostByUserId();
-  }, [currentUser.data.profilePic]);
+  }, []);
+
+  const fetchFollowing = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+
+      const followings = await Userserver.getFollowings(accessToken);
+
+      console.log(
+        "followings",
+        currentUserId.userId,
+        followings.listData[0].id
+      );
+
+      const isCurrentUserFollowing = followings.listData.some(
+        (following) => following.id === currentUserId.userId
+      );
+
+      
+
+      setIsFollowing(isCurrentUserFollowing);
+      // Check if the currentUserId is in the list of followings
+    } catch (error) {
+      console.error("Error fetching user followings:", error);
+    }
+  };
 
   const handleFollowButtonClick = async () => {
     try {
@@ -117,10 +119,14 @@ const ProfileFriends = () => {
       if (isFollowing === false) {
         await Userserver.createFollow(accessToken, currentUserId.userId);
         setIsFollowing(true);
+        const followings = await Userserver.getFollowings(accessToken);
+        setFollowingList(followings.listData)
       } else {
         console.log("access_token", accessToken);
         await Userserver.UnFollow(accessToken, currentUserId.userId);
         setIsFollowing(false);
+        const followings = await Userserver.getFollowings(accessToken);
+        setFollowingList(followings.listData)
       }
     } catch (error) {
       console.error("Error handling follow button click:", error);
@@ -157,7 +163,11 @@ const ProfileFriends = () => {
         <div className="uInfo">
           <div className="left"></div>
           <div className="center">
-            <span>{profileUserName}</span>
+            <span>
+              {currentUserProfile && currentUserProfile.listData && (
+                <span>{currentUserProfile.listData[0].username}</span>
+              )}
+            </span>
             <div className="info">
               <div className="item">
                 <PlaceIcon />
