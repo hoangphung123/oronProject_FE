@@ -9,6 +9,7 @@ import { RingLoader } from "react-spinners";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [userId, setUserId] = useState("");
   const [countdown, setCountdown] = useState(300);
   const [otpCode, setOtpCode] = useState("");
   const [loadingAS, setLoadingAS] = useState(false);
@@ -19,6 +20,7 @@ const ForgotPassword = () => {
 
   const handlePopupClose = () => {
     setShowPopup(false);
+    setCountdown(300)
   };
 
   const resetCountdown = () => {
@@ -68,27 +70,27 @@ const ForgotPassword = () => {
   const handleAccessClick = async () => {
     try {
       setLoadingAS(true);
-      const userID = localStorage.getItem("userID");
+      
   
-      if (!userID) {
+      if (!userId) {
         toast.error("User ID not found in localStorage");
         return;
       }
   
       const verificationData = {
-        id: userID,
+        id: userId,
         verificationCode: otpCode,
       };
   
-      const verifiedUser = await userservice.verifyforgotpassword(verificationData);
+      const verifiedUser = await userservice.verifyForgotPassword(verificationData);
   
       console.log("User verified successfully:", verifiedUser);
   
-      localStorage.removeItem("userID");
+      
   
       // Do something after successful verification, e.g., redirect to the login page
       navigate("/login");
-  
+      setCountdown(300)
       setShowPopup(false);
     } catch (error) {
       console.error("Error verifying user:", error);
@@ -105,9 +107,11 @@ const ForgotPassword = () => {
       email: email,
     };
     try {
-      await userservice.forgotpassword(userData);
+      const response = await userservice.forgotpassword(userData);
+      setUserId(response.data.userId)
       toast.success('Success');
       setShowPopup(true);
+      setCountdown(300)
     } catch (err) {
       toast.error(`Error: ${err.response.data.message}`);
     }

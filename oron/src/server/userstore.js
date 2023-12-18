@@ -199,7 +199,7 @@ export const forgotpassword = async (userData) => {
   }
 }
 
-export const verifyforgotpassword = async (userData) => {
+export const verifyForgotPassword = async (userData) => {
   try {
     const response = await axios.post(`${api_url}/auth/verification-forgot-password-code`, userData);
 
@@ -217,6 +217,7 @@ export const verifyforgotpassword = async (userData) => {
     throw error;
   }
 }
+
 
 export const getUserByUsername = async (accessToken, username) => {
   try {
