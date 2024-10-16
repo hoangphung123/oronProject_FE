@@ -11,6 +11,9 @@ import * as UserServices from "../../server/itemstore";
 import { PostsContext } from "../../context/postContext";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
+import ImageCreate from "../../assets/choseImage.png";
+import IconAddress from "../../assets/icon.png";
+import IconTag from "../../assets/IconTag.png";
 // import Carousel from '../carousel/Carousel';
 
 export default function Share() {
@@ -288,100 +291,117 @@ export default function Share() {
                     </select>
                   </div>
                 </div>
-                <h2>Tạo Bài viết</h2>
                 <span className="close" onClick={closePopup}>
                   x
                 </span>
               </div>
-              <div className="popup-avatar"></div>
+              <div className="popup-avatar">
+                <textarea
+                  className="input_description"
+                  type="text"
+                  placeholder="Bạn đang nghĩ gì đấy?"
+                  value={description}
+                  onChange={(e) => handleInputChange(e, "description")}
+                />
+              </div>
               <div className="popup-content">
                 <div className="left">
                   <div className="left-container">
-                    <h1>Ảnh</h1>
                     <div className="imageContainer">
                       <div {...getRootProps()} className="dropzone">
-                        <input {...getInputProps()} />
-                        <p className="imageContainer_p">+</p>
+                        <img className="zone_image" src={ImageCreate} alt="" />
+                        <input {...getInputProps()}></input>
+                        {selectedImages && (
+                          <img src={selectedImages} alt="Selected" />
+                        )}
                       </div>
-                      {selectedImages && (
-                        <img src={selectedImages} alt="Selected" />
-                      )}
                     </div>
                   </div>
                 </div>
                 <div className="right">
-                  <h1>Thông tin bài viết</h1>
-                  <form>
-                    <textarea
-                      className="input_description"
-                      type="text"
-                      placeholder="Description"
-                      value={description}
-                      onChange={(e) => handleInputChange(e, "description")}
-                    />
-                    <select
-                      value={selectedCategory}
-                      onChange={handSelectedCategory}
-                    >
-                      <option value="" disabled>
-                        Category
-                      </option>
-                      {category.map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      value={selectedProvince}
-                      onChange={handleSelectProvince}
-                    >
-                      <option value="" disabled>
-                        Province
-                      </option>
-                      {provinces.map((province) => (
-                        <option key={province.id} value={province.id}>
-                          {province.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      value={selectedDistrict}
-                      onChange={handleSelectDistricts}
-                    >
-                      <option value="" disabled>
-                        District
-                      </option>
-                      {districts.map((district) => (
-                        <option key={district.id} value={district.id}>
-                          {district.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      value={selectedWard}
-                      onChange={(e) => setSelectedWard(e.target.value)}
-                    >
-                      <option value="" disabled>
-                        Ward
-                      </option>
-                      {wards.map((ward, index) => (
-                        <option key={ward.id} value={ward.id}>
-                          {ward.name}
-                        </option>
-                      ))}
-                    </select>
-                  </form>
+                  <div className="right-icon">
+                    <img src={IconAddress} alt="" />
+                    <img src={IconTag} alt="" />
+                  </div>
+                  <Button
+                    onClick={handleRegisterClick}
+                    variant="contained"
+                    className="acsess_button"
+                  >
+                    Đăng
+                  </Button>
                 </div>
               </div>
               <div className="popup-action">
-                <Button
-                  onClick={handleRegisterClick}
-                  variant="contained"
-                  className="acsess_button"
-                >
-                  Đăng
-                </Button>
+                <form>
+                  <div className="form-group">
+                    {/* Address Section */}
+                    <div className="form-column">
+                      <h4>Address</h4>
+                      <select
+                        className="select_popup"
+                        value={selectedProvince}
+                        onChange={handleSelectProvince}
+                      >
+                        <option value="" disabled>
+                          Province
+                        </option>
+                        {provinces.map((province) => (
+                          <option key={province.id} value={province.id}>
+                            {province.name}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="select_popup"
+                        value={selectedDistrict}
+                        onChange={handleSelectDistricts}
+                      >
+                        <option value="" disabled>
+                          District
+                        </option>
+                        {districts.map((district) => (
+                          <option key={district.id} value={district.id}>
+                            {district.name}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="select_popup"
+                        value={selectedWard}
+                        onChange={(e) => setSelectedWard(e.target.value)}
+                      >
+                        <option value="" disabled>
+                          Ward
+                        </option>
+                        {wards.map((ward) => (
+                          <option key={ward.id} value={ward.id}>
+                            {ward.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Category Section */}
+                    <div className="form-column">
+                      <h4>Category</h4>
+                      <select
+                        className="select_popup"
+                        value={selectedCategory}
+                        onChange={handSelectedCategory}
+                      >
+                        <option value="" disabled>
+                          Category
+                        </option>
+                        {category.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </>
