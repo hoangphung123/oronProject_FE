@@ -127,7 +127,7 @@ const CaptionCarousel = () => {
 
   return (
     <div className="carousel">
-    <Box position={'relative'} height={'300px'} width={'1000px'} borderRadius={"16px"} overflow={'hidden'} marginBottom={ '10px'} >
+    <Box position={'relative'} height={'400px'} width={'1000px'} borderRadius={"16px"} overflow={'hidden'} marginBottom={ '10px'} >
       <Slider {...settings}>
         {cards.map((card, index) => (
           <Box
@@ -139,7 +139,7 @@ const CaptionCarousel = () => {
             backgroundRepeat="no-repeat"
             backgroundSize="cover"
             backgroundImage={`url(${card.image})`}>
-            <Container size="container.lg" height="300px" width='1000vw' position="relative">
+            <Container size="container.lg" height="400px" width='1000vw' position="relative">
               <Box
                 position="absolute"
                 top="50%"
