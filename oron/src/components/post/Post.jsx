@@ -25,6 +25,7 @@ import "./post.scss";
 // import AngryIcon from "@mui/icons-material/Angry";
 import Popover from "@mui/material/Popover";
 import Rating from "react-rating";
+import Notification from "../notification/Notification";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -58,6 +59,8 @@ const Post = ({ post }) => {
   const [reviewDescription, setReviewDescription] = useState("");
   const [reactionListOpen, setReactionListOpen] = useState(false);
   const [reactionUser, setReactionUser] = useState([]);
+  const [message, setMessage] = useState('');
+  const [type, setType] = useState('');
 
   const handleClosePopupEdit = () => {
     resetEditPopup()
@@ -69,9 +72,7 @@ const Post = ({ post }) => {
     setSelectedCategory("");
     setSelectedProvince("");
     setSelectedDistrict("");
-    
     setSelectedWard("");
-    console.log('districtId', selectedDistrict, selectedWard )
     setDescription("");
     setSelectedImages(null);
     setSelectedImage(null)
@@ -86,13 +87,16 @@ const Post = ({ post }) => {
     await setSelectedDistrict(post.districtId);
     
     setSelectedWard(post.wardId);
-    console.log('districtId', selectedDistrict, selectedWard )
     setDescription(post.description);
     setSelectedImages(`http://localhost:3500/${post.imageURL}`);
     setSelectedImage(post.imageURL)
     
 
     setIsEditPopupOpen(true);
+  };
+
+  const clearNotification = () => {
+    setMessage('');
   };
 
   const handleInputChange = (e, inputField) => {
@@ -124,7 +128,6 @@ const Post = ({ post }) => {
     const file = acceptedFiles[0];
 
     const imageUrl = URL.createObjectURL(file);
-    console.log("file", imageUrl);
     setSelectedImage(file);
     setSelectedImages(imageUrl);
   };
@@ -229,11 +232,16 @@ const Post = ({ post }) => {
 
       // Update the save posts state with the new data
       setSavePost((prevSavePosts) => [newData, ...prevSavePosts]);
-
-      console.log("Post saved successfully:", savedPost);
+      setAnchorEl(null);
+      setMessage('Post saved successfully!');
+      setType('success');
+      // toast.success(`Post saved successfully`);
       // (Có thể thêm thông báo hoặc cập nhật UI ở đây nếu cần)
     } catch (error) {
-      console.error("Error saving post:", error.message);
+      setAnchorEl(null);
+      setMessage('Post cannot saved');
+      setType('danger');
+      // toast.error(`Post saved successfully: ${error.message}`);
       // (Có thể thêm thông báo lỗi ở đây nếu cần)
     }
   };
@@ -259,9 +267,6 @@ const Post = ({ post }) => {
   const handleIconSelect = (selectedType, type) => {
     setSelectedIcon(selectedType);
     setLikeAnchorEl(null);
-
-    console.log("type", type);
-
     // Call the createReaction function with the post ID and type
     createReaction(post.id, type);
   };
@@ -283,11 +288,9 @@ const Post = ({ post }) => {
       const response = await Itemserver.getAllPost(accessToken, limit, categoryIds);
       const postData = response.listData;
       setPosts(postData);
-
-      // Add any additional logic or notifications as needed
-      console.log("Reaction created successfully");
+      toast.success(`Reaction created successfully`);
     } catch (error) {
-      console.error("Error creating reaction:", error.message);
+      toast.error(`Error creating reaction: ${error.message}`);
       // Handle error, show a notification, or perform other actions
     }
   };
@@ -307,9 +310,9 @@ const Post = ({ post }) => {
       setPosts(postData);
 
       // Update UI or navigate to another page after successful deletion
-      console.log("Post deleted successfully");
+      toast.success(`Post deleted successfully`);
     } catch (error) {
-      console.error("Error deleting post:", error.message);
+      toast.error(`Error deleting post: ${error.message}`);
       // Handle error, show a notification, or perform other actions
     }
   };
@@ -317,7 +320,6 @@ const Post = ({ post }) => {
   const fetchCategory = async () => {
     try {
       const response = await Itemserver.getCategory(1);
-      console.log("listdata", response);
       const fetchedCategory = response.listData;
 
       setCategory(fetchedCategory);
@@ -426,9 +428,6 @@ const Post = ({ post }) => {
       );
 
       const registeredUserId = registeredUser.data.id;
-
-      console.log('selectedImage',selectedImage);
-
       await Itemserver.uploadPost(accessToken, selectedImage, registeredUserId);
 
       const limit = 9;
@@ -447,8 +446,6 @@ const Post = ({ post }) => {
   };
 
   const handleRatingChange = (value) => {
-    // Implement logic to handle the rating change
-    console.log("Rating changed to:", value);
     setRatingValue(value);
     setIsRatingPopupOpen(true);
     // You can update state or perform other actions based on the rating value
@@ -864,6 +861,7 @@ const Post = ({ post }) => {
           </div>
         </>
       )}
+      <Notification message={message} type={type} clearNotification={clearNotification} />
       <ToastContainer />
     </div>
   );

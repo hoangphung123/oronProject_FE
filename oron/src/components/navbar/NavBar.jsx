@@ -70,8 +70,6 @@ const NavBar = () => {
 
     // Store the updated user data in localStorage
     localStorage.setItem("friends", JSON.stringify(updatedUserId));
-    console.log("userId", userId);
-    console.log("username", username);
     navigate("/profileFriends");
     // Optionally, you may also want to close the recent searches dropdown
     setShowRecentSearches(false);

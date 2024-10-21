@@ -1,7 +1,8 @@
 import "./leftbar.scss";
-import Friends from "../../assets/1.png";
-import Gallery from "../../assets/8.png";
-import Ranking from "../../assets/14.png";
+import Friends from "./Users.png";
+import Gallery from "./Save.png";
+import Ranking from "./Ranking.png";
+import Registation from "./Package.png"
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { PostsContext } from "../../context/postContext";
@@ -26,6 +27,7 @@ const LeftBar = () => {
             </Link>
             <span>{currentUser.data.username}</span>
           </div>
+          <hr />
           <div className="item">
             <Link
               to="/friends"
@@ -44,6 +46,24 @@ const LeftBar = () => {
             </Link>
 
             <span>Ranking</span>
+          </div>
+          <div className="item">
+            <Link
+              to="/detailRegistation"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img src={Registation} alt="" />
+            </Link>
+            <span>Registration for your post</span>
+          </div>
+          <div className="item">
+            <Link
+              to="/detailRegistation"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img src={Registation} alt="" />
+            </Link>
+            <span>Your registration for order post</span>
           </div>
           <hr />
           <div className="item">
