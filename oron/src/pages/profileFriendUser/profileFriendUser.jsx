@@ -134,7 +134,7 @@ const ProfileFriends = () => {
   };
 
   return (
-    <div className={`profile ${darkMode ? "theme-dark" : "theme-light"}`}>
+    <div className={`profiles ${darkMode ? "theme-dark" : "theme-light"}`}>
       <div className="images">
         {currentUserProfile && currentUserProfile.listData && (
           <>

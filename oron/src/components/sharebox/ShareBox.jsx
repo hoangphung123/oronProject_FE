@@ -250,12 +250,14 @@ export default function Share() {
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
-          <img
-            className="shareProfileImg"
-            src={`http://localhost:3500/${currentUser.data.profilePic}`}
-            alt=""
-          />
-          <span>What product do you want to share?</span>
+          <div className="share-info">
+            <img
+              className="shareProfileImg"
+              src={`http://localhost:3500/${currentUser.data.profilePic}`}
+              alt=""
+            />
+            <span>What product do you want to share?</span>
+          </div>
           <div className="shareBottom">
             <div className="shareOptions"></div>
             <button className="shareButton" onClick={openPopup}>

@@ -96,10 +96,10 @@ function App() {
           path: "/",
           element: <Home />,
         },
-        {
-          path: "/profile/:id",
-          element: <Profile />,
-        },
+        // {
+        //   path: "/profile/:id",
+        //   element: <Profile />,
+        // },
         // {
         //   path: "/ranking",
         //   element: <Ranking />,
@@ -114,6 +114,10 @@ function App() {
       path: "/login",
       element: <Login />,
     },
+    // {
+    //   path: "/profile/:id",
+    //   element: <Profile />,
+    // },
     {
       path: "/detailSavePort",
       element: <DetailSavePost />,
@@ -143,7 +147,7 @@ function App() {
       element: <DetailRegistation />,
     },
     {
-      path: "/profileFriends",
+      path: "/",
       element: (
         <ProtectedRoute>
           <Layouts />
@@ -153,6 +157,10 @@ function App() {
         {
           path: "/profileFriends",
           element: <ProfileFriends />,
+        },
+        {
+          path: "/profile/:id",
+          element: <Profile />,
         },
       ],
     },

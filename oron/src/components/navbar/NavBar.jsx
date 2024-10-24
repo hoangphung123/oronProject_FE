@@ -25,6 +25,8 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import ImageNofication from "./IconNofication.png";
+import ImageMessage from "./IconMessage.png";
 
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -108,7 +110,6 @@ const NavBar = () => {
   };
 
   const handleOpenDialog = () => {
-    
     setDialogOpen(true);
   };
 
@@ -141,7 +142,7 @@ const NavBar = () => {
 
       toast.success("Password changed successfully.");
       handleCloseDialog();
-      setAnchorEl(null)
+      setAnchorEl(null);
     } catch (error) {
       const errorMessage = Array.isArray(error.response.data.message)
         ? error.response.data.message[0]
@@ -206,7 +207,7 @@ const NavBar = () => {
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span onClick={handlefetchFriends}>ORON Social</span>
+          <span onClick={handlefetchFriends}>ORON</span>
         </Link>
         {/* <HomeOutlinedIcon/> */}
         {darkMode ? (
@@ -258,10 +259,12 @@ const NavBar = () => {
           )}
         </div>
       </div>
-      <div className="right">
+      <div className="center">
         <PersonOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
+      </div>
+      <div className="right">
         <div className="user" onClick={handleUserClick}>
           <img
             src={`http://localhost:3500/${currentUser.data.profilePic}`}
@@ -269,9 +272,12 @@ const NavBar = () => {
           />
           <span>{currentUser.data.username}</span>
         </div>
+        <img src={ImageNofication} alt="IconNofication" />
+        <img src={ImageMessage} alt="IconMessage" />
 
         {/* Material-UI Menu component */}
         <Menu
+          className="MEnu"
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}
           onClose={handleClose}
@@ -290,10 +296,46 @@ const NavBar = () => {
             onClick={handleClose}
             className="custom-menu"
           >
-            Profile
+            <a href="#" class="wave-link">
+              <span>Profile</span>
+              <svg
+                class="link__graphic link__graphic--slide"
+                width="300%"
+                height="100%"
+                viewBox="0 0 1200 60"
+                preserveAspectRatio="none"
+              >
+                <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
+              </svg>
+            </a>
+          </MenuItem>
+          <MenuItem className="custom-menu" onClick={handleLogout}>
+            <a href="#" class="wave-link">
+              <span>Logout</span>
+              <svg
+                class="link__graphic link__graphic--slide"
+                width="300%"
+                height="100%"
+                viewBox="0 0 1200 60"
+                preserveAspectRatio="none"
+              >
+                <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
+              </svg>
+            </a>
           </MenuItem>
           <MenuItem className="custom-menu" onClick={handleOpenDialog}>
-            Change password
+            <a href="#" class="wave-link">
+              <span>Change password</span>
+              <svg
+                class="link__graphic link__graphic--slide"
+                width="300%"
+                height="100%"
+                viewBox="0 0 1200 60"
+                preserveAspectRatio="none"
+              >
+                <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"></path>
+              </svg>
+            </a>
           </MenuItem>
           <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
             <DialogTitle>Change Password</DialogTitle>
@@ -327,9 +369,6 @@ const NavBar = () => {
               </Button>
             </DialogActions>
           </Dialog>
-          <MenuItem className="custom-menu" onClick={handleLogout}>
-            Logout
-          </MenuItem>
         </Menu>
         <ToastContainer />
       </div>
