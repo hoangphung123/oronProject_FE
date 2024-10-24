@@ -23,7 +23,6 @@ const LeftBar1 = () => {
   }
 
   const handleUserClick = async (userId, username) => {
-    console.log(`Clicked on user with ID: ${userId} and Username: ${username}`);
     const updatedUserId = { userId, username };
     setCurrentUserId(updatedUserId);
 

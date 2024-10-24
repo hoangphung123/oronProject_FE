@@ -16,6 +16,11 @@
       .shareTop {
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        .share-info{
+          display: flex;
+          align-items: center;
+        }
         .shareProfileImg {
           width: 50px;
           height: 50px;
@@ -40,7 +45,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        left: 57%;
+        // left: 57%;
         position: relative;
         .shareOptions {
           display: flex;
@@ -86,7 +91,7 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      background-color: themed("bg"); /* Màu nền mờ với độ mờ 45% */
+      background-color: themed("bgl"); /* Màu nền mờ với độ mờ 45% */
       // backdrop-filter: blur(30px); /* Tạo hiệu ứng mờ bằng backdrop-filter */
       box-shadow: 0 4px 6px rgba(226, 223, 223, 0.704);
       border-radius: 10px;
@@ -142,6 +147,9 @@
         height: 20px;
         padding: 0;
         margin: 0;
+        background: #F5F5F5;
+        border: 1px solid #D9D9D9;
+        border-radius: 10px;
       }
 
       select.statusSelect {
@@ -198,7 +206,7 @@
         .zone_image {
           position: absolute;
           top: 0;
-          width: 80%;
+          width: auto;
           height: auto;
           top: 50%;
           left: 50%;

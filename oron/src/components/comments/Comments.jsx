@@ -35,12 +35,10 @@ const Comments = ({ postId }) => {
   });
 
   const openEditPopup = (commentId) => {
-    console.log("commentId", commentId);
     setEditingCommentId(commentId);
   };
 
   const handleRatingChange = (value) => {
-    console.log("Rating changed to:", value);
     setRatingValue(value);
   };
 
@@ -54,7 +52,6 @@ const Comments = ({ postId }) => {
 
   const handleKeyPresss = (e, postId) => {
     if (e.key === "Enter") {
-      console.log('aaaa')
       // Người dùng bấm Enter, gọi hàm handleEditComment
        // Kết thúc chỉnh sửa
        handleAddComment(postId)
@@ -114,9 +111,6 @@ const Comments = ({ postId }) => {
 
       // Close the rating popup
       setIsRatingPopupOpen(false);
-
-      // Add any additional logic or notifications as needed
-      console.log("Review upadte successfully");
     } catch (error) {
       console.error("Error update review:", error.message);
       // Handle error, show a notification, or perform other actions
@@ -162,8 +156,6 @@ const Comments = ({ postId }) => {
       return; // Do not add empty comments
     }
     const accessToken = JSON.parse(localStorage.getItem("access_token"));
-    console.log("postId", postId);
-
     const commentData = {
       description: newComment,
       postId: postId,
@@ -198,12 +190,8 @@ const Comments = ({ postId }) => {
 
     const response = await postServer.getCommentByPostId(postId);
     const data = response.listData;
-
-    console.log("Fetched comments:", data);
-
     // Update comments state with the fetched data
     setComments(data);
-
     // Clear the new comment input
     setNewComment("");
   };
@@ -234,9 +222,6 @@ const Comments = ({ postId }) => {
     try {
       const response = await postServer.getCommentByPostId(postId);
       const data = response.listData;
-
-      console.log("Fetched comments:", data);
-
       // Update comments state with the fetched data
       setComments(data);
     } catch (error) {
@@ -368,7 +353,7 @@ const Comments = ({ postId }) => {
             src={`http://localhost:3500/${comment.user.profilePic}`}
             alt=""
           />
-          <div className="info">
+          <div className="infoComment">
             <span>{comment.user.username}</span>
             {editingCommentId === comment.id ? (
               <input

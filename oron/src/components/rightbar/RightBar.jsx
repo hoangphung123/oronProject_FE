@@ -71,8 +71,8 @@ const RightBar = () => {
         <div className="item">
           <div className="item_title">
             <span>Registration for your posts</span>
-            <Button onClick={redirectToDetail}>Detail</Button>
           </div>
+          <hr className="item_contact"/>
           {Array.isArray(postRegistrationsByOwner) &&
           postRegistrationsByOwner.length > 0 ? (
             postRegistrationsByOwner.map((registration, index) => (
@@ -97,8 +97,8 @@ const RightBar = () => {
         <div className="item">
           <div className="item_title">
             <span>Your registrations for other post</span>
-            <Button onClick={redirectToDetail}>Detail</Button>
           </div>
+          <hr className="item_contact"/>
           {/* Check if postRegistrations is an array before mapping */}
           {Array.isArray(postRegistrations) && postRegistrations.length > 0 ? (
             postRegistrations.map((registration, index) => (
@@ -122,7 +122,8 @@ const RightBar = () => {
         </div>
         {/* Third Item */}
         <div className="item">
-          <span>Online Friends</span>
+          <span>Contact</span>
+          <hr className="item_contact" />
           {/* Replace the hard-coded user data with FriendsDataArray */}
           {friendsList.map((friendData, index) => (
             <div className="user" key={index}>

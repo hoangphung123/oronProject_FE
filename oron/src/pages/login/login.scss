@@ -1,95 +1,95 @@
-.login{
-height: 100vh;
-background: linear-gradient(rgba(17, 41, 64,), rgba(17, 41, 64, 0.1)),
-              url("./tenlua3.png") center/cover no-repeat;
-background-color: rgb(17, 41, 64);
-display: flex;
-align-items: center;
-justify-content: center;
-    .card{
-        width: 60%;
-        display: flex;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        background-color: rgb(29, 67, 89);
-        border-radius: 10px;
-        min-height: 600px;
-        overflow: hidden;
-        .left{
-            flex: 1;
-            background: linear-gradient(rgba(222, 215, 236, 0.5), rgba(27, 22, 36, 0.5)), url("./Screenshot\ 2023-10-22\ 205227.png") center;
-            background-size: cover;
-            border-radius: 10px 0 0 10px;
-            margin: 20px 0 20px 60px;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-            color: white;
-            h1{
-                font-size: 120px;
-            }
-            p{
-                font-size: 20px;
-            }
-            span{
-                font-size: 16px;
-            }
-            button{
-                width: 140%;
-                border-radius: 10px;
-                padding: 10px;
-                border: none;
-                background-color: rgb(29, 67, 89);
-                color: white;
-                font-weight: bold;
-                cursor: pointer;
-            }
-            button:hover{
-                background-color: rgb(174,222,228);    
-                color: 	rgb(17, 41, 64);
-            }
-        }
-        .right{
-            flex: 1;
-            padding: 50px;
-            display: flex;
-            margin: 20px 60px 20px 0;
-            background-color: white;
-            flex-direction: column;
-            gap: 50px;
-            justify-content: center;
-            border-radius: 0 10px 10px 0;
-            h1{
-                color: #555;
-                font-size: 30px;
-            }
-            form{
-                display: flex;
-                flex-direction: column;
-                gap: 30px;
-                input{
-                    border: none;
-                    border-bottom: 1px solid lightgray;
-                    padding:20px;
-                }
-                button{
-                    width: 40%;
-                    margin-top: 25px;
-                    border-radius: 10px;
-                    padding: 10px;
-                    border: none;
-                    background-color: rgb(174,222,228);
-                    font-weight: bold;
-                    color: 	rgb(17, 41, 64);
-                    cursor: pointer;
-
-                }
-                button:hover{
-                    background-color: rgb(29, 67, 89);
-                    color: white;
-                }
-            }
-        }
-    }
-}
+.form-container {
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    height: 100vh;
+    position: relative;
+  }
+  
+  .remember-block{
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .background-image {
+    background: url("./Rectangle 24.png") no-repeat center center;
+    background-size: cover;
+    width: 50%;
+    height: 100%;
+    flex: 1;
+  }
+  
+  .form-box {
+    width: 400px;
+    padding: 30px;
+    background-color: white;
+    color: black;
+    /* border-radius: 8px; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .title-login{
+    text-align: center;
+  }
+  
+  .acount{
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    left: 25%;
+  }
+  
+  .Form-login {
+    margin-top: -80px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .input-login {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  label {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .button-login{
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #5293f5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button-login:hover {
+    background-color: #4562a0;
+  }
+  
+  .social-login {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .social-login a {
+    color: #666;
+    font-size: 20px;
+  }
+  
+  .social-login a:hover {
+    color: #000;
+  }

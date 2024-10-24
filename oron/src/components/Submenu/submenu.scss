@@ -18,6 +18,21 @@
     /* Adjust padding as needed */
     }
 
+    .button-category {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        gap: 10px;
+
+        .img-category{
+            width: 60px;
+            height: auto;
+            object-fit: cover;
+        }
+    }
+
 
     .button {
         width: 50px;
