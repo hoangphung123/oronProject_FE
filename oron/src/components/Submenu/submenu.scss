@@ -4,7 +4,7 @@
 
     @include themify($themes) {
         background-color: themed("bg");
-        width: 90%;
+        // width: 90%;
         align-items: center;
         height: 5px;
         display: flex;

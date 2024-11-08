@@ -6,6 +6,10 @@ import Ranking from "./pages/ranking/Ranking.jsx";
 import Reportadmin from "./pages/reportadmin/Reportadmin.jsx";
 import DetailRegistation from "./pages/detailRegister/detail.jsx";
 import DetailSavePost from "./pages/detailSavePost/detailSavePosr.jsx";
+import Sidebar from "./components/common/Sidebar.jsx"
+import SettingsPage from "./pages/admin/SettingsPage.jsx";
+import LoginAdmin from "./pages/admin/loginAdmin/LoginAdmin.jsx";
+import UsersPage from "./pages/admin/UsersPage.jsx";
 import {
   createBrowserRouter,
   Navigate,
@@ -18,6 +22,7 @@ import RightBar from "./components/rightbar/RightBar.jsx";
 import Home from "./pages/home/Home.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import ProfileFriends from "./pages/profileFriends/profileFriends.jsx";
+import ProductsPage from "./pages/admin/ProductsPage.jsx";
 // import Carousel from './components/carousel/Carousel.jsx';
 import "./style.scss";
 import { useContext, useEffect } from "react";
@@ -52,7 +57,7 @@ function App() {
         <NavBar />
         <div style={{ display: "flex" }}>
           <LeftBar />
-          <div style={{ flex: 6 }}>
+          <div className="Home-post" style={{ flex: 6 }}>
             <Outlet />
           </div>
           <RightBar />
@@ -71,6 +76,20 @@ function App() {
           </div>
         </div>
       </div>
+    );
+  };
+
+  const LayoutAdmin = () => {
+    return (
+      <div className='flex h-screen bg-gray-900 text-gray-100 overflow-hidden'>
+			{/* BG */}
+			<div className='fixed inset-0 z-0'>
+				<div className='absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80' />
+				<div className='absolute inset-0 backdrop-blur-sm' />
+			</div>
+			<Sidebar />
+			<Outlet />
+		</div>
     );
   };
 
@@ -113,6 +132,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/loginAdmin",
+      element: <LoginAdmin />,
     },
     // {
     //   path: "/profile/:id",
@@ -161,6 +184,32 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
+        },
+      ],
+    },
+    {
+      path: "/admin",
+      element: (
+        <ProtectedRoute>
+          <LayoutAdmin />
+        </ProtectedRoute>
+      ),
+      children: [
+        // {
+        //   path: "/users",
+        //   element: <ProfileFriends />,
+        // },
+        {
+          path: "",
+          element: <SettingsPage />,
+        },
+        {
+          path: "users",
+          element: <UsersPage />,
+        },
+        {
+          path: "reports",
+          element: <ProductsPage />,
         },
       ],
     },

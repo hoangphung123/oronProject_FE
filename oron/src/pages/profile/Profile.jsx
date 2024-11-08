@@ -15,10 +15,14 @@ import * as Userserver from "../../server/userstore";
 import * as Postserver from "../../server/itemstore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useNavigate } from "react-router-dom";
 import { PostsContext } from "../../context/postContext";
 import ShareBox from "../../components/sharebox/ShareBox";
+import MyProfileComponent from "../../components/MyProfileComponent/MyProfileComponent";
+import FriendComponent from "../../components/FriendComponent/FriendComponent";
 
 const Profile = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
@@ -38,6 +42,7 @@ const Profile = () => {
   const [isPopupOpenCover, setIsPopupOpenCover] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImages, setSelectedImages] = useState(null);
+  const [activeTab, setActiveTab] = useState("Post");
 
   const handleCoverImageUpload = async (e) => {
     try {
@@ -61,6 +66,10 @@ const Profile = () => {
     } catch (error) {
       console.error("Error uploading cover image:", error);
     }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   const onDrop = (acceptedFiles) => {
@@ -285,37 +294,54 @@ const Profile = () => {
       </div>
       <nav className="menu">
         <ul>
-          <li>Post</li>
-          <li>Friend</li>
-          <li>My Profile</li>
+          <li onClick={() => handleTabChange("Post")}>Post</li>
+          <li onClick={() => handleTabChange("Friend")}>Friend</li>
+          <li onClick={() => handleTabChange("My Profile")}>My Profile</li>
           <li>Option 2</li>
           <li>Option 3</li>
           <li>Option 4</li>
         </ul>
       </nav>
       {/* Profile Content */}
-      <div className="profileContainer_user">
-        <div className="Information_left">
-          {/* Introduction Section */}
-          <div className="introduction">
-            <h3>Introduction</h3>
-            <div className="location">
-              {/* <FontAwesomeIcon icon={faMapMarkerAlt} /> */}
-              <span>Linh Chieu, Thu Duc</span>
+
+      {activeTab === "Post" && (
+        <>
+          <div className="profileContainer_user">
+            <div className="Information_left">
+              {/* Introduction Section */}
+              <div className="introduction">
+                <h3>Introduction</h3>
+                <div className="location">
+                  <FontAwesomeIcon
+                    icon={faMapMarkerAlt}
+                    className="icon-profile"
+                    // size="2xl"
+                    style={{ color: cameraIconColor }}
+                  />
+                  <span>Linh Chieu, Thu Duc</span>
+                </div>
+                <div className="link">
+                  <FontAwesomeIcon
+                    icon={faLink}
+                    className="icon-profile"
+                    // size="2xl"
+                    style={{ color: cameraIconColor }}
+                  />
+                  <a href="https://google.com">Google.com</a>
+                </div>
+              </div>
             </div>
-            <div className="link">
-              {/* <FontAwesomeIcon icon={faLink} /> */}
-              <a href="https://google.com">Google.com</a>
+
+            {/* Posts Section */}
+            <div className="posts_content">
+              <ShareBox />
+              <Posts />
             </div>
           </div>
-        </div>
-
-        {/* Posts Section */}
-        <div className="posts_content">
-          <ShareBox />
-          <Posts />
-        </div>
-      </div>
+        </>
+      )}
+      {activeTab === "Friend" && <FriendComponent />}
+      {activeTab === "My Profile" && <MyProfileComponent />}
     </div>
   );
 };

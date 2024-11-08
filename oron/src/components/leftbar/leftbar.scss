@@ -4,11 +4,12 @@
   @include themify($themes) {
     // flex: 2.5;
     position: sticky;
-    top: 70px;
-    height: calc(100vh - 70px);
+    top: 50px;
+    // height: calc(100vh - 70px);
     overflow: scroll;
     background-color: themed("bgs");
     color: themed("textColor");
+    height: 100vh;
 
     @include mobile {
       display: none;
