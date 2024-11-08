@@ -1,6 +1,8 @@
 @import "../../style.scss";
 .profile {
   padding: 20px 120px;
+  min-height: 100vh;
+  // height: 100vh;
   @include themify($themes) {
     background-color: themed("bgSoft");
     .images {
@@ -179,7 +181,8 @@
     }
     .profileContainer_user {
       display: flex;
-      padding: 0 70px 20px 70px;
+      padding: 0 20px 20px 20px;
+      gap: 20px;
       @include mobile {
         padding: 10px;
       }
@@ -188,8 +191,45 @@
       }
       .Information_left {
         flex: 1;
+        background-color: themed("bg");
+        box-shadow: 0px 0px 25px -10px rgba(0, 0, 0, 0.38);
+        border-radius: 20px;
+        padding: 10px;
+        height: fit-content;
+        .introduction {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          h3 {
+            border-bottom: 1px solid themed("textColorSoft");
+            width: fit-content;
+            color: themed("textColorSoft");
+            margin-bottom: 10px;
+          }
+          .location {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            span{
+              color: themed("textColorSoft");
+            }
+          }
+          .link {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            a{
+              color: themed("textColorSoft");
+              text-decoration: none;
+            }
+          }
+          .icon-profile{
+            width: 30px;
+            height: 30px;
+          }
+        }
       }
-      .posts_content{
+      .posts_content {
         flex: 2;
       }
     }
@@ -279,7 +319,7 @@
       margin-bottom: 20px; /* Add some margin to separate it from the profile section */
       width: fit-content;
     }
-    
+
     .menu ul {
       list-style-type: none;
       margin: 0;
@@ -287,33 +327,32 @@
       display: flex; /* Align the items horizontally */
       gap: 40px;
     }
-    
+
     .menu ul li {
       margin: 0 15px; /* Add space between the menu items */
       font-size: 20px;
       font-weight: bold;
       color: themed("textColorSoft");
     }
-    
+
     .menu ul li:hover {
       cursor: pointer;
       color: #007bff; /* Change color when hovering */
     }
-    
+
     .menu ul li:active {
       color: #0056b3; /* Change color when active */
     }
-    
+
     .menu ul li a {
       text-decoration: none;
       color: inherit; /* Inherit color from li */
       padding: 5px 10px;
       border-radius: 5px;
     }
-    
+
     .menu ul li a:hover {
       background-color: #f0f0f0; /* Background on hover */
     }
-    
   }
 }

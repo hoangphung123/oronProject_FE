@@ -4,6 +4,7 @@ import App from './App';
 import { DarkModeContextProvider } from './context/darkModeContext';
 import { AuthContextProvider } from './context/authContext';
 import { PostsProvider, usePosts } from "./context/postContext.js";
+// import "indess.css"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
