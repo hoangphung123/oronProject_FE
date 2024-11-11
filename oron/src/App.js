@@ -47,9 +47,9 @@ function App() {
     console.log(currentUser.data.username);
   };
 
-  useEffect(() => {
-    fecheslogin();
-  }, []);
+  // useEffect(() => {
+  //   fecheslogin();
+  // }, []);
 
   const Layout = () => {
     return (
@@ -95,6 +95,7 @@ function App() {
 
   //Protected Route (check login or not yet)
   const ProtectedRoute = ({ children }) => {
+    console.log("currentUser", currentUser)
     if (!currentUser) {
       return <Navigate to="/login" />;
     }
@@ -200,7 +201,7 @@ function App() {
         //   element: <ProfileFriends />,
         // },
         {
-          path: "",
+          path: "setting",
           element: <SettingsPage />,
         },
         {
@@ -208,7 +209,7 @@ function App() {
           element: <UsersPage />,
         },
         {
-          path: "reports",
+          path: "",
           element: <ProductsPage />,
         },
       ],

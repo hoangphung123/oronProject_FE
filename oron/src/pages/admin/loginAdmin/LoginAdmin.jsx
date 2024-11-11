@@ -39,7 +39,7 @@ function LoginAdmin() {
     <div className="containers">
       <div className="top"></div>
       <div className="bottom"></div>
-      <div className="center">
+      <div className="centers">
         <h2>Please Sign In</h2>
         <input
           type="text"

@@ -262,7 +262,7 @@ const Post = ({ post }) => {
           >
             <TextsmsOutlinedIcon />
             {showRegisteredUsers
-              ? "Registered Users for this post"
+              ? "Registation for this post"
               : "Registation for this post"}
           </div>
         </div>
