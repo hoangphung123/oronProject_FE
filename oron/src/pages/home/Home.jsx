@@ -160,9 +160,9 @@ const Home = () => {
       <Carousel />
       <Submenu />
       <ShareBox />
-      <button className="button_next">
+      {/* <button className="button_next">
         <FontAwesomeIcon icon={faAngleRight} size="xl" />
-      </button>
+      </button> */}
       <Posts />
     </div>
   );

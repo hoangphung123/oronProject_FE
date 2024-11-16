@@ -292,16 +292,19 @@ const Profile = () => {
         <div className="center"></div>
         <div className="right"></div>
       </div>
-      <nav className="menu">
-        <ul>
-          <li onClick={() => handleTabChange("Post")}>Post</li>
-          <li onClick={() => handleTabChange("Friend")}>Friend</li>
-          <li onClick={() => handleTabChange("My Profile")}>My Profile</li>
-          <li>Option 2</li>
+      <div className="menu_content">
+        <nav className="menu">
+          <ul>
+            <li onClick={() => handleTabChange("Post")}>Post</li>
+            <li onClick={() => handleTabChange("Friend")}>Friend</li>
+            <li onClick={() => handleTabChange("My Profile")}>My Profile</li>
+            {/* <li>Option 2</li>
           <li>Option 3</li>
-          <li>Option 4</li>
-        </ul>
-      </nav>
+          <li>Option 4</li> */}
+          </ul>
+        </nav>
+      </div>
+
       {/* Profile Content */}
 
       {activeTab === "Post" && (

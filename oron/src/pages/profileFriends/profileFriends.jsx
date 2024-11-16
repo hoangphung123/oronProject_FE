@@ -14,6 +14,7 @@ import * as Postserver from "../../server/itemstore";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useNavigate } from "react-router-dom";
 import { PostsContext } from "../../context/postContext";
+import { Search } from "lucide-react";
 
 const ProfileFriends = () => {
   const { currentUser, setCurrentUser, currentUserId, setCurrentUserId } =
