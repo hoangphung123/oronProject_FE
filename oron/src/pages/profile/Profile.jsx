@@ -321,7 +321,7 @@ const Profile = () => {
                     // size="2xl"
                     style={{ color: cameraIconColor }}
                   />
-                  <span>Linh Chieu, Thu Duc</span>
+                  <span>{currentUser.data.specificAddress}</span>
                 </div>
                 <div className="link">
                   <FontAwesomeIcon

@@ -16,6 +16,23 @@
       color: themed("textColor");
     }
 
+    .profile-container-title{
+      display: flex;
+      justify-content:  space-between;
+      border-bottom: 1px solid themed("textColor");
+      margin-bottom: 10pxhh;
+      .profile-container_button{
+        display: flex;
+        gap: 20px;
+
+        img{
+          width: 30px;
+          height: 30px;
+          object-fit: cover;
+        }
+      }
+    }
+
     .profile-content {
       display: flex;
 
@@ -107,6 +124,24 @@
             width: 120px;
           }
         }
+        .Date-picker{
+          background: transparent;
+          max-width: 600px;
+        }
+        .ant-picker-input{
+          input{
+            color: themed("textColor");
+            min-width: 80%;
+            border: 0px;
+            &::placeholder {
+              color: themed("textColor"); // Đổi màu của placeholder
+            }
+          }
+          
+        }
+        .ant-picker-suffix{
+          color: themed("textColor");
+        }
       }
 
       input {
@@ -116,6 +151,7 @@
         color: themed("textColor");
         border-radius: 4px;
         min-width: 600px;
+        font-size: 15px;
       }
       select {
         padding: 5px;
@@ -124,6 +160,9 @@
         color: themed("textColor");
         border-radius: 4px;
         max-width: 600px;
+        option{
+          color: black;
+        }
       }
     }
   }

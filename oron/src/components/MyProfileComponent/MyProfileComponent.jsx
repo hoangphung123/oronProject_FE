@@ -1,12 +1,166 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyProfileComponent.scss";
+import ButtonCanncel from "./Icon Button.png";
+import ButtonSave from "./Icon Button1.png";
+import { DatePicker } from "antd";
+import * as UserSever from "../../server/userstore";
+import moment from "moment";
 
 const MyProfileComponent = () => {
   const [activeTab, setActiveTab] = useState("Overview");
+  const [userData, setUserData] = useState(null);
+  const [provinces, setProvinces] = useState([]);
+  const [wards, setwards] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedWard, setSelectedWard] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [name, setName] = useState("");
+  const [birthDate, setBirthDate] = useState(null);
+  const [specificAddress, setSpecificAddress] = useState("");
+  const [genderCD, setGenderCD] = useState(1);
+  const [mail, setMail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [relatedUrl, setRelatedUrl] = useState("");
+
+  // const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+  //   console.log(date, dateString);
+  // };
+
+  const DeleteData = () => {
+    setBirthDate(null);
+    setGenderCD(2);
+    setFirstName("");
+    setSpecificAddress("");
+    setSelectedProvince("");
+    setSelectedDistrict("");
+    setSelectedWard("");
+    userData.fullAddress = "";
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("access_token"));
+      const updatedProfile = {
+        name: firstName,
+        birthDate: birthDate ? birthDate.format("YYYY-MM-DD") : null,
+        specificAddress: specificAddress,
+        province: selectedProvince,
+        district: selectedDistrict,
+        ward: selectedWard,
+        genderCD: genderCD,
+        phoneNumber: phoneNumber,
+        relatedUrl: relatedUrl
+      };
+
+      const response = await UserSever.UpdateProfile(
+        accessToken,
+        updatedProfile
+      );
+      if (response.success) {
+        console.log("Profile updated successfully!");
+        // Optionally refresh user data or show a success message
+      } else {
+        console.log("Error updating profile:", response.error);
+      }
+    } catch (error) {
+      console.error("Error calling UpdateProfile API:", error.message);
+    }
+  };
+
+  const fetchProvinces = async () => {
+    try {
+      const response = await UserSever.getAllProvinces();
+
+      if (!response.error) {
+        const fetchedProvinces = response.data.listData;
+        setProvinces(fetchedProvinces);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  };
+
+  const fetchDistrictsByProvinceId = async (provinceId) => {
+    try {
+      const responses = await UserSever.getDistrictsByProvinceId(provinceId);
+      if (!responses.error) {
+        const fetchedDistricts = responses.data.listData;
+        setDistricts(fetchedDistricts);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  };
+
+  const fetchWardsByDistrictId = async (districtId) => {
+    try {
+      const responses = await UserSever.getWardsByDistrictId(districtId);
+      if (!responses.error) {
+        const fetchedWards = responses.data.listData;
+        setwards(fetchedWards);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log("error", error.message);
+    }
+  };
+
+  const handleSelectDistricts = (e) => {
+    const selectedDistrictId = e.target.value;
+    setSelectedDistrict(selectedDistrictId);
+    fetchWardsByDistrictId(selectedDistrictId);
+  };
+
+  const handleSelectProvince = (e) => {
+    const selectedProvinceId = e.target.value;
+    setSelectedProvince(selectedProvinceId);
+    fetchDistrictsByProvinceId(selectedProvinceId);
+  };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const accessToken = JSON.parse(localStorage.getItem("access_token"));
+        const profileResponse = await UserSever.getProfile(accessToken);
+        setUserData(profileResponse.data);
+        setFirstName(profileResponse.data.name);
+        setBirthDate(
+          profileResponse.data.birthDate
+            ? moment(profileResponse.data.birthDate)
+            : null
+        );
+        setSpecificAddress(profileResponse.data.specificAddress);
+        setGenderCD(profileResponse.data.genderCD);
+        setMail(profileResponse.data.email);
+        setPhoneNumber(profileResponse.data.phoneNumber);
+        setRelatedUrl(profileResponse.data.relatedUrl)
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+    fetchProvinces();
+    fetchUserProfile();
+  }, []);
+
+  if (!userData) return <p>Loading...</p>;
 
   return (
     <div className="profile-container">
-      <h2>My Profile</h2>
+      <div className="profile-container-title">
+        <h2>My Profile</h2>
+        <div className="profile-container_button">
+          <img src={ButtonCanncel} alt="buttonCanncel" onClick={DeleteData} />
+          <img src={ButtonSave} alt="" onClick={handleSaveProfile} />
+        </div>
+      </div>
+
       <div className="profile-content">
         <div className="profile-sidebar">
           <button
@@ -34,19 +188,25 @@ const MyProfileComponent = () => {
               <p className="profile-details-title">
                 <strong>Name</strong>
               </p>
-              <p className="profile-details-content">Dinh Thinh</p>
+              <p className="profile-details-content">{userData.name}</p>
               <p className="profile-details-title">
                 <strong>Birthday</strong>
               </p>
-              <p className="profile-details-content">04/06/2002</p>
+              <p className="profile-details-content">
+                {userData.birthDate
+                  ? moment(userData.birthDate).format("DD/MM/YYYY")
+                  : "N/A"}
+              </p>
               <p className="profile-details-title">
                 <strong>Address</strong>
               </p>
-              <p className="profile-details-content">Details address</p>
+              <p className="profile-details-content">{userData.fullAddress}</p>
               <p className="profile-details-title">
                 <strong>Contact</strong>
               </p>
-              <p className="profile-details-content">Email or number phone</p>
+              <p className="profile-details-content">
+                {userData.email || userData.phoneNumber}
+              </p>
               {/* <div className="edit-buttons">
                 <button className="edit-button">H</button>
                 <button className="delete-button">X</button>
@@ -62,7 +222,14 @@ const MyProfileComponent = () => {
                 <div className="details_Personal">
                   {/* <label>First Name</label> */}
                   <div class="field">
-                    <input type="text" id="firstname" placeholder="..." />
+                    <input
+                      type="text"
+                      id="firstname"
+                      value={firstName}
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
+                    />
                     <label for="firstname">firstname</label>
                   </div>
                   {/* <label>Name</label> */}
@@ -72,20 +239,23 @@ const MyProfileComponent = () => {
                   </div>
                 </div>
                 <label>Birthday</label>
-                <div className="birthday-inputs">
-                  <select>
-                    <option>Date</option>
-                  </select>
-                  <select>
-                    <option>Month</option>
-                  </select>
-                  <select>
-                    <option>Year</option>
-                  </select>
-                </div>
+                <DatePicker
+                  className="Date-picker"
+                  onChange={(date) => {
+                    setBirthDate(date); // Update the separate birthDate state
+                  }}
+                  value={birthDate}
+                />
                 <label>Sex</label>
-                <select>
-                  <option>Male</option>
+                <select
+                  value={genderCD || 2}
+                  onChange={(e) => {
+                    setGenderCD(e.target.value, 10);
+                  }}
+                >
+                  <option value={0}>Male</option>
+                  <option value={1}>Female</option>
+                  <option value={2}>None</option>
                 </select>
               </div>
               <h3 className="addres_title">
@@ -93,20 +263,57 @@ const MyProfileComponent = () => {
               </h3>
               <div className="address-form">
                 <label>Province</label>
-                <select>
-                  <option>Province</option>
+                <select
+                  value={selectedProvince}
+                  onChange={handleSelectProvince}
+                >
+                  <option value="" disabled>
+                    {userData.fullAddress.split(", ")[2]}
+                  </option>
+                  {provinces.map((province) => (
+                    <option key={province.id} value={province.id}>
+                      {province.name}
+                    </option>
+                  ))}
                 </select>
                 <label>District</label>
-                <select>
-                  <option>District</option>
+                <select
+                  value={selectedDistrict}
+                  onChange={handleSelectDistricts}
+                >
+                  <option value="" disabled>
+                    {userData.fullAddress.split(", ")[1]}
+                  </option>
+                  {districts.map((district) => (
+                    <option key={district.id} value={district.id}>
+                      {district.name}
+                    </option>
+                  ))}
                 </select>
                 <label>Ward</label>
-                <select>
-                  <option>Ward</option>
+                <select
+                  value={selectedWard}
+                  onChange={(e) => setSelectedWard(e.target.value)}
+                >
+                  <option value="" disabled>
+                    {userData.fullAddress.split(", ")[0]}
+                  </option>
+                  {wards.map((ward, index) => (
+                    <option key={ward.id} value={ward.id}>
+                      {ward.name}
+                    </option>
+                  ))}
                 </select>
                 {/* <label>Specific Address</label> */}
                 <div class="field">
-                  <input type="text" id="SpecificAddress" placeholder="..." />
+                  <input
+                    type="text"
+                    id="SpecificAddress"
+                    value={specificAddress}
+                    onChange={(e) => {
+                      setSpecificAddress(e.target.value);
+                    }}
+                  />
                   <label for="SpecificAddress">Specific Address</label>
                 </div>
               </div>
@@ -117,13 +324,31 @@ const MyProfileComponent = () => {
               <h3>Personal Information</h3>
               <div className="other-form">
                 <label>Email</label>
-                <input type="email" value="nguyenxuanloc@gmail.com" readOnly />
+                <input
+                  type="email"
+                  value={mail}
+                  onChange={(e) => {
+                    setMail(e.target.value);
+                  }}
+                />
                 <label>Number Phone</label>
-                <input type="text" value="01234567890" readOnly />
+                <input
+                  type="text"
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value);
+                  }}
+                />
               </div>
               <h3>Other</h3>
               <label>Link</label>
-              <input type="text" value="google.com" readOnly />
+              <input
+                type="text"
+                value={relatedUrl}
+                onChange={(e) => {
+                  setRelatedUrl(e.target.value);
+                }}
+              />
             </div>
           )}
         </div>
