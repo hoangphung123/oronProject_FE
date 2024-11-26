@@ -222,7 +222,7 @@ export const verifyForgotPassword = async (userData) => {
 export const getUserByUsername = async (accessToken, username) => {
   try {
     const response = await axios.get(
-      `${api_url}/user/filter?keyword=${username}&limit=10`, // Use URL parameters for username and limit
+      `${api_url}/user/filter?keyword=${username}`, // Use URL parameters for username and limit
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -310,6 +310,26 @@ export const changePassWord = async (accessToken, dataChange) => {
 
     const changePasswordResult = response.data;
     return changePasswordResult;
+  } catch (error) {
+    console.error('Error while changing password:', error.message);
+    throw error;
+  }
+}
+
+export const UpdateProfile = async (accessToken, dataChange) => {
+  try {
+    const response = await axios.patch(
+      `${api_url}/user`,
+      dataChange,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const updateDataResult = response.data;
+    return updateDataResult;
   } catch (error) {
     console.error('Error while changing password:', error.message);
     throw error;

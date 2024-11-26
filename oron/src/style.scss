@@ -21,8 +21,6 @@ $themes: (
   ),
 );
 
-
-
 @mixin themify($themes) {
   @each $theme, $map in $themes {
     .theme-#{$theme} & {
@@ -53,6 +51,42 @@ $themes: (
 @mixin tablet {
   @media (max-width: 960px) {
     @content;
+  }
+}
+
+.field {
+  @include themify($themes) {
+    position: relative;
+    margin-top: 15px;
+    input {
+      color: themed("textColor");
+      background: none;
+      margin: 0.625rem 0.625rem 0.625rem 0;
+      border: 2px solid #03014d;
+    }
+
+    label {
+      position: absolute;
+      top: -5px;
+      left: 0.4rem;
+      translate: 0.625rem 0.625rem;
+      color: themed("textColor");
+      background-color: themed("bg");
+      padding-inline: 0.25rem;
+      border: 2px solid transparent;
+      pointer-events: none;
+      transition: translate 250ms, background-color 250ms, border-color 250ms;
+    }
+
+    &:focus-within label,
+    &:not(:has(:placeholder-shown)) label {
+      translate: 0.625rem -1rem;
+      border-color: themed("textColor");
+    }
+  }
+
+  input::placeholder {
+    color: transparent;
   }
 }
 

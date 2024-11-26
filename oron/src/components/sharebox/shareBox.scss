@@ -98,7 +98,6 @@
       min-height: 83vh;
       min-width: 25%;
       overflow: hidden;
-      z-index: 2;
       height: 45%;
       gap: 20px;
 
@@ -122,6 +121,7 @@
         border-radius: 5px;
         border: none;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        color: #000 !important;
         /* Thêm các thuộc tính CSS khác nếu cần thiết */
       }
 

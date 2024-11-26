@@ -6,8 +6,8 @@ import "../../pages/tailwind-styles.css"
 
 const SIDEBAR_ITEMS = [
 	{ name: "Users", icon: Users, color: "#EC4899", href: "/admin/users" },
-	{ name: "Report", icon: ShoppingBag, color: "#8B5CF6", href: "/admin/reports" },
-	{ name: "Settings", icon: Settings, color: "#6EE7B7", href: "/admin" },
+	{ name: "Report", icon: ShoppingBag, color: "#8B5CF6", href: "/admin" },
+	{ name: "Settings", icon: Settings, color: "#6EE7B7", href: "/admin/setting" },
 ];
 
 const Sidebar = () => {

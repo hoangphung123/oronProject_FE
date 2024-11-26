@@ -10,6 +10,7 @@ import Sidebar from "./components/common/Sidebar.jsx"
 import SettingsPage from "./pages/admin/SettingsPage.jsx";
 import LoginAdmin from "./pages/admin/loginAdmin/LoginAdmin.jsx";
 import UsersPage from "./pages/admin/UsersPage.jsx";
+import RankingNew from "./pages/rankingNew/rankingNew.jsx";
 import {
   createBrowserRouter,
   Navigate,
@@ -47,9 +48,9 @@ function App() {
     console.log(currentUser.data.username);
   };
 
-  useEffect(() => {
-    fecheslogin();
-  }, []);
+  // useEffect(() => {
+  //   fecheslogin();
+  // }, []);
 
   const Layout = () => {
     return (
@@ -79,6 +80,20 @@ function App() {
     );
   };
 
+  const LayoutRanking = () => {
+    return (
+      <div className={`theme-${darkMode ? "dark" : "light"}`}>
+        <NavBar />
+        <div style={{ display: "flex" }}>
+          <LeftBar />
+          <div className="Home-post" style={{ flex: 6 }}>
+            <Outlet />
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const LayoutAdmin = () => {
     return (
       <div className='flex h-screen bg-gray-900 text-gray-100 overflow-hidden'>
@@ -95,6 +110,7 @@ function App() {
 
   //Protected Route (check login or not yet)
   const ProtectedRoute = ({ children }) => {
+    console.log("currentUser", currentUser)
     if (!currentUser) {
       return <Navigate to="/login" />;
     }
@@ -157,14 +173,14 @@ function App() {
       path: "/forgotpassword",
       element: <Forgotpassword />,
     },
-    {
-      path: "/ranking",
-      element: <Ranking />,
-    },
-    {
-      path: "/reportadmin",
-      element: <Reportadmin />,
-    },
+    // {
+    //   path: "/ranking",
+    //   element: <RankingNew />,
+    // },
+    // {
+    //   path: "/reportadmin",
+    //   element: <Reportadmin />,
+    // },
     {
       path: "/detailRegistation",
       element: <DetailRegistation />,
@@ -188,6 +204,20 @@ function App() {
       ],
     },
     {
+      path: "/",
+      element: (
+        <ProtectedRoute>
+          <LayoutRanking />
+        </ProtectedRoute>
+      ),
+      children: [
+        {
+          path: "/ranking",
+          element: <RankingNew />,
+        },
+      ],
+    },
+    {
       path: "/admin",
       element: (
         <ProtectedRoute>
@@ -200,7 +230,7 @@ function App() {
         //   element: <ProfileFriends />,
         // },
         {
-          path: "",
+          path: "setting",
           element: <SettingsPage />,
         },
         {
@@ -208,7 +238,7 @@ function App() {
           element: <UsersPage />,
         },
         {
-          path: "reports",
+          path: "",
           element: <ProductsPage />,
         },
       ],

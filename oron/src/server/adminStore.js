@@ -27,3 +27,19 @@ export const getAllUsers = async (accessToken) => {
     throw error;
   }
 };
+
+// Get reports by admin API
+export const getReportsByAdmin = async (accessToken) => {
+  try {
+    const response = await axios.get(`${api_url}/report/filter`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const reports = response.data;
+    return reports;
+  } catch (error) {
+    console.error("Error while fetching reports:", error.message);
+    throw error;
+  }
+};

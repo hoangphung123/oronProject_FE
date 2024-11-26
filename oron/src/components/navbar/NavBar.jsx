@@ -31,7 +31,7 @@ import ImageMessage from "./IconMessage.png";
 const NavBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser, currentUserId, setCurrentUserId } =
+  const { currentUser, currentUserId, setCurrentUserId, setCurrentUser } =
     useContext(AuthContext);
   const navigate = useNavigate();
   // const [profileImage, setProfileImage] = useState(currentUser.data.profilePic);
@@ -103,6 +103,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    // setCurrentUser(null)
     // Chuyển hướng đến trang đăng nhập (hoặc trang khác tùy thuộc vào yêu cầu của bạn)
     navigate("/login");
     // Đóng Menu sau khi logout
