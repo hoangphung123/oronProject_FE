@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './FriendPage.scss';
+import { PostsContext } from "../../context/postContext";
+
 
 const FriendPage = ({ type }) => {
+  const { friendsList, followingList, followerList } = useContext(PostsContext);
   const followData = [
     { name: 'Kaito Kid', imageUrl: 'path/to/image1.jpg' },
     { name: 'Kaito Kid', imageUrl: 'path/to/image2.jpg' },
@@ -30,11 +33,11 @@ const FriendPage = ({ type }) => {
   let showAcceptButton = false;
 
   if (type === 'follow') {
-    data = followData;
+    data = followingList;
   } else if (type === 'follower') {
-    data = followerData;
+    data = followerList;
   } else if (type === 'friendRequest') {
-    data = friendRequestData;
+    data = friendsList;
     showAcceptButton = true;
   }
 
@@ -44,7 +47,7 @@ const FriendPage = ({ type }) => {
       <div className="friend-request-container">
         {data.map((person, index) => (
           <div key={index} className="friend-request-card">
-            <img src={person.imageUrl} alt={person.name} className="friend-request-image" />
+            <img src={`http://localhost:3500/${person.profilePic}`} alt={person.name} className="friend-request-image" />
             <h3 className="friend-request-name">{person.name}</h3>
             {showAcceptButton && <button className="accept-button">Accept</button>}
             <button className="delete-button">Delete</button>

@@ -327,6 +327,7 @@ const MyProfileComponent = () => {
                 <input
                   type="email"
                   value={mail}
+                  readOnly
                   onChange={(e) => {
                     setMail(e.target.value);
                   }}

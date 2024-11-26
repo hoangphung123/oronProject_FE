@@ -85,15 +85,15 @@ const LeftBar1 = ({ setSelectedTab }) => {
           className={`tab ${selectedTab === "friendRequest" ? "active" : ""}`}
           onClick={() => handleTabClick("friendRequest")}
         >
-          Friend Request
+          Friends
         </div>
         <div className="tabs">
-          <div
+          {/* <div
             className={`tab ${selectedTab === "friends" ? "active" : ""}`}
             onClick={() => handleTabClick("friends")}
           >
             Friends
-          </div>
+          </div> */}
           <div
             className={`tab ${selectedTab === "followers" ? "active" : ""}`}
             onClick={() => handleTabClick("followers")}

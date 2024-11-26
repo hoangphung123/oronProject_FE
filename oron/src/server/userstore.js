@@ -222,7 +222,7 @@ export const verifyForgotPassword = async (userData) => {
 export const getUserByUsername = async (accessToken, username) => {
   try {
     const response = await axios.get(
-      `${api_url}/user/filter?keyword=${username}&limit=10`, // Use URL parameters for username and limit
+      `${api_url}/user/filter?keyword=${username}`, // Use URL parameters for username and limit
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

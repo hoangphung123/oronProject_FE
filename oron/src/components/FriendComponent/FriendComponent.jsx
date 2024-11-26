@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./FriendComponent.scss";
 import { Search } from "lucide-react";
+import { PostsContext } from "../../context/postContext";
 
 const FriendComponent = () => {
+  const { friendsList, followingList, followerList } = useContext(PostsContext);
   const friends = [
     { name: "Phung", avatar: "https://i.pinimg.com/564x/da/52/81/da52815da1578cbe48e9bf62145374b6.jpg" },
     { name: "Huy Hoang", avatar: "https://i.pinimg.com/564x/da/52/81/da52815da1578cbe48e9bf62145374b6.jpg" },
@@ -26,10 +28,10 @@ const FriendComponent = () => {
         </div>
       </div>
       <div className="friend-list">
-        {friends.map((friend, index) => (
+        {friendsList.map((friend, index) => (
           <div key={index} className="friend-card">
-            <img src={friend.avatar} alt={friend.name} className="avatar" />
-            <span>{friend.name}</span>
+            <img src={`http://localhost:3500/${friend.profilePic}`} alt={friend.name} className="avatar" />
+            <span>{friend.username}</span>
           </div>
         ))}
       </div>

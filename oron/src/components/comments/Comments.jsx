@@ -10,6 +10,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import IconButton from "@mui/material/IconButton";
 import { PostsContext } from "../../context/postContext";
 import Rating from "react-rating";
+import { CommentBox } from "../comment/Commentbox";
 
 const Comments = ({ postId }) => {
   const { currentUser } = useContext(AuthContext);
@@ -34,6 +35,21 @@ const Comments = ({ postId }) => {
     description: "",
   });
 
+  const addComment = () => {
+    setComments([
+      ...comments,
+      { id: `${comments.length}`, value: "", children: [] },
+    ]);
+  };
+
+  const onChange = (comment) => {
+    setComments(
+      comments.map((comm) => {
+        return comm.id === comment.id ? comment : comm;
+      })
+    );
+  };
+
   const openEditPopup = (commentId) => {
     setEditingCommentId(commentId);
   };
@@ -53,8 +69,8 @@ const Comments = ({ postId }) => {
   const handleKeyPresss = (e, postId) => {
     if (e.key === "Enter") {
       // Người dùng bấm Enter, gọi hàm handleEditComment
-       // Kết thúc chỉnh sửa
-       handleAddComment(postId)
+      // Kết thúc chỉnh sửa
+      handleAddComment(postId);
     }
   };
 
@@ -75,7 +91,11 @@ const Comments = ({ postId }) => {
       setReviewer([]);
 
       const limit = 9;
-      const response = await postServer.getAllPost(accessToken, limit, categoryIds);
+      const response = await postServer.getAllPost(
+        accessToken,
+        limit,
+        categoryIds
+      );
       const postData = response.listData;
       setPosts(postData);
       // Set the deleted review ID for UI updates
@@ -98,7 +118,11 @@ const Comments = ({ postId }) => {
       await postServer.updateReview(accessToken, reviewId, reviewData);
 
       const limit = 9;
-      const response = await postServer.getAllPost(accessToken, limit, categoryIds);
+      const response = await postServer.getAllPost(
+        accessToken,
+        limit,
+        categoryIds
+      );
       const postData = response.listData;
       setPosts(postData);
 
@@ -159,34 +183,11 @@ const Comments = ({ postId }) => {
     const commentData = {
       description: newComment,
       postId: postId,
+      parentId: "0cb1e867-b55e-434a-8661-73a591cb0e79",
+      parentLevel: 1,
     };
 
     await postServer.uploadComment(accessToken, commentData);
-
-    // const newCommentObject = {
-    //   id: comments.id, // Generate a unique ID (replace with your logic)
-    //   description: newComment,
-    //   user: {
-    //     username: currentUser.data.username,
-    //     profilePic: `${currentUser.data.profilePic}`,
-    //   },
-    //   post: {
-    //     id: "0a73500d-8f84-4a81-a50a-0479152e2a5d", // Replace with the actual post ID
-    //     description: "Đại học sư phạm kỹ Thuật", // Replace with the actual post description
-    //     imageURL: "post/1700901151754-maxresdefault.jpg", // Replace with the actual image URL
-    //     videoURL: null, // Set to null if there is no video
-    //     status: 1, // Replace with the actual post status
-    //     fullAddress: "Xã Phú Mỹ, Huyện Phú Tân, Tỉnh Cà Mau", // Replace with the actual post address
-    //     specificAddress: "32, Le Quy Don", // Replace with the actual post specific address
-    //     createdAt: "2023-11-25T08:32:31.708Z", // Replace with the actual post createdAt
-    //     updatedAt: "2023-11-25T08:32:31.768Z", // Replace with the actual post updatedAt
-    //   },
-    //   createdAt: new Date().toISOString(), // Assuming createdAt is a string in ISO format
-    //   updatedAt: new Date().toISOString(), // Assuming updatedAt is a string in ISO format
-    // };
-
-    // Update the comments state with the new comment
-    // setComments((prevComments) => [newCommentObject, ...prevComments]);
 
     const response = await postServer.getCommentByPostId(postId);
     const data = response.listData;
@@ -196,7 +197,6 @@ const Comments = ({ postId }) => {
     setNewComment("");
   };
 
-
   const handleDeleteComment = async (commentId) => {
     const accessToken = JSON.parse(localStorage.getItem("access_token"));
 
@@ -205,10 +205,12 @@ const Comments = ({ postId }) => {
       await postServer.deleteComment(accessToken, commentId);
 
       // Update the comments state after deletion
-      const updatedComments = comments.filter((comment) => comment.id !== commentId);
+      const updatedComments = comments.filter(
+        (comment) => comment.id !== commentId
+      );
       setComments(updatedComments);
       setAnchorEl(null);
-      
+
       // Add any additional logic or notifications as needed
       console.log("Comment deleted successfully");
     } catch (error) {
@@ -332,7 +334,7 @@ const Comments = ({ postId }) => {
         </div>
       ))}
       <hr />
-      <div className="write">
+      {/* <div className="write">
         <img
           src={`http://localhost:3500/${currentUser.data.profilePic}`}
           alt=""
@@ -345,9 +347,15 @@ const Comments = ({ postId }) => {
           onKeyUp={(e) => handleKeyPresss(e, postId)}
         />
         <button onClick={() => handleAddComment(postId)}>Send</button>
-      </div>
-
-      {comments.map((comment) => (
+      </div> */}
+      <button
+        style={{ marginLeft: "0.5rem", marginTop: "1rem" }}
+        onClick={addComment}
+      >
+        Add Comment
+      </button>
+      <CommentBox comments={comments} onChange={onChange} postIds={postId} />
+      {/* {comments.map((comment) => (
         <div className="comment" key={comment.id}>
           <img
             src={`http://localhost:3500/${comment.user.profilePic}`}
@@ -405,7 +413,7 @@ const Comments = ({ postId }) => {
             )}
           </div>
         </div>
-      ))}
+      ))} */}
       {/* {isEditPopupOpen && (
         <>
           <div className="overlay" onClick={closeEditPopup}></div>

@@ -170,6 +170,70 @@
           }
         }
       }
+
+      .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-columnHeaderTitleContainer {
+        color: themed("textColor");
+      }
+
+      .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-cell--textLeft {
+        color: themed("textColor");
+      }
+
+      .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+        color: themed("textColor");
+        margin-bottom: 20px;
+        border: themed("textColor");
+      }
+
+      .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+        border-color: themed("textColor");
+      }
+
+      .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon {
+        color: themed("textColor");
+      }
+
+      .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+        color: themed("textColor");
+        padding: 0 2px;
+        background: themed("bg");
+        border: 1px solid themed("textColor");
+        top: -10px;
+      }
+
+      .css-ptkaw2-MuiDataGrid-root {
+        border-color: themed("textColor");
+      }
+
+      .css-ptkaw2-MuiDataGrid-root .MuiDataGrid-withBorderColor {
+        border-color: themed("textColor");
+      }
+      .css-rtrcn9-MuiTablePagination-root:last-child {
+        color: themed("textColor");
+      }
+      .css-zylse7-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+        color: themed("textColor");
+      }
+      .css-yrdy0g-MuiDataGrid-columnHeaderRow {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .MuiDataGrid-columnHeadersInner.css-gl260s-MuiDataGrid-columnHeadersInner {
+        width: 100%;
+      }
+      .ant-table {
+        background: themed("bg");
+        color: themed("textColor");
+        border: 2px solid themed("textColor");
+      }
+      .ant-table-cell {
+        border: 1px solid themed("textColor");
+        text-align: center;
+      }
+      .ranking-medal{
+        font-size: 24px;
+      }
     }
   }
 }
